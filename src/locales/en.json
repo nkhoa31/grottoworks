@@ -195,6 +195,7 @@
   "features.tasks.assignees": "Volunteers",
   "features.tasks.assignNone": "Nobody assigned yet",
   "features.tasks.assign": "Assign",
+  "features.tasks.assignVolunteer": "Assign",
   "features.tasks.assignTitle": "Assign volunteers",
   "features.tasks.assigned": "{{name}} assigned",
   "features.tasks.assignedShort": "Assigned",
@@ -223,5 +224,7 @@
   "features.tasks.deleteTitle": "Delete task",
   "features.tasks.deleteConfirm": "Delete \"{{name}}\"? This cannot be undone.",
   "features.tasks.empty": "No tasks yet.",
-  "features.tasks.notFound": "Task not found."
+  "features.tasks.notFound": "Task not found.",
+  "features.tasks.noArea": "You have not been assigned to lead any area yet",
+  "features.tasks.contactCommittee": "Contact the committee"
 }

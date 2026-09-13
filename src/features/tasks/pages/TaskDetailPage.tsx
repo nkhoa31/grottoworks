@@ -29,10 +29,7 @@ import {
   useUpdateTask,
 } from '../api'
 import type { Task, User } from '@/types'
-
-// ISO yyyy-mm-dd → dd/MM/yyyy (giống SeasonListPage).
-const viDate = (iso: string) =>
-  iso.length >= 10 ? `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)}` : iso
+import { viDate } from '@/lib/format'
 
 const TEXTAREA_CLS =
   'mt-1 w-full rounded-md border border-grotto-hair bg-grotto-panel px-3 py-2 text-sm text-grotto-ink transition-colors focus-visible:outline-none focus-visible:border-grotto-terra focus-visible:ring-2 focus-visible:ring-grotto-terra/30'
@@ -67,7 +64,7 @@ function VolunteerRow({ task, user }: { task: Task; user: User }) {
       </div>
       <Button size="sm" variant={assigned ? 'outline' : 'default'} disabled={assigned} onClick={onAssign}>
         {assigned ? <Check className="size-4" /> : <Plus className="size-4" />}
-        {assigned ? t('features.tasks.assignedShort') : t('common.create')}
+        {assigned ? t('features.tasks.assignedShort') : t('features.tasks.assignVolunteer')}
       </Button>
     </div>
   )
@@ -93,8 +90,8 @@ function AssignDialog({ task, onClose }: { task: Task; onClose: () => void }) {
   )
 }
 
-// Assignee chip + nút X bỏ phân công.
-function AssigneeChip({ taskId, user }: { taskId: string; user: User }) {
+// Assignee chip + nút X bỏ phân công (ẩn X khi readOnly).
+function AssigneeChip({ taskId, user, readOnly }: { taskId: string; user: User; readOnly?: boolean }) {
   const { t } = useTranslation()
   const toast = useToast()
   const unassign = useUnassign(taskId, user.id)
@@ -109,14 +106,16 @@ function AssigneeChip({ taskId, user }: { taskId: string; user: User }) {
   return (
     <span className={CHIP_CLS}>
       {user.name}
-      <button
-        type="button"
-        aria-label={t('features.tasks.unassign', { name: user.name })}
-        onClick={onUnassign}
-        className="text-grotto-soft transition-colors hover:text-grotto-brick"
-      >
-        <X className="size-3.5" />
-      </button>
+      {!readOnly && (
+        <button
+          type="button"
+          aria-label={t('features.tasks.unassign', { name: user.name })}
+          onClick={onUnassign}
+          className="text-grotto-soft transition-colors hover:text-grotto-brick"
+        >
+          <X className="size-3.5" />
+        </button>
+      )}
     </span>
   )
 }
@@ -353,7 +352,7 @@ export default function TaskDetailPage() {
             <div className="mt-3 flex flex-wrap gap-2">
               {assignees.length ? (
                 assignees.map((u) => (
-                  <AssigneeChip key={u.id} taskId={task.id} user={u} />
+                  <AssigneeChip key={u.id} taskId={task.id} user={u} readOnly={readOnly} />
                 ))
               ) : (
                 <p className="text-sm text-grotto-soft">{t('features.tasks.assignNone')}</p>

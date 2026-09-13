@@ -34,11 +34,16 @@ export function AreaCard({
       data-area-id={area.id}
       style={style}
       onClick={onClick ? () => onClick(area) : undefined}
+      role={onClick ? 'button' : undefined}
+      aria-label={onClick ? area.name : undefined}
       tabIndex={onClick ? 0 : undefined}
       onKeyDown={
         onClick
           ? (e) => {
-              if (e.key === 'Enter') onClick(area)
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                onClick(area)
+              }
             }
           : undefined
       }

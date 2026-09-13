@@ -15,12 +15,9 @@ import { useSeasons, useCloseSeason } from '../api'
 import { SeasonFormDialog } from './SeasonFormDialog'
 import type { Season } from '@/types'
 import i18n from '@/lib/i18n'
+import { viDate } from '@/lib/format'
 
 const d = (n: number) => ({ '--d': n }) as CSSProperties
-
-// ISO yyyy-mm-dd → dd/MM/yyyy.
-const viDate = (iso: string) =>
-  iso.length >= 10 ? `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)}` : iso
 
 export default function SeasonListPage() {
   const { t } = useTranslation()
