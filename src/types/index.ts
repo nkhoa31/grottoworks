@@ -78,8 +78,5 @@ export interface ChecklistItem { id: string; areaId: string; label: string; done
 
 export interface ActivityLog { id: string; at: string; actor: string; action: string; target: string }
 
-// Danh mục dùng chung (Admin — Task 12 quản trị danh mục).
+// Danh mục kỹ năng dùng chung (Admin — Task 12 quản trị danh mục).
 export const SKILLS = ['Điện', 'Mộc', 'Hàn', 'Trang trí', 'Vận chuyển', 'Logistics', 'Sơn'] as const;
-export const EXPENSE_CATEGORIES = [
-  'Vật tư xây dựng', 'Điện & ánh sáng', 'Trang trí', 'Vận chuyển', 'Ăn uống', 'Khác',
-] as const;

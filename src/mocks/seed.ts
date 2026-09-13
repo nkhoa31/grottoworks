@@ -7,7 +7,7 @@ import { donations } from './seed/donations';
 import { purchaseRecords, purchaseRequests } from './seed/purchases';
 import { timesheets } from './seed/timesheets';
 import { activityLogs, borrowedItems, checklistItems, supportRequests, volunteerRegs } from './seed/misc';
-import { SKILLS, EXPENSE_CATEGORIES } from '../types';
+import { SKILLS } from '../types';
 
 export const seed = {
   parish,
@@ -27,7 +27,6 @@ export const seed = {
   checklists: checklistItems,
   activityLogs,
   skills: [...SKILLS],
-  categories: [...EXPENSE_CATEGORIES],
 };
 
 export type Seed = typeof seed;
