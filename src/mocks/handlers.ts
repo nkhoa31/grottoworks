@@ -31,7 +31,7 @@ const PREFIX: Record<string, string> = {
 // label tiếng Việt cho ActivityLog action, theo style seed.
 const LABEL: Record<string, string> = {
   users: 'người dùng',
-  seasons: 'mùa',
+  parish: 'giáo xứ',
   communities: 'giáo khu',
   areas: 'khu',
   tasks: 'nhiệm vụ',
@@ -45,6 +45,7 @@ const LABEL: Record<string, string> = {
   timesheets: 'chấm công',
   supportRequests: 'yêu cầu hỗ trợ',
   checklists: 'checklist',
+  skills: 'kỹ năng',
 }
 
 function nextId(db: any, resource: string): string {
@@ -250,7 +251,69 @@ export const handlers = [
       headers: { 'Content-Disposition': 'attachment; filename="grottoworks-backup.json"' },
     }),
   ),
-  // Seed key dạng object đơn (không phải mảng) — chỉ GET.
+  // seed key object đơn / mảng chuỗi — mock layer loại trừ khỏi crud() generic.
+  http.post('/api/skills', async ({ request }) => {
+    const db = loadDb()
+    const { name } = (await request.json()) as { name?: string }
+    const v = (name ?? '').trim()
+    if (!v) return HttpResponse.json({ message: 'Thiếu tên kỹ năng' }, { status: 400 })
+    if (db.skills.includes(v))
+      return HttpResponse.json({ message: 'Kỹ năng đã tồn tại' }, { status: 409 })
+    db.skills.push(v)
+    logMutation(db, request, 'skills', 'thêm', v)
+    saveDb(db)
+    return HttpResponse.json(db.skills, { status: 201 })
+  }),
+  http.patch(`/api/skills/:index`, async ({ params, request }) => {
+    const db = loadDb()
+    const i = Number(params.index)
+    if (!Number.isInteger(i) || i < 0 || i >= db.skills.length)
+      return new HttpResponse(null, { status: 404 })
+    const { name } = (await request.json()) as { name?: string }
+    const v = (name ?? '').trim()
+    if (!v) return HttpResponse.json({ message: 'Thiếu tên kỹ năng' }, { status: 400 })
+    if (db.skills.includes(v))
+      return HttpResponse.json({ message: 'Kỹ năng đã tồn tại' }, { status: 409 })
+    const old = db.skills[i]
+    db.skills[i] = v
+    // Đổi tên cập nhật theo: user.skills + task.skills lưu tên kỹ năng.
+    for (const u of db.users) u.skills = u.skills.map((s: string) => (s === old ? v : s))
+    for (const tk of db.tasks) tk.skills = tk.skills.map((s: string) => (s === old ? v : s))
+    logMutation(db, request, 'skills', 'đổi tên', `${old} → ${v}`)
+    saveDb(db)
+    return HttpResponse.json(db.skills)
+  }),
+  http.delete(`/api/skills/:index`, ({ params, request }) => {
+    const db = loadDb()
+    const i = Number(params.index)
+    if (!Number.isInteger(i) || i < 0 || i >= db.skills.length)
+      return new HttpResponse(null, { status: 404 })
+    const v = db.skills[i]
+    // Chặn xoá khi còn tham chiếu (user hoặc task đang dùng kỹ năng).
+    const used =
+      db.users.some((u: { skills: string[] }) => u.skills.includes(v)) ||
+      db.tasks.some((tk: { skills: string[] }) => tk.skills.includes(v))
+    if (used)
+      return HttpResponse.json(
+        { message: `Kỹ năng "${v}" đang được dùng — không thể xoá` },
+        { status: 409 },
+      )
+    db.skills.splice(i, 1)
+    logMutation(db, request, 'skills', 'xoá', v)
+    saveDb(db)
+    return new HttpResponse(null, { status: 204 })
+  }),
+  // parish là object đơn (không phải mảng) — GET ở dưới; PATCH đổi tên.
+  http.patch('/api/parish', async ({ request }) => {
+    const db = loadDb()
+    const { name } = (await request.json()) as { name?: string }
+    const v = (name ?? '').trim()
+    if (!v) return HttpResponse.json({ message: 'Thiếu tên giáo xứ' }, { status: 400 })
+    db.parish.name = v
+    logMutation(db, request, 'parish', 'đổi tên', v)
+    saveDb(db)
+    return HttpResponse.json(db.parish)
+  }),
   http.get('/api/parish', () => HttpResponse.json(loadDb().parish)),
   // skills là string[] (danh mục, không phải record) — GET-only nguyên dạng.
   http.get('/api/skills', () => HttpResponse.json(loadDb().skills)),
