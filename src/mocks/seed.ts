@@ -1,6 +1,6 @@
 // Seed dữ liệu mẫu giáo xứ Tân Định — hoàn toàn deterministic, không random.
 import { communities, parish, users } from './seed/users';
-import { areas, season } from './seed/areas';
+import { areas, seasons } from './seed/areas';
 import { materials } from './seed/materials';
 import { tasks } from './seed/tasks';
 import { donations } from './seed/donations';
@@ -13,7 +13,7 @@ export const seed = {
   parish,
   communities,
   users,
-  season,
+  seasons,
   areas,
   tasks,
   volunteerRegs,

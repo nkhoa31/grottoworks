@@ -1,9 +1,16 @@
 import type { Season, WorkArea } from '../../types';
 
-export const season: Season = {
-  id: 's1', year: 2026, startDate: '2026-09-15', endDate: '2026-12-24',
-  status: 'ACTIVE', budget: 120_000_000,
-};
+// Mảng mùa: một mùa đã chốt (2025) + mùa đang chạy (2026).
+export const seasons: Season[] = [
+  {
+    id: 's0', year: 2025, startDate: '2025-09-15', endDate: '2025-12-24',
+    status: 'CLOSED', budget: 95_000_000,
+  },
+  {
+    id: 's1', year: 2026, startDate: '2026-09-15', endDate: '2026-12-24',
+    status: 'ACTIVE', budget: 120_000_000,
+  },
+];
 
 export const areas: WorkArea[] = [
   { id: 'a1', name: 'Hang đá Bê-lem', type: 'GROTTO', level: 'PARISH', leaderId: 'u3', officerId: 'u4', progress: 35, volunteerCount: 12, taskCount: 8, status: 'AT_RISK' },
