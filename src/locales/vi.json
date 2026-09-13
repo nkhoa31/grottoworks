@@ -195,6 +195,7 @@
   "features.tasks.assignees": "Tình nguyện viên",
   "features.tasks.assignNone": "Chưa phân công ai",
   "features.tasks.assign": "Phân công",
+  "features.tasks.assignVolunteer": "Phân công",
   "features.tasks.assignTitle": "Phân công TNV",
   "features.tasks.assigned": "Đã phân công {{name}}",
   "features.tasks.assignedShort": "Đã phân công",
@@ -223,5 +224,7 @@
   "features.tasks.deleteTitle": "Xoá việc",
   "features.tasks.deleteConfirm": "Xoá \"{{name}}\"? Không thể hoàn tác.",
   "features.tasks.empty": "Chưa có việc nào.",
-  "features.tasks.notFound": "Không tìm thấy việc."
+  "features.tasks.notFound": "Không tìm thấy việc.",
+  "features.tasks.noArea": "Bạn chưa được phân công lãnh khu vực nào",
+  "features.tasks.contactCommittee": "Liên hệ ban tổ chức"
 }

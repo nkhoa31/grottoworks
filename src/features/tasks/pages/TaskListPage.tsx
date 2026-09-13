@@ -10,19 +10,19 @@ import { useTranslation } from 'react-i18next'
 import { Pencil, Plus, Trash2 } from 'lucide-react'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { DataTable } from '@/components/shared/DataTable'
+import { EmptyState } from '@/components/shared/EmptyState'
 import { StatusTag } from '@/components/shared/StatusTag'
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/toast'
+import { buttonVariants, buttonSizes } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import { useAreas } from '@/features/areas/api'
 import { useAuth } from '@/lib/auth'
+import { viDate } from '@/lib/format'
 import { useDeleteTask, useTasks } from '../api'
 import { SELECT_CLS, TaskFormDialog } from './TaskFormDialog'
 import type { Task } from '@/types'
-
-// ISO yyyy-mm-dd → dd/MM/yyyy (giống SeasonListPage).
-const viDate = (iso: string) =>
-  iso.length >= 10 ? `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)}` : iso
 
 export default function TaskListPage() {
   const { t } = useTranslation()
@@ -178,6 +178,20 @@ export default function TaskListPage() {
 
       {isPending ? (
         <p className="lbl-mono">{t('common.loading')}</p>
+      ) : user?.role === 'LEADER' && myAreas.length === 0 ? (
+        // Leader chưa lãnh khu nào (cả nhánh /leader/assignments) — không
+        // đổ toàn bộ tasks, hướng liên hệ committee.
+        <EmptyState
+          text={t('features.tasks.noArea')}
+          action={
+            <a
+              href="mailto:committee@grottoworks.vn"
+              className={cn(buttonVariants.default, buttonSizes.default)}
+            >
+              {t('features.tasks.contactCommittee')}
+            </a>
+          }
+        />
       ) : (
         <DataTable
           rows={tasks}
