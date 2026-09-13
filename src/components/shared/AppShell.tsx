@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next'
 import { useQuery } from '@tanstack/react-query'
 import {
   Bell, LogOut, LayoutDashboard, Calendar, MapPin, Users, ShoppingCart, LifeBuoy,
-  ListChecks, FileText, ClipboardList, Inbox, Clock, Package, Gift, Backpack,
-  Boxes, UserCog, Church, Tags, Star, History, Database,
+  ListChecks, FileText, ClipboardList, ClipboardCheck, UserPlus, Inbox, Clock,
+  Package, Gift, Backpack, Boxes, UserCog, Church, Tags, Star, History, Database,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { api } from '@/lib/api'
@@ -24,6 +24,7 @@ const ICONS: Record<string, LucideIcon> = {
   tasks: ClipboardList, inbox: Inbox, clock: Clock, materials: Package,
   gift: Gift, borrowed: Backpack, boxes: Boxes, accounts: UserCog,
   church: Church, tags: Tags, star: Star, history: History, backup: Database,
+  assign: UserPlus, confirm: ClipboardCheck,
 }
 
 export function AppShell({ role }: { role?: Role }) {

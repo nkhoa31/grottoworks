@@ -1,11 +1,18 @@
 import { useEffect, useState } from 'react'
+import i18n from '@/lib/i18n'
 import { Card } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 
-// Count-up rAF, cubic ease-out ~700ms (bỏ qua khi reduced-motion — index.css).
+// Count-up rAF ~700ms, cubic ease-out; reduced-motion → đặt giá trị luôn.
 function useCountUp(target: number, duration = 700): number {
-  const [val, setVal] = useState(0)
+  const reduced =
+    typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches
+  const [val, setVal] = useState(() => (reduced ? target : 0))
   useEffect(() => {
+    if (reduced) {
+      setVal(target)
+      return
+    }
     let raf = 0
     const t0 = performance.now()
     const tick = (t: number) => {
@@ -15,7 +22,7 @@ function useCountUp(target: number, duration = 700): number {
     }
     raf = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(raf)
-  }, [target, duration])
+  }, [target, duration, reduced])
   return val
 }
 
@@ -37,12 +44,13 @@ export function StatCard({
   className?: string
 }) {
   const v = useCountUp(value)
+  const locale = i18n.language === 'en' ? 'en-US' : 'vi-VN'
   return (
     <Card className={cn('relative overflow-hidden p-5', className)}>
       <div className={cn('absolute inset-x-0 top-0 h-1.5', BAR[tone])} aria-hidden />
       <p className="lbl-mono">{label}</p>
       <p className="tabular mt-2 text-3xl font-extrabold text-grotto-ink">
-        {v.toLocaleString('vi-VN')}
+        {v.toLocaleString(locale)}
         {unit && <span className="ml-1.5 text-sm font-semibold text-grotto-soft">{unit}</span>}
       </p>
       {delta && (

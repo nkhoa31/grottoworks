@@ -1,9 +1,10 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import type { ReactNode } from 'react'
 import { X } from 'lucide-react'
+import i18n from '@/lib/i18n'
 
-// Dialog tự viết (không Radix): overlay + card grotto, đóng bằng Escape
-// hoặc click overlay. ConfirmDialog (shared) bọc component này.
+// Dialog tự viết (không Radix): overlay + card grotto. Esc + click overlay đóng,
+// mở dialog focus nút close (focus trap đầy đủ hoãn — demo 1 vòng Tab là đủ).
 export function Dialog({
   open,
   onClose,
@@ -17,8 +18,11 @@ export function Dialog({
   children?: ReactNode
   footer?: ReactNode
 }) {
+  const closeRef = useRef<HTMLButtonElement>(null)
+
   useEffect(() => {
     if (!open) return
+    closeRef.current?.focus()
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
     }
@@ -42,10 +46,11 @@ export function Dialog({
         <div className="flex items-start justify-between gap-4">
           <h2 className="text-lg font-bold text-grotto-ink">{title}</h2>
           <button
+            ref={closeRef}
             type="button"
             onClick={onClose}
-            aria-label="Đóng"
-            className="text-grotto-soft transition-colors hover:text-grotto-ink"
+            aria-label={i18n.t('common.close')}
+            className="rounded-md text-grotto-soft transition-colors hover:text-grotto-ink"
           >
             <X className="size-4" />
           </button>

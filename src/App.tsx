@@ -36,6 +36,14 @@ function RootRedirect() {
   return <Navigate to={user ? `/${user.role.toLowerCase()}` : '/login'} replace />
 }
 
+// /login khi đã có phiên → thẳng dashboard role, không hiện form lần nữa.
+function LoginGate() {
+  const { user, isPending } = useAuth()
+  if (isPending) return null
+  if (user) return <Navigate to={`/${user.role.toLowerCase()}`} replace />
+  return <Login />
+}
+
 // 401 giữa phiên (api.ts dispatch 'grotto:unauthorized') → logout + về /login.
 function SessionWatch() {
   const { logout } = useAuth()
@@ -90,7 +98,7 @@ export default function App() {
             <Suspense fallback={null}>
               <Routes>
                 <Route path="/" element={<RootRedirect />} />
-                <Route path="/login" element={<Login />} />
+                <Route path="/login" element={<LoginGate />} />
                 <Route
                   path="/profile"
                   element={
