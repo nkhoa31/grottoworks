@@ -13,9 +13,8 @@ import { DataTable } from '@/components/shared/DataTable'
 import { EmptyState } from '@/components/shared/EmptyState'
 import { StatusTag } from '@/components/shared/StatusTag'
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
-import { Button } from '@/components/ui/button'
+import { Button, buttonBase, buttonSizes, buttonVariants } from '@/components/ui/button'
 import { useToast } from '@/components/ui/toast'
-import { buttonVariants, buttonSizes } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useAreas } from '@/features/areas/api'
 import { useAuth } from '@/lib/auth'
@@ -186,7 +185,7 @@ export default function TaskListPage() {
           action={
             <a
               href="mailto:committee@grottoworks.vn"
-              className={cn(buttonVariants.default, buttonSizes.default)}
+              className={cn(buttonBase, buttonVariants.default, buttonSizes.default)}
             >
               {t('features.tasks.contactCommittee')}
             </a>
