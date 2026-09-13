@@ -62,12 +62,18 @@ export interface PurchaseRecord {
 export interface Donation {
   id: string; materialId?: string; monetary?: number; donorName: string;
   status: 'PLEDGED' | 'RECEIVED_FULL' | 'RECEIVED_PARTIAL' | 'UNUSABLE' | 'CANCELED';
-  promisedQty?: number; receivedQty?: number;
+  promisedQty?: number; receivedQty?: number; note?: string;
 }
 
 export interface BorrowedItem {
   id: string; name: string; owner: string; expectedReturn: string;
   returnedCondition?: 'GOOD' | 'DAMAGED' | 'LOST'; areaId: string;
+}
+
+/** Phân bổ vật tư đã nhận cho nhiệm vụ/khu (đích: task hoặc khu khác). */
+export interface Allocation {
+  id: string; materialId: string; targetTaskId?: string; targetAreaId?: string;
+  qty: number; date: string; byUserId: string;
 }
 
 export interface Timesheet {

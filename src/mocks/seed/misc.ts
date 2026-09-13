@@ -1,4 +1,14 @@
-import type { ActivityLog, BorrowedItem, ChecklistItem, SupportRequest, VolunteerReg } from '../../types';
+import type { ActivityLog, Allocation, BorrowedItem, ChecklistItem, SupportRequest, VolunteerReg } from '../../types';
+
+// Phân bổ vật tư đã nhận: tổng alloc mỗi vật tư ≤ received của vật tư đó.
+export const allocations: Allocation[] = [
+  { id: 'al1', materialId: 'm1', targetTaskId: 't1', qty: 20, date: '2026-10-02', byUserId: 'u4' },
+  { id: 'al2', materialId: 'm2', targetTaskId: 't2', qty: 300, date: '2026-10-20', byUserId: 'u4' },
+  { id: 'al3', materialId: 'm4', targetTaskId: 't5', qty: 100, date: '2026-10-15', byUserId: 'u4' },
+  { id: 'al4', materialId: 'm16', targetTaskId: 't27', qty: 30, date: '2026-11-10', byUserId: 'u10' },
+  { id: 'al5', materialId: 'm13', targetAreaId: 'a1', qty: 20, date: '2026-11-08', byUserId: 'u8' },
+  { id: 'al6', materialId: 'm7', targetTaskId: 't12', qty: 10, date: '2026-11-05', byUserId: 'u6' },
+];
 
 export const borrowedItems: BorrowedItem[] = [
   { id: 'b1', name: 'Máy phát điện 5kVA', owner: 'Ông Vinhsơn Phạm Văn Dũng', expectedReturn: '2026-12-28', areaId: 'a3' },

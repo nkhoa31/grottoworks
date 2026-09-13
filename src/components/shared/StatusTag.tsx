@@ -10,6 +10,7 @@ const TONE: Record<string, 'ok' | 'warn' | 'alert' | 'soft'> = {
   LATE: 'alert', REVISE: 'alert', REJECTED: 'alert', SHORTAGE: 'alert',
   AT_RISK: 'alert', UNUSABLE: 'alert', DAMAGED: 'alert', LOST: 'alert',
   OPEN: 'warn', // yêu cầu hỗ trợ đang chờ điều phối — tone straw urgent
+  NOT_RETURNED: 'soft', // đồ mượn chưa trả
 }
 
 const STYLE = {
