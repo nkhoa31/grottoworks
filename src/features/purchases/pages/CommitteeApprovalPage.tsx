@@ -27,12 +27,16 @@ function RejectDialog({ item, onClose }: { item: PurchaseRequest; onClose: () =>
   const reject = useRejectRequest()
   const [reason, setReason] = useState('')
 
-  const onConfirm = async () => {
+  // Trả về true khi thành công — dialog chỉ đóng khi thành công, giữ nguyên
+  // lý do đã gõ nếu mutation lỗi để committee bấm lại.
+  const onConfirm = async (): Promise<boolean> => {
     try {
       await reject.mutateAsync({ id: item.id, reason })
       toast(t('features.purchases.rejected', { code: item.id }))
+      return true
     } catch {
       toast(t('common.error'), 'alert')
+      return false
     }
   }
 
@@ -50,8 +54,9 @@ function RejectDialog({ item, onClose }: { item: PurchaseRequest; onClose: () =>
             variant="destructive"
             disabled={!reason.trim() || reject.isPending}
             onClick={() => {
-              void onConfirm()
-              onClose()
+              void onConfirm().then((ok) => {
+                if (ok) onClose()
+              })
             }}
           >
             {t('features.purchases.reject')}
@@ -127,7 +132,20 @@ export default function CommitteeApprovalPage() {
         render: (r: PurchaseRequest) => <span className="tabular">{r.total.toLocaleString()} ₫</span>,
       },
       { key: 'createdBy', header: t('features.purchases.createdBy'), render: (r: PurchaseRequest) => userName(r.createdBy) },
-      { key: 'note', header: t('features.purchases.note'), render: (r: PurchaseRequest) => r.note ?? '—' },
+      {
+        key: 'note',
+        header: t('features.purchases.note'),
+        render: (r: PurchaseRequest) => (
+          <span>
+            {r.note ?? '—'}
+            {r.rejectReason && (
+              <span className="block text-xs text-grotto-brick">
+                {t('features.purchases.rejectReason')}: {r.rejectReason}
+              </span>
+            )}
+          </span>
+        ),
+      },
       { key: 'status', header: t('common.status'), render: (r: PurchaseRequest) => <StatusTag status={r.status} /> },
       {
         key: 'actions',

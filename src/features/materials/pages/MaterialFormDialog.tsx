@@ -19,13 +19,19 @@ const num = (key: string) =>
     (v) => (v === '' || v == null ? undefined : v),
     z.coerce.number({ invalid_type_error: key }).min(0, key),
   )
+// Optional: trống hợp lệ (chưa biết giá), sai định dạng/âm mới báo lỗi.
+const numOpt = (key: string) =>
+  z.preprocess(
+    (v) => (v === '' || v == null ? undefined : v),
+    z.coerce.number({ invalid_type_error: key }).min(0, key).optional(),
+  )
 
 const schema = z.object({
   name: z.string().trim().min(1, 'features.materials.nameRequired'),
   unit: z.string().trim().min(1, 'features.materials.unitRequired'),
   required: num('features.materials.numberInvalid'),
   existing: num('features.materials.numberInvalid'),
-  estUnitPrice: num('features.materials.numberInvalid'),
+  estUnitPrice: numOpt('features.materials.priceInvalid'),
 })
 type FormData = z.infer<typeof schema>
 
@@ -63,12 +69,14 @@ export function MaterialFormDialog({
   })
 
   const onSubmit = async (data: FormData) => {
+    // Trống đơn giá → 0 (chưa biết giá) — type yêu cầu number.
+    const payload = { ...data, estUnitPrice: data.estUnitPrice ?? 0 }
     try {
       if (editing && material) {
-        await update.mutateAsync({ id: material.id, ...data })
+        await update.mutateAsync({ id: material.id, ...payload })
         toast(t('features.materials.updated', { name: data.name }))
       } else {
-        await create.mutateAsync({ areaId, ...data, purchased: 0, donatedPledged: 0, donatedReceived: 0 })
+        await create.mutateAsync({ areaId, ...payload, purchased: 0, donatedPledged: 0, donatedReceived: 0 })
         toast(t('features.materials.created', { name: data.name }))
       }
       onClose()

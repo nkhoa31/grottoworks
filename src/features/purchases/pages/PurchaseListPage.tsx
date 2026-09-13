@@ -66,7 +66,20 @@ export default function PurchaseListPage() {
         align: 'right' as const,
         render: (r: PurchaseRequest) => <span className="tabular">{r.total.toLocaleString()} ₫</span>,
       },
-      { key: 'note', header: t('features.purchases.note'), render: (r: PurchaseRequest) => r.note ?? '—' },
+      {
+        key: 'note',
+        header: t('features.purchases.note'),
+        render: (r: PurchaseRequest) => (
+          <span>
+            {r.note ?? '—'}
+            {r.rejectReason && (
+              <span className="block text-xs text-grotto-brick">
+                {t('features.purchases.rejectReason')}: {r.rejectReason}
+              </span>
+            )}
+          </span>
+        ),
+      },
       { key: 'status', header: t('common.status'), render: (r: PurchaseRequest) => <StatusTag status={r.status} /> },
       {
         key: 'actions',

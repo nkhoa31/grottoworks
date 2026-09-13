@@ -67,7 +67,7 @@ export function PurchaseFormDialog({
         qtys,
         total,
         status: 'DRAFT',
-        createdBy: user?.id ?? 'u4',
+        ...(user ? { createdBy: user.id } : {}),
         note: data.note.trim() || undefined,
       })
       toast(t('features.purchases.created'))
