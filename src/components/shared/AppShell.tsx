@@ -4,7 +4,7 @@ import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-do
 import { useTranslation } from 'react-i18next'
 import { useQuery } from '@tanstack/react-query'
 import {
-  Bell, LogOut, LayoutDashboard, Calendar, MapPin, Users, ShoppingCart, LifeBuoy,
+  LogOut, LayoutDashboard, Calendar, MapPin, Users, ShoppingCart, LifeBuoy,
   ListChecks, FileText, ClipboardList, ClipboardCheck, UserPlus, Inbox, Clock,
   Package, Gift, Backpack, Boxes, UserCog, Church, Tags, Star, History, Database,
 } from 'lucide-react'
@@ -13,6 +13,7 @@ import { api } from '@/lib/api'
 import { useAuth } from '@/lib/auth'
 import { useSupportRequests } from '@/features/support/api'
 import { NAV } from './nav-config'
+import { NotificationsDropdown } from './NotificationsDropdown'
 import { Avatar } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -122,16 +123,7 @@ export function AppShell({ role }: { role?: Role }) {
             <span>{crumb}</span>
           </div>
           <div className="flex items-center gap-2">
-            {/* Nội dung thông báo thật thuộc Task 13 — tạm chỉ dot. */}
-            <button
-              type="button"
-              title={t('shell.notifications')}
-              aria-label={t('shell.notifications')}
-              className="relative grid size-10 place-items-center rounded-md text-grotto-soft transition-colors hover:bg-grotto-ground hover:text-grotto-ink"
-            >
-              <Bell className="size-5" />
-              <span className="absolute right-2.5 top-2.5 size-2 rounded-full bg-grotto-brick" aria-hidden />
-            </button>
+            <NotificationsDropdown />
             <Link
               to="/profile"
               className="flex items-center gap-2.5 rounded-md py-1 pl-1 pr-2.5 transition-colors hover:bg-grotto-ground"

@@ -26,6 +26,16 @@
   body {
     @apply bg-grotto-ground text-grotto-ink font-sans;
   }
+
+  /* a11y: ring focus-visible cho mọi phần tử tương tác KHÔNG dùng Button/Input
+     (nav link, hàng bảng có tabindex, chip lọc, tab, chuông) — 2 component đó
+     đã có ring riêng ở utilities layer (thắng base). */
+  a:focus-visible,
+  button:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
 }
 
 .tabular {

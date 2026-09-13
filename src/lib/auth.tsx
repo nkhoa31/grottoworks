@@ -11,6 +11,8 @@ interface AuthContextValue {
   isPending: boolean
   login: (email: string, password: string) => Promise<User>
   logout: () => Promise<void>
+  /** Tải lại user từ /auth/me (Profile tự sửa qua PATCH /users/:id). */
+  refresh: () => Promise<User>
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null)
@@ -37,6 +39,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return data.user
   }
 
+  const refresh = async () => {
+    const u = await api<User>('/auth/me')
+    setUser(u)
+    return u
+  }
+
   const logout = async () => {
     try {
       await api('/auth/logout', { method: 'POST' })
@@ -48,7 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, isPending, login, logout }}>
+    <AuthContext.Provider value={{ user, isPending, login, logout, refresh }}>
       {children}
     </AuthContext.Provider>
   )
