@@ -119,7 +119,14 @@ export default function TimesheetPage() {
       {
         key: 'status',
         header: t('common.status'),
-        render: (x: Row) => <StatusTag status={x.status} />,
+        // Theo brief chấm công: OPEN ◇ soft (ca chưa bấm ra), PENDING_FIX ✕ straw.
+        render: (x: Row) => (
+          <StatusTag
+            status={x.status}
+            glyph={x.status === 'OPEN' ? '◇' : x.status === 'PENDING_FIX' ? '✕' : undefined}
+            tone={x.status === 'OPEN' ? 'soft' : undefined}
+          />
+        ),
       },
       {
         key: 'actions',
@@ -224,7 +231,7 @@ export default function TimesheetPage() {
           onClose={() => setCreating(false)}
         />
       )}
-      {fixing && fixing.status === 'PENDING_FIX' && (
+      {fixing && fixing.correctionRequest != null && (
         <CorrectionDialog
           item={fixing}
           volunteerName={volunteerName(fixing.volunteerId)}
