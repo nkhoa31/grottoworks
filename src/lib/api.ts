@@ -12,14 +12,12 @@ export class ApiError extends Error {
 
 export async function api<T>(path: string, init?: RequestInit): Promise<T> {
   const token = localStorage.getItem('grotto-token')
-  const res = await fetch('/api' + path, {
-    ...init,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...init?.headers,
-    },
-  })
+  // Headers instance: accept mọi dạng init.headers (record/array/Headers),
+  // set auth SAU để caller không override mất Bearer token.
+  const headers = new Headers(init?.headers)
+  headers.set('Content-Type', 'application/json')
+  if (token) headers.set('Authorization', `Bearer ${token}`)
+  const res = await fetch('/api' + path, { ...init, headers })
   if (!res.ok) {
     let message = `${res.status} ${res.statusText}`
     try {

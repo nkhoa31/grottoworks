@@ -24,7 +24,6 @@ const PREFIX: Record<string, string> = {
   supportRequests: 'sr',
   checklists: 'cl',
   activityLogs: 'log',
-  skills: 'sk',
 }
 
 // label tiếng Việt cho ActivityLog action, theo style seed.
@@ -42,7 +41,6 @@ const LABEL: Record<string, string> = {
   timesheets: 'chấm công',
   supportRequests: 'yêu cầu hỗ trợ',
   checklists: 'checklist',
-  skills: 'kỹ năng',
 }
 
 function nextId(db: any, resource: string): string {
@@ -65,7 +63,7 @@ function logMutation(db: any, request: HasHeaders, resource: string, verb: strin
   const actor = tokenUser(db, request)?.id ?? 'u1'
   db.activityLogs.push({
     id: nextId(db, 'activityLogs'),
-    at: new Date().toISOString(),
+    at: new Date().toISOString().replace('Z', ''),
     actor,
     action: `${verb} ${LABEL[resource] ?? resource}`,
     target,
@@ -208,6 +206,8 @@ const crud = (resource: string) => [
   }),
   http.delete(`/api/${resource}/:id`, ({ params, request }) => {
     const db = loadDb()
+    const i = db[resource].findIndex((r: any) => r.id === params.id)
+    if (i < 0) return new HttpResponse(null, { status: 404 })
     db[resource] = db[resource].filter((r: any) => r.id !== params.id)
     logMutation(db, request, resource, 'xoá', String(params.id))
     saveDb(db)
@@ -249,6 +249,8 @@ export const handlers = [
   // Seed key dạng object đơn (không phải mảng) — chỉ GET.
   http.get('/api/parish', () => HttpResponse.json(loadDb().parish)),
   http.get('/api/season', () => HttpResponse.json(loadDb().season)),
+  // skills là string[] (danh mục, không phải record) — GET-only nguyên dạng.
+  http.get('/api/skills', () => HttpResponse.json(loadDb().skills)),
   // CRUD cho mọi resource key mảng của seed.
   ...crud('users'),
   ...crud('communities'),
@@ -264,5 +266,4 @@ export const handlers = [
   ...crud('supportRequests'),
   ...crud('checklists'),
   ...crud('activityLogs'),
-  ...crud('skills'),
 ]
