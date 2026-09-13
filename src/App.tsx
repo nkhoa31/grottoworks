@@ -32,6 +32,16 @@ const AllocationPage = lazy(() => import('@/features/allocations/pages/Allocatio
 const TimesheetPage = lazy(() => import('@/features/timesheets/pages/TimesheetPage'))
 const ChecklistPage = lazy(() => import('@/features/checklist/pages/ChecklistPage'))
 const ReportPage = lazy(() => import('@/features/reports/pages/ReportPage'))
+const CommitteeDashboard = lazy(() => import('@/features/dashboards/CommitteeDashboard'))
+const LeaderDashboard = lazy(() => import('@/features/dashboards/LeaderDashboard'))
+const OfficerDashboard = lazy(() => import('@/features/dashboards/OfficerDashboard'))
+const AccountsPage = lazy(() => import('@/features/admin/pages/AccountsPage'))
+const CommunitiesPage = lazy(() => import('@/features/admin/pages/CommunitiesPage'))
+const CategoriesPage = lazy(() => import('@/features/admin/pages/CategoriesPage'))
+const PointRulesPage = lazy(() => import('@/features/admin/pages/PointRulesPage'))
+const NotificationsPage = lazy(() => import('@/features/admin/pages/NotificationsPage'))
+const ActivityPage = lazy(() => import('@/features/admin/pages/ActivityPage'))
+const BackupPage = lazy(() => import('@/features/admin/pages/BackupPage'))
 
 // Trang thật theo route `to` của nav-config; mục chưa có → Placeholder.
 // Task 5+ thêm dần vào map này (pattern lazy page).
@@ -56,6 +66,13 @@ const PAGES: Record<string, ComponentType> = {
   '/leader/checklist': ChecklistPage,
   '/committee/checklist': ChecklistPage,
   '/committee/reports': ReportPage,
+  '/admin/accounts': AccountsPage,
+  '/admin/communities': CommunitiesPage,
+  '/admin/categories': CategoriesPage,
+  '/admin/point-rules': PointRulesPage,
+  '/admin/notifications': NotificationsPage,
+  '/admin/activity': ActivityPage,
+  '/admin/backup': BackupPage,
 }
 
 // Route có param — nav-config không mô tả được, khai báo tường minh theo role
@@ -128,7 +145,29 @@ function roleRoutes(role: Role) {
         </RequireRole>
       }
     >
-      <Route index element={<Placeholder label={items[0].label} />} />
+      {/* Index = dashboard thật của role (Task 10). Suspense cục bộ để
+          lazy chunk chỉ che outlet, AppShell (nav) giữ nguyên — khác với
+          Suspense ngoài Routes che luôn cả shell. */}
+      <Route
+        index
+        element={
+          role === 'COMMITTEE' ? (
+            <Suspense fallback={null}>
+              <CommitteeDashboard />
+            </Suspense>
+          ) : role === 'LEADER' ? (
+            <Suspense fallback={null}>
+              <LeaderDashboard />
+            </Suspense>
+          ) : role === 'OFFICER' ? (
+            <Suspense fallback={null}>
+              <OfficerDashboard />
+            </Suspense>
+          ) : (
+            <Placeholder label={items[0].label} />
+          )
+        }
+      />
       {items
         .filter((i) => i.to !== prefix)
         .map((i) => {
