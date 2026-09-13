@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useTranslation } from 'react-i18next'
-import { Ban, ClipboardCheck, Download, Plus } from 'lucide-react'
+import { Ban, ClipboardCheck, Download, Plus, XCircle } from 'lucide-react'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { DataTable } from '@/components/shared/DataTable'
 import { EmptyState } from '@/components/shared/EmptyState'
@@ -133,6 +133,9 @@ export default function DonationListPage() {
   const [creating, setCreating] = useState(false)
   const [recordingId, setRecordingId] = useState<string | null>(null)
   const [canceling, setCanceling] = useState<Donation | null>(null)
+  const [unusable, setUnusable] = useState<Donation | null>(null)
+  // Quà tiền PLEDGED → xác nhận 1 bước RECEIVED_FULL (không dialog nhận số lượng).
+  const [receivingMoney, setReceivingMoney] = useState<Donation | null>(null)
   // Theo id (không giữ object) — data luôn tươi sau mutation.
   const recording = recordingId ? (donations.find((d) => d.id === recordingId) ?? null) : null
 
@@ -192,7 +195,7 @@ export default function DonationListPage() {
         render: (d: Donation) =>
           d.status === 'PLEDGED' || d.status === 'RECEIVED_PARTIAL' ? (
             <div className="flex justify-end gap-1">
-              {d.materialId && (
+              {d.materialId ? (
                 <Button
                   variant="ghost"
                   size="icon"
@@ -201,7 +204,26 @@ export default function DonationListPage() {
                 >
                   <ClipboardCheck className="size-4" />
                 </Button>
+              ) : (
+                d.status === 'PLEDGED' && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label={t('features.donations.receiveMoney')}
+                    onClick={() => setReceivingMoney(d)}
+                  >
+                    <ClipboardCheck className="size-4" />
+                  </Button>
+                )
               )}
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label={t('features.donations.unusable')}
+                onClick={() => setUnusable(d)}
+              >
+                <XCircle className="size-4" />
+              </Button>
               <Button
                 variant="ghost"
                 size="icon"
@@ -295,6 +317,39 @@ export default function DonationListPage() {
               .catch(() => toast(t('common.error'), 'alert'))
           }}
           onClose={() => setCanceling(null)}
+        />
+      )}
+      {unusable && (
+        <ConfirmDialog
+          open
+          title={t('features.donations.unusableTitle')}
+          description={t('features.donations.unusableConfirm', { name: unusable.donorName })}
+          confirmLabel={t('features.donations.unusable')}
+          onConfirm={() => {
+            void update
+              .mutateAsync({ id: unusable.id, status: 'UNUSABLE' })
+              .then(() => toast(t('features.donations.markedUnusable')))
+              .catch(() => toast(t('common.error'), 'alert'))
+          }}
+          onClose={() => setUnusable(null)}
+        />
+      )}
+      {receivingMoney && (
+        <ConfirmDialog
+          open
+          title={t('features.donations.receiveMoneyTitle')}
+          description={t('features.donations.receiveMoneyConfirm', {
+            amount: fmt(receivingMoney.monetary ?? 0),
+            name: receivingMoney.donorName,
+          })}
+          confirmLabel={t('features.donations.receiveMoney')}
+          onConfirm={() => {
+            void update
+              .mutateAsync({ id: receivingMoney.id, status: 'RECEIVED_FULL' })
+              .then(() => toast(t('features.donations.moneyReceived')))
+              .catch(() => toast(t('common.error'), 'alert'))
+          }}
+          onClose={() => setReceivingMoney(null)}
         />
       )}
     </div>

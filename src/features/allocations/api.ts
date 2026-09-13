@@ -25,10 +25,12 @@ export function availableMap(
   )
 }
 
+// byUserId optional (pattern createdBy của useCreatePurchaseRequest): mock
+// POST persist nguyên body — thiếu key thì ActivityLog suy actor 'u1'.
 export function useCreateAllocation() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (data: Omit<Allocation, 'id'>) =>
+    mutationFn: (data: Omit<Allocation, 'id' | 'byUserId'> & { byUserId?: string }) =>
       api<Allocation>('/allocations', { method: 'POST', body: JSON.stringify(data) }),
     onSuccess: () => qc.invalidateQueries({ queryKey: allocationKeys.all }),
   })

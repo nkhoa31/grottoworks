@@ -142,7 +142,8 @@ export function DonationFormDialog({
         ) : (
           <div>
             <Label htmlFor="donation-money">{t('features.donations.monetary')}</Label>
-            <Input id="donation-money" type="number" min={0} step={1000} {...register('monetary')} />
+            {/* min 1 khớp zod .min(1) — tiền 0 vô nghĩa. */}
+            <Input id="donation-money" type="number" min={1} step={1000} {...register('monetary')} />
             {err(errors.monetary?.message)}
           </div>
         )}

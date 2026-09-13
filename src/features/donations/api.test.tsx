@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { setupServer } from 'msw/node'
 import { resetDb } from '@/lib/db'
 import { handlers } from '@/mocks/handlers'
-import { useRecordReception } from './api'
+import { useRecordReception, useUpdateDonation } from './api'
 import type { Donation, Material } from '@/types'
 
 const base = location.origin
@@ -72,4 +72,21 @@ test('ghi tiếp 20 sau khi đã nhận 10 → cộng thêm đúng 10', async ()
   expect(d.status).toBe('RECEIVED_FULL')
   const m = await get<Material>('/materials/m12')
   expect(m.donatedReceived).toBe(20)
+})
+
+// UNUSABLE: chỉ đổi status — material donatedReceived/donatedPledged giữ nguyên.
+test('đánh dấu UNUSABLE → material không đổi donatedPledged/donatedReceived', async () => {
+  const { result } = renderHook(() => useUpdateDonation(), { wrapper })
+  // d8 seed: m12, promised 20, chưa nhận. m12: donatedPledged 20, donatedReceived 0.
+  await act(async () => {
+    await result.current.mutateAsync({ id: 'd8', status: 'UNUSABLE' })
+  })
+
+  const d = await get<Donation>('/donations/d8')
+  expect(d.status).toBe('UNUSABLE')
+
+  const m = await get<Material>('/materials/m12')
+  expect(m.donatedPledged).toBe(20)
+  expect(m.donatedReceived).toBe(0)
+  expect(m.received).toBe(40)
 })
