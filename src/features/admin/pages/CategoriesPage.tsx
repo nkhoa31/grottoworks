@@ -152,21 +152,22 @@ function CategoryRow({
   )
 }
 
-// Form thêm nhanh: input + nút tạo — reset sau khi add.
-function AddCategoryForm({ onAdd }: { onAdd: (name: string) => void }) {
+// Form thêm nhanh: input + nút tạo — reset sau khi add (await để isSubmitting
+// giữ nút disabled trong lúc mutation chạy).
+function AddCategoryForm({ onAdd }: { onAdd: (name: string) => void | Promise<unknown> }) {
   const { t } = useTranslation()
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<FormData>({ resolver: zodResolver(schema), defaultValues: { name: '' } })
 
   return (
     <form
       className="mt-4 flex items-start gap-2"
-      onSubmit={handleSubmit((d) => {
-        onAdd(d.name.trim())
+      onSubmit={handleSubmit(async (d) => {
+        await onAdd(d.name.trim())
         reset()
       })}
     >
@@ -183,7 +184,7 @@ function AddCategoryForm({ onAdd }: { onAdd: (name: string) => void }) {
           <p className="mt-1 text-xs font-semibold text-grotto-brick">{t(errors.name.message)}</p>
         )}
       </div>
-      <Button type="submit">
+      <Button type="submit" disabled={isSubmitting}>
         <Plus className="size-4" />
         {t('common.create')}
       </Button>

@@ -1,25 +1,149 @@
+// Hồ sơ cá nhân — RHF + zod: sửa tên + kỹ năng (PATCH /users/:id), email readonly.
+// Điểm vinh danh + giờ công (timesheets lọc theo volunteerId) + chip kỹ năng.
+// Sau lưu gọi auth.refresh() để context/header nhận user mới (auth user là snapshot).
+import type { CSSProperties } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import { useTranslation } from 'react-i18next'
-import { useAuth } from '@/lib/auth'
 import { PageHeader } from '@/components/shared/PageHeader'
-import { Card } from '@/components/ui/card'
+import { StatCard } from '@/components/shared/StatCard'
 import { Avatar } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { useToast } from '@/components/ui/toast'
+import { useAuth } from '@/lib/auth'
+import { cn } from '@/lib/utils'
+import { useSkills } from '@/features/tasks/api'
+import { useTimesheets } from '@/features/timesheets/api'
+import { useUpdateProfile } from '@/features/profile/api'
+import type { User } from '@/types'
 
-// Route tồn tại từ Task 3; nội dung thật (hồ sơ, điểm, kỹ năng) thuộc Task 13.
+const schema = z.object({
+  name: z.string().trim().min(1, 'common.required'),
+  skills: z.array(z.string()),
+})
+type FormData = z.infer<typeof schema>
+
+// Form mount riêng khi user đã có (auth pending xong) — defaultValues luôn đúng.
+function ProfileForm({ user, onSaved }: { user: User; onSaved: () => Promise<unknown> }) {
+  const { t } = useTranslation()
+  const toast = useToast()
+  const update = useUpdateProfile()
+  const { data: allSkills = [] } = useSkills()
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors, isSubmitting },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+    defaultValues: { name: user.name, skills: user.skills },
+  })
+
+  const onSubmit = async (data: FormData) => {
+    try {
+      await update.mutateAsync({ id: user.id, name: data.name, skills: data.skills })
+      await onSaved()
+      toast(t('profile.saved'))
+    } catch {
+      toast(t('common.error'), 'alert')
+    }
+  }
+
+  return (
+    <Card className="p-6">
+      <div className="mb-5 flex items-center gap-4">
+        <Avatar name={user.name} hue={user.avatarHue} size="lg" />
+        <div className="min-w-0">
+          <p className="truncate text-lg font-extrabold text-grotto-ink">{user.name}</p>
+          <p className="text-sm text-grotto-soft">{t(`role.${user.role}`)}</p>
+        </div>
+      </div>
+
+      <form id="profile-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
+        <div>
+          <Label htmlFor="profile-name">{t('profile.name')}</Label>
+          <Input id="profile-name" {...register('name')} />
+          {errors.name?.message && (
+            <p className="mt-1 text-xs font-semibold text-grotto-brick">{t(errors.name.message)}</p>
+          )}
+        </div>
+        <div>
+          <Label htmlFor="profile-email">{t('profile.email')}</Label>
+          <Input id="profile-email" value={user.email} readOnly />
+        </div>
+        <div>
+          <Label>{t('profile.skills')}</Label>
+          <p className="mb-2 text-xs text-grotto-soft">{t('profile.skillsHint')}</p>
+          <Controller
+            name="skills"
+            control={control}
+            render={({ field }) => (
+              <div className="flex flex-wrap gap-2" role="group" aria-label={t('profile.skills')}>
+                {allSkills.map((s) => {
+                  const on = field.value.includes(s)
+                  return (
+                    <button
+                      key={s}
+                      type="button"
+                      aria-pressed={on}
+                      onClick={() =>
+                        field.onChange(
+                          on ? field.value.filter((x) => x !== s) : [...field.value, s],
+                        )
+                      }
+                      className={cn(
+                        'rounded-full border px-3 py-1 text-xs font-semibold transition-colors',
+                        on
+                          ? 'border-grotto-terra bg-grotto-terra text-grotto-panel'
+                          : 'border-grotto-hair bg-grotto-panel text-grotto-soft hover:border-grotto-terra hover:text-grotto-terra',
+                      )}
+                    >
+                      {s}
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+          />
+        </div>
+        <div className="flex justify-end">
+          <Button type="submit" form="profile-form" disabled={isSubmitting}>
+            {t('common.save')}
+          </Button>
+        </div>
+      </form>
+    </Card>
+  )
+}
+
 export default function Profile() {
   const { t } = useTranslation()
-  const { user } = useAuth()
+  const { user, refresh } = useAuth()
+  const { data: timesheets = [] } = useTimesheets(user?.id)
+
+  if (!user) return <p className="lbl-mono">{t('common.loading')}</p>
+
+  const hours = timesheets.reduce((s, x) => s + (x.hours ?? 0), 0)
+
   return (
-    <div className="mx-auto max-w-lg">
-      <PageHeader
-        title={user?.name ?? t('shell.profile')}
-        sub={user ? `${user.email} · ${t(`role.${user.role}`)}` : undefined}
-      />
-      <Card className="p-6">
-        <div className="flex items-center gap-4">
-          <Avatar name={user?.name ?? ''} hue={user?.avatarHue} size="lg" />
-          <p className="text-sm text-grotto-soft">{t('profile.placeholder')}</p>
+    <div className="mx-auto max-w-2xl">
+      <PageHeader title={t('profile.title')} sub={`${user.email} · ${t(`role.${user.role}`)}`} />
+
+      <div className="mb-6 grid grid-cols-2 gap-4">
+        <div style={{ '--d': 0 } as CSSProperties}>
+          <StatCard label={t('profile.points')} value={user.points} />
         </div>
-      </Card>
+        <div style={{ '--d': 1 } as CSSProperties}>
+          <StatCard label={t('profile.hours')} value={Math.round(hours * 10) / 10} />
+        </div>
+      </div>
+
+      <ProfileForm user={user} onSaved={refresh} />
     </div>
   )
 }
