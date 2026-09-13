@@ -167,8 +167,14 @@ function AddCategoryForm({ onAdd }: { onAdd: (name: string) => void | Promise<un
     <form
       className="mt-4 flex items-start gap-2"
       onSubmit={handleSubmit(async (d) => {
-        await onAdd(d.name.trim())
-        reset()
+        // onAdd trả promise thật (caller không discard) — reset chỉ khi thành công;
+        // lỗi đã toast ở caller, giữ nguyên input để sửa lại.
+        try {
+          await onAdd(d.name.trim())
+          reset()
+        } catch {
+          // bỏ qua — đã toast
+        }
       })}
     >
       <div className="flex-1">
@@ -220,12 +226,15 @@ export default function CategoriesPage() {
     tasks.filter((x) => x.skills.includes(s)).length
   const unitUses = (u: string) => materials.filter((m) => m.unit === u).length
 
+  // Ném lỗi sau khi toast để form thêm không reset input khi create fail
+  // (vd trùng tên) — caller await đúng flow.
   const addSkill = async (name: string) => {
     try {
       await createSkill.mutateAsync(name)
       toast(t('features.admin.created', { name }))
     } catch (e) {
       toast(e instanceof Error ? e.message : t('common.error'), 'alert')
+      throw e
     }
   }
   const renameSkillAt = async (index: number, name: string) => {
@@ -339,7 +348,7 @@ export default function CategoriesPage() {
               ))}
             </ul>
             {!skills.length && <EmptyState text={t('features.admin.empty')} />}
-            <AddCategoryForm onAdd={(name) => void addSkill(name)} />
+            <AddCategoryForm onAdd={addSkill} />
           </>
         )}
 
