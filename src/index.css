@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* shadcn variables mapped to the grotto palette (HSL) */
+    --background: 34 52% 87%; /* grotto ground #EFE4CC */
+    --foreground: 27 28% 19%; /* grotto ink #3E2F23 */
+    --primary: 22 52% 48%; /* grotto terra #B96A3B */
+    --primary-foreground: 43 69% 95%; /* grotto panel #FBF6E9 */
+    --secondary: 43 69% 95%; /* grotto panel #FBF6E9 */
+    --secondary-foreground: 27 28% 19%; /* grotto ink #3E2F23 */
+    --muted: 39 39% 80%; /* grotto hair #E0D2B8 */
+    --muted-foreground: 32 22% 44%; /* grotto soft #8A7358 */
+    --accent: 34 62% 49%; /* grotto straw #C9972F */
+    --accent-foreground: 27 28% 19%; /* grotto ink #3E2F23 */
+    --destructive: 8 55% 40%; /* grotto brick #9C3D2E */
+    --destructive-foreground: 43 69% 95%; /* grotto panel #FBF6E9 */
+    --border: 39 39% 80%; /* grotto hair #E0D2B8 */
+    --input: 39 39% 80%; /* grotto hair #E0D2B8 */
+    --ring: 22 52% 48%; /* grotto terra #B96A3B */
+    --radius: 0.5rem;
+  }
+
+  body {
+    @apply bg-grotto-ground text-grotto-ink font-sans;
+  }
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.lbl-mono {
+  @apply font-mono text-[10px] uppercase tracking-[0.14em] text-grotto-soft;
+}
+
+@keyframes g-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.stagger > * {
+  animation: g-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: calc(var(--d, 0) * 70ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+::selection {
+  background: #c9972f;
+  color: #3e2f23;
+}
