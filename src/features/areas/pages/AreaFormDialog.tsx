@@ -33,8 +33,9 @@ const schema = z
 type FormData = z.infer<typeof schema>
 
 // ponytail: dialog hẹp — native select đủ dùng; component select riêng khi
-// cần search/tích hợp nhiều option (users > 30).
-const SELECT_CLS =
+// cần search/tích hợp nhiều option (users > 30). Export để dialog khác
+// (AreaAssignDialog) dùng chung style.
+export const SELECT_CLS =
   'flex h-10 w-full rounded-md border border-grotto-hair bg-grotto-panel px-3 py-2 text-sm text-grotto-ink transition-colors focus-visible:outline-none focus-visible:border-grotto-terra focus-visible:ring-2 focus-visible:ring-grotto-terra/30'
 
 export function AreaFormDialog({
@@ -85,7 +86,9 @@ export function AreaFormDialog({
   const level = watch('level')
 
   const onSubmit = async (data: FormData) => {
-    const communityId = data.level === 'COMMUNITY' ? data.communityId : undefined
+    // PARISH: update gửi null để mock PATCH xoá communityId cũ (shallow merge
+    // giữ key); create bỏ key (undefined khỏi JSON).
+    const communityId = data.level === 'COMMUNITY' ? data.communityId : null
     try {
       if (editing && area) {
         await update.mutateAsync({ id: area.id, ...data, communityId })
@@ -94,7 +97,7 @@ export function AreaFormDialog({
         // Khu mới: tiến độ 0, chưa có TNV/nhiệm vụ, mặc định đúng tiến độ.
         await create.mutateAsync({
           ...data,
-          communityId,
+          communityId: communityId ?? undefined,
           progress: 0,
           volunteerCount: 0,
           taskCount: 0,

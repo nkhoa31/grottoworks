@@ -1,6 +1,6 @@
 // Trang danh sách mùa (COMMITTEE): PageHeader + StatCards + DataTable,
 // tạo/sửa qua SeasonFormDialog, chốt mùa qua ConfirmDialog.
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CalendarPlus, Pencil, LockKeyhole } from 'lucide-react'
@@ -34,7 +34,7 @@ export default function SeasonListPage() {
 
   const active = seasons.filter((s) => s.status === 'ACTIVE')
   const locale = i18n.language === 'en' ? 'en-US' : 'vi-VN'
-  const columns = [
+  const columns = useMemo(() => [
     { key: 'year', header: t('features.season.year'), render: (s: Season) => <span className="tabular font-semibold">{s.year}</span> },
     { key: 'period', header: t('features.season.period'), render: (s: Season) => <span className="tabular">{viDate(s.startDate)} → {viDate(s.endDate)}</span> },
     { key: 'budget', header: t('features.season.budget'), align: 'right' as const, render: (s: Season) => <span className="tabular">{s.budget.toLocaleString(locale)}</span> },
@@ -68,7 +68,7 @@ export default function SeasonListPage() {
         </div>
       ),
     },
-  ]
+  ], [t, locale])
 
   const onCloseSeason = async (s: Season) => {
     try {
