@@ -29,6 +29,23 @@ describe('seed invariants', () => {
     });
   });
 
+  it('donations khớp số liệu vật tư (pledged/received)', () => {
+    const byId = new Map(seed.materials.map((m) => [m.id, m]));
+    const pledged = new Map<string, number>();
+    const received = new Map<string, number>();
+    seed.donations.forEach((d) => {
+      if (!d.materialId || d.status === 'CANCELED') return;
+      const mat = byId.get(d.materialId);
+      expect(mat).toBeDefined();
+      pledged.set(d.materialId, (pledged.get(d.materialId) ?? 0) + (d.promisedQty ?? 0));
+      if (d.status === 'RECEIVED_FULL' || d.status === 'RECEIVED_PARTIAL') {
+        received.set(d.materialId, (received.get(d.materialId) ?? 0) + (d.receivedQty ?? 0));
+      }
+    });
+    pledged.forEach((sum, id) => expect(byId.get(id)!.donatedPledged).toBeGreaterThanOrEqual(sum));
+    received.forEach((sum, id) => expect(byId.get(id)!.donatedReceived).toBeGreaterThanOrEqual(sum));
+  });
+
   it('received = existing + purchased + donatedReceived cho mọi vật tư', () => {
     seed.materials.forEach((m) =>
       expect(m.received).toBe(m.existing + m.purchased + m.donatedReceived),

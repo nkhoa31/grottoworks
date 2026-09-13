@@ -19,9 +19,9 @@ const m = (
 export const materials: Material[] = [
   // a1 — Hang đá Bê-lem
   m('m1', 'a1', 'Xi măng PCB40', 'bao', 55, 10, 30, 10, 5, 'u6'),
-  m('m2', 'a1', 'Gạch đỏ only brick', 'viên', 800, 200, 400, 100, 100, 'u6'),
+  m('m2', 'a1', 'Gạch đỏ', 'viên', 800, 200, 400, 100, 100, 'u6'),
   m('m3', 'a1', 'Rơm bó', 'bó', 40, 15, 20, 5, 5, 'u6'),
-  m('m4', 'a1', 'Dây điện 2 lớp 2.5mm', 'm', 250, 80, 150, 0, 0, 'u7'),
+  m('m4', 'a1', 'Dây điện 2 lớp 2.5mm', 'm', 250, 80, 150, 20, 20, 'u7'),
   m('m5', 'a1', 'Bạt che mưa', 'm2', 60, 0, 0, 0, 0),
   // a2 — Cây thông lớn
   m('m6', 'a2', 'Cây thông tươi 4m', 'cây', 1, 0, 1, 0, 0, 'u5'),
