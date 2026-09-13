@@ -293,5 +293,6 @@
   "features.support.coordinate": "Coordinate",
   "features.support.coordinated": "{{name}} coordinated",
   "features.support.resolve": "Mark resolved",
-  "features.support.resolved": "Support request resolved"
+  "features.support.resolved": "Support request resolved",
+  "nav.leader.support": "Support requests"
 }
