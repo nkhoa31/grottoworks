@@ -18,6 +18,10 @@ const SeasonListPage = lazy(() => import('@/features/season/pages/SeasonListPage
 const AreaListPage = lazy(() => import('@/features/areas/pages/AreaListPage'))
 const TaskListPage = lazy(() => import('@/features/tasks/pages/TaskListPage'))
 const TaskDetailPage = lazy(() => import('@/features/tasks/pages/TaskDetailPage'))
+const VolunteerListPage = lazy(() => import('@/features/volunteers/pages/VolunteerListPage'))
+const VolunteerDetailPage = lazy(() => import('@/features/volunteers/pages/VolunteerDetailPage'))
+const RegsApprovalPage = lazy(() => import('@/features/volunteerRegs/pages/RegsApprovalPage'))
+const SupportListPage = lazy(() => import('@/features/support/pages/SupportListPage'))
 
 // Trang thật theo route `to` của nav-config; mục chưa có → Placeholder.
 // Task 5+ thêm dần vào map này (pattern lazy page).
@@ -26,13 +30,21 @@ const PAGES: Record<string, ComponentType> = {
   '/committee/areas': AreaListPage,
   '/leader/tasks': TaskListPage,
   '/leader/assignments': TaskListPage,
+  '/leader/volunteers': VolunteerListPage,
+  '/committee/volunteers': VolunteerListPage,
+  '/leader/regs': RegsApprovalPage,
+  '/leader/support': SupportListPage,
+  '/committee/support': SupportListPage,
 }
 
 // Route có param — nav-config không mô tả được, khai báo tường minh theo role
 // (page tự đọc useParams/useLocation để biết ngữ cảnh mount).
 const DYNAMIC: Partial<Record<Role, { path: string; Page: ComponentType }[]>> = {
-  LEADER: [{ path: 'tasks/:id', Page: TaskDetailPage }],
-  COMMITTEE: [{ path: 'areas/:id/tasks', Page: TaskListPage }],
+  LEADER: [{ path: 'tasks/:id', Page: TaskDetailPage }, { path: 'volunteers/:id', Page: VolunteerDetailPage }],
+  COMMITTEE: [
+    { path: 'areas/:id/tasks', Page: TaskListPage },
+    { path: 'volunteers/:id', Page: VolunteerDetailPage },
+  ],
 }
 
 const queryClient = new QueryClient()
