@@ -17,7 +17,15 @@ export const AREA_ICONS: Record<AreaType, typeof Landmark> = {
   STAGE: Theater,
 }
 
-export function AreaCard({ area, index }: { area: WorkArea; index: number }) {
+export function AreaCard({
+  area,
+  index,
+  onClick,
+}: {
+  area: WorkArea
+  index: number
+  onClick?: (area: WorkArea) => void
+}) {
   const { t } = useTranslation()
   const Icon = AREA_ICONS[area.type]
   const style = { '--d': index } as CSSProperties
@@ -25,7 +33,19 @@ export function AreaCard({ area, index }: { area: WorkArea; index: number }) {
     <div
       data-area-id={area.id}
       style={style}
-      className="g-item overflow-hidden rounded-grotto border border-grotto-hair bg-grotto-panel shadow-sm"
+      onClick={onClick ? () => onClick(area) : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={
+        onClick
+          ? (e) => {
+              if (e.key === 'Enter') onClick(area)
+            }
+          : undefined
+      }
+      className={cn(
+        'g-item overflow-hidden rounded-grotto border border-grotto-hair bg-grotto-panel shadow-sm',
+        onClick && 'cursor-pointer transition-transform hover:-translate-y-0.5 hover:shadow-md',
+      )}
     >
       {/* Vòm hang: dải terra + mái vòm panel cắt lên trên, icon ở giữa. */}
       <div className="relative h-24 bg-grotto-terra">
