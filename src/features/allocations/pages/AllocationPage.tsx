@@ -52,13 +52,13 @@ export default function AllocationPage() {
   const { data: allocations = [], isPending } = useAllocations()
   const create = useCreateAllocation()
 
-  // Officer: vật tư khu mình phụ trách (seed: mỗi officer 1 khu); khác: mọi khu.
+  // Officer: vật tư + nhiệm vụ khu mình phụ trách (pattern Task 7 RecordDialog);
+  // khác: mọi khu.
   const isOfficer = user?.role === 'OFFICER'
   const myAreas = isOfficer ? areas.filter((a) => a.officerId === user.id) : areas
-  const fixed = myAreas.length === 1 ? myAreas[0] : null
-  const areaId = fixed?.id ?? ''
-  const materials = areaId ? allMaterials.filter((m) => m.areaId === areaId) : allMaterials
-  const tasks = areaId ? allTasks.filter((x) => x.areaId === areaId) : allTasks
+  const myAreaIds = new Set(myAreas.map((a) => a.id))
+  const materials = isOfficer ? allMaterials.filter((m) => myAreaIds.has(m.areaId)) : allMaterials
+  const tasks = isOfficer ? allTasks.filter((x) => myAreaIds.has(x.areaId)) : allTasks
 
   const available = availableMap(materials, allocations)
   // available đổi theo query data → validate lúc submit đọc ref (schema tạo
@@ -115,7 +115,8 @@ export default function AllocationPage() {
           : { targetAreaId: data.targetAreaId }),
         qty: data.qty,
         date: new Date().toISOString().slice(0, 10),
-        byUserId: user?.id ?? 'u1',
+        // byUserId chỉ gửi khi có user — mock POST persist nguyên body.
+        ...(user ? { byUserId: user.id } : {}),
       })
       toast(t('features.allocations.created', { n: data.qty, unit: material?.unit ?? '' }))
     } catch {
@@ -126,8 +127,8 @@ export default function AllocationPage() {
   const err = (msg?: string) =>
     msg ? <p className="mt-1 text-xs font-semibold text-grotto-brick">{t(msg)}</p> : null
 
-  // Bảng: phân bổ của vật tư khu đang xem.
-  const rows = areaId
+  // Bảng: phân bổ của vật tư khu officer phụ trách.
+  const rows = isOfficer
     ? allocations.filter((a) => materials.some((m) => m.id === a.materialId))
     : allocations
   const taskById = useMemo(() => new Map(allTasks.map((x) => [x.id, x])), [allTasks])

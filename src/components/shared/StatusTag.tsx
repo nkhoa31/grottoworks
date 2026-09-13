@@ -7,6 +7,7 @@ const TONE: Record<string, 'ok' | 'warn' | 'alert' | 'soft'> = {
   ON_TRACK: 'ok', RECEIVED_FULL: 'ok',
   DOING: 'warn', INCOMING: 'warn', PENDING: 'warn', REVIEW: 'warn',
   COORDINATED: 'warn', PENDING_FIX: 'warn', RECEIVED_PARTIAL: 'warn', ACTIVE: 'warn',
+  PLEDGED: 'warn',
   LATE: 'alert', REVISE: 'alert', REJECTED: 'alert', SHORTAGE: 'alert',
   AT_RISK: 'alert', UNUSABLE: 'alert', DAMAGED: 'alert', LOST: 'alert',
   OPEN: 'warn', // yêu cầu hỗ trợ đang chờ điều phối — tone straw urgent
