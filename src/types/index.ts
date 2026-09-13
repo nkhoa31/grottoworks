@@ -36,6 +36,8 @@ export interface Material {
   required: number; existing: number; purchased: number;
   donatedPledged: number; donatedReceived: number; received: number;
   buyerId?: string; status: 'SHORTAGE' | 'INCOMING' | 'ENOUGH';
+  /** Đơn giá dự kiến (VNĐ) — tính tổng đề nghị mua = qty × estUnitPrice. */
+  estUnitPrice: number;
 }
 
 /** Thiếu hụt = nhu cầu - đã về kho (existing + purchased + donatedReceived). */
@@ -46,6 +48,8 @@ export function shortage(m: Pick<Material, 'required' | 'received'>): number {
 export interface PurchaseRequest {
   id: string; materialIds: string[]; total: number;
   status: 'DRAFT' | 'PENDING' | 'APPROVED' | 'REJECTED'; createdBy: string; note?: string;
+  /** Số lượng đề nghị mua từng vật tư (key = materialId) — default lúc xác nhận. */
+  qtys?: Record<string, number>;
 }
 
 export interface PurchaseRecord {
