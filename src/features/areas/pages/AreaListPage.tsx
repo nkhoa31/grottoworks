@@ -3,7 +3,7 @@
 // Click card/row: Task 5 sẽ nối sang trang chi tiết khu — tạm no-op.
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { LayoutGrid, Table2, Pencil, Trash2, Plus } from 'lucide-react'
+import { LayoutGrid, Table2, Pencil, Trash2, Plus, UserPlus } from 'lucide-react'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { DataTable } from '@/components/shared/DataTable'
 import { EmptyState } from '@/components/shared/EmptyState'
@@ -15,6 +15,7 @@ import { cn } from '@/lib/utils'
 import { useAreas, useUsers, useDeleteArea } from '../api'
 import { AreaCard } from '../components/AreaCard'
 import { AreaFormDialog } from './AreaFormDialog'
+import { AreaAssignDialog } from './AreaAssignDialog'
 import type { WorkArea } from '@/types'
 
 type View = 'grid' | 'table'
@@ -30,6 +31,7 @@ export default function AreaListPage() {
   const [formOpen, setFormOpen] = useState(false)
   const [editing, setEditing] = useState<WorkArea | null>(null)
   const [deleting, setDeleting] = useState<WorkArea | null>(null)
+  const [assigning, setAssigning] = useState<WorkArea | null>(null)
 
   const nameOf = (id: string) => users.find((u) => u.id === id)?.name ?? '—'
 
@@ -57,6 +59,14 @@ export default function AreaListPage() {
         header: t('common.actions'),
         render: (a: WorkArea) => (
           <div className="flex justify-end gap-1">
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label={t('features.areas.assign')}
+              onClick={() => setAssigning(a)}
+            >
+              <UserPlus className="size-4" />
+            </Button>
             <Button
               variant="ghost"
               size="icon"
@@ -163,6 +173,7 @@ export default function AreaListPage() {
       )}
 
       {formOpen && <AreaFormDialog area={editing} onClose={() => setFormOpen(false)} />}
+      {assigning && <AreaAssignDialog area={assigning} onClose={() => setAssigning(null)} />}
       <ConfirmDialog
         open={Boolean(deleting)}
         title={t('features.areas.deleteTitle')}

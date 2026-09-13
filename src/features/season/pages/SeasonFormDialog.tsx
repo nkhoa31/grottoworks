@@ -21,9 +21,13 @@ const schema = z
       .max(2035, 'features.season.yearRange'),
     startDate: z.string().min(1, 'common.required'),
     endDate: z.string().min(1, 'common.required'),
-    budget: z.coerce
-      .number({ invalid_type_error: 'features.season.budgetInvalid' })
-      .min(0, 'features.season.budgetInvalid'),
+    // Budget bắt buộc: trống → NaN → lỗi, KHÔNG âm thầm ép thành 0.
+    budget: z.preprocess(
+      (v) => (v === '' || v == null ? undefined : v),
+      z.coerce
+        .number({ invalid_type_error: 'features.season.budgetInvalid' })
+        .min(0, 'features.season.budgetInvalid'),
+    ),
   })
   .refine((d) => !d.startDate || !d.endDate || d.startDate < d.endDate, {
     path: ['endDate'],
@@ -63,6 +67,9 @@ export function SeasonFormDialog({
       : { year: 2026, startDate: '', endDate: '', budget: 0 },
   })
 
+  const err = (msg?: string) =>
+    msg ? <p className="mt-1 text-xs font-semibold text-grotto-brick">{t(msg)}</p> : null
+
   const onSubmit = async (data: FormData) => {
     try {
       if (editing && season) {
@@ -98,40 +105,24 @@ export function SeasonFormDialog({
         <div>
           <Label htmlFor="season-year">{t('features.season.year')}</Label>
           <Input id="season-year" type="number" inputMode="numeric" {...register('year')} />
-          {errors.year && (
-            <p className="mt-1 text-xs font-semibold text-grotto-brick">
-              {t(errors.year.message ?? '')}
-            </p>
-          )}
+          {err(errors.year?.message)}
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div>
             <Label htmlFor="season-start">{t('features.season.startDate')}</Label>
             <Input id="season-start" type="date" {...register('startDate')} />
-            {errors.startDate && (
-              <p className="mt-1 text-xs font-semibold text-grotto-brick">
-                {t(errors.startDate.message ?? '')}
-              </p>
-            )}
+            {err(errors.startDate?.message)}
           </div>
           <div>
             <Label htmlFor="season-end">{t('features.season.endDate')}</Label>
             <Input id="season-end" type="date" {...register('endDate')} />
-            {errors.endDate && (
-              <p className="mt-1 text-xs font-semibold text-grotto-brick">
-                {t(errors.endDate.message ?? '')}
-              </p>
-            )}
+            {err(errors.endDate?.message)}
           </div>
         </div>
         <div>
           <Label htmlFor="season-budget">{t('features.season.budget')}</Label>
           <Input id="season-budget" type="number" inputMode="numeric" min={0} {...register('budget')} />
-          {errors.budget && (
-            <p className="mt-1 text-xs font-semibold text-grotto-brick">
-              {t(errors.budget.message ?? '')}
-            </p>
-          )}
+          {err(errors.budget?.message)}
         </div>
       </form>
     </Dialog>
