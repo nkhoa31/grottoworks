@@ -5,3 +5,4 @@ superpowers/
 *.png
 coverage/
 *.tsbuildinfo
+.tmp-verify/
