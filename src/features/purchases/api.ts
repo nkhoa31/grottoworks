@@ -5,6 +5,7 @@
 // += qty, handler suy ra received/status (pattern 2 bước như useApproveReg).
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '@/lib/api'
+import { materialKeys } from '@/features/materials/api'
 import type { Material, PurchaseRecord, PurchaseRequest } from '@/types'
 
 export const purchaseRequestKeys = { all: ['purchaseRequests'] as const }
@@ -35,13 +36,14 @@ function usePurchaseMutation<TVars>(fn: (vars: TVars) => Promise<unknown>) {
     onSuccess: () => {
       void qc.invalidateQueries({ queryKey: purchaseRequestKeys.all })
       void qc.invalidateQueries({ queryKey: purchaseRecordKeys.all })
-      void qc.invalidateQueries({ queryKey: ['materials'] })
+      void qc.invalidateQueries({ queryKey: materialKeys.all })
     },
   })
 }
 
+// createdBy optional: không có user (lý thuyết) thì mock tự suy actor.
 export function useCreatePurchaseRequest() {
-  return usePurchaseMutation((data: Omit<PurchaseRequest, 'id'>) =>
+  return usePurchaseMutation((data: Omit<PurchaseRequest, 'id' | 'createdBy'> & { createdBy?: string }) =>
     api<PurchaseRequest>('/purchaseRequests', { method: 'POST', body: JSON.stringify(data) }),
   )
 }
@@ -55,10 +57,10 @@ export function useApproveRequest() {
   return usePurchaseMutation((id: string) => patchRequest(id, { status: 'APPROVED' }))
 }
 
-// Từ chối kèm lý do ghi đè vào note.
+// Từ chối kèm lý do — ghi vào rejectReason riêng, note gốc giữ nguyên.
 export function useRejectRequest() {
   return usePurchaseMutation(({ id, reason }: { id: string; reason: string }) =>
-    patchRequest(id, { status: 'REJECTED', note: reason }),
+    patchRequest(id, { status: 'REJECTED', rejectReason: reason }),
   )
 }
 

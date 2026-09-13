@@ -11,7 +11,7 @@ export const purchaseRequests: PurchaseRequest[] = [
   { id: 'pr7', materialIds: ['m25'], total: 3_500_000, status: 'PENDING', createdBy: 'u12' },
   { id: 'pr8', materialIds: ['m22'], total: 3_200_000, status: 'DRAFT', createdBy: 'u4' },
   { id: 'pr9', materialIds: ['m19'], total: 250_000, status: 'DRAFT', createdBy: 'u10' },
-  { id: 'pr10', materialIds: ['m9'], total: 2_100_000, status: 'REJECTED', createdBy: 'u8', note: 'Vượt ngân sách, đề nghị dùng lại đèn năm ngoái' },
+  { id: 'pr10', materialIds: ['m9'], total: 2_100_000, status: 'REJECTED', createdBy: 'u8', rejectReason: 'Vượt ngân sách, đề nghị dùng lại đèn năm ngoái' },
 ];
 
 export const purchaseRecords: PurchaseRecord[] = [

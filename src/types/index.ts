@@ -48,6 +48,8 @@ export function shortage(m: Pick<Material, 'required' | 'received'>): number {
 export interface PurchaseRequest {
   id: string; materialIds: string[]; total: number;
   status: 'DRAFT' | 'PENDING' | 'APPROVED' | 'REJECTED'; createdBy: string; note?: string;
+  /** Lý do committee từ chối — tách riêng, không đè note gốc. */
+  rejectReason?: string;
   /** Số lượng đề nghị mua từng vật tư (key = materialId) — default lúc xác nhận. */
   qtys?: Record<string, number>;
 }

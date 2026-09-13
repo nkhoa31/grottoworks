@@ -55,7 +55,7 @@ test('tạo hồ sơ mua: POST record qty N → received tăng N, đủ thì sta
   expect(m.status).toBe('ENOUGH') // received ≥ required
 })
 
-test('committee từ chối: status REJECTED + note lý do, vật tư không đổi', async () => {
+test('committee từ chối: REJECTED + rejectReason riêng, note gốc và vật tư giữ nguyên', async () => {
   const m13Before = await get<Material>('/materials/m13')
   const m14Before = await get<Material>('/materials/m14')
 
@@ -64,7 +64,9 @@ test('committee từ chối: status REJECTED + note lý do, vật tư không đ�
 
   const pr = await get<PurchaseRequest>('/purchaseRequests/pr5')
   expect(pr.status).toBe('REJECTED')
-  expect(pr.note).toBe('Vượt ngân sách mùa')
+  // pr5 có note gốc 'Bóng đèn còn thiếu 120 cái' — phải còn nguyên.
+  expect(pr.note).toBe('Bóng đèn còn thiếu 120 cái')
+  expect(pr.rejectReason).toBe('Vượt ngân sách mùa')
 
   expect(await get<Material>('/materials/m13')).toEqual(m13Before)
   expect(await get<Material>('/materials/m14')).toEqual(m14Before)

@@ -196,8 +196,13 @@ export default function PurchaseConfirmPage() {
   const matName = (id: string) => materials.find((m) => m.id === id)?.name ?? id
   const userName = (id: string) => users.find((u) => u.id === id)?.name ?? '—'
 
+  // Chờ xử lý = APPROVED + chưa có hồ sơ nào (đã có record thì tạo tiếp sẽ
+  // double-count purchased — record tồn tại nghĩa là đã ghi giao hàng).
   const pending = requests.filter(
-    (r) => r.status === 'APPROVED' && r.materialIds.some((id) => myMaterials.some((m) => m.id === id)),
+    (r) =>
+      r.status === 'APPROVED' &&
+      !records.some((rec) => rec.requestId === r.id) &&
+      r.materialIds.some((id) => myMaterials.some((m) => m.id === id)),
   )
   const myRecords = records
     .filter((r) => myMaterials.some((m) => m.id === r.materialId))
