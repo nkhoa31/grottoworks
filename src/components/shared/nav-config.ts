@@ -59,6 +59,7 @@ export const NAV: Record<Role, NavGroup[]> = {
         { label: 'nav.leader.tasks', to: '/leader/tasks', icon: 'tasks' },
         { label: 'nav.leader.assignments', to: '/leader/assignments', icon: 'assign' },
         { label: 'nav.leader.regs', to: '/leader/regs', icon: 'inbox', badge: 'support' },
+        { label: 'nav.leader.support', to: '/leader/support', icon: 'lifebuoy' },
         { label: 'nav.leader.volunteers', to: '/leader/volunteers', icon: 'users' },
         { label: 'nav.leader.timesheets', to: '/leader/timesheets', icon: 'clock' },
         { label: 'nav.leader.checklist', to: '/leader/checklist', icon: 'checklist' },
