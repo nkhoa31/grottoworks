@@ -1,7 +1,7 @@
 // NotificationsDropdown: mở panel → 10 activity mới nhất từ GET /api/activity
 // (log31–log40 seed, log40 đứng đầu); dot unread tắt khi mở (đánh dấu đã đọc).
 import { afterAll, beforeAll, beforeEach, expect, test } from 'vitest'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { setupServer } from 'msw/node'
 import { resetDb } from '@/lib/db'
@@ -28,11 +28,10 @@ function mount() {
 test('mở panel → 10 hoạt động mới nhất, dot unread tắt sau khi mở', async () => {
   mount()
 
-  const bell = screen.getByRole('button', { name: 'Thông báo' })
   // Activity về sau: có log mới hơn timestamp 0 → dot đỏ xuất hiện.
-  await waitFor(() => expect(bell.querySelector('span.bg-grotto-brick')).not.toBeNull())
+  expect(await screen.findByTestId('unread-dot')).toBeDefined()
 
-  fireEvent.click(bell)
+  fireEvent.click(screen.getByRole('button', { name: 'Thông báo' }))
 
   // 10 dòng mới nhất (log31–log40 seed); log40 = u2 xác nhận hóa đơn pc4.
   expect(await screen.findAllByRole('listitem')).toHaveLength(10)
@@ -40,5 +39,5 @@ test('mở panel → 10 hoạt động mới nhất, dot unread tắt sau khi m�
   expect(screen.getByText('xác nhận hóa đơn')).toBeDefined()
   expect(screen.getByText('pc4')).toBeDefined()
   // Mở panel = đánh dấu đã đọc → dot biến mất.
-  expect(bell.querySelector('span.bg-grotto-brick')).toBeNull()
+  expect(screen.queryByTestId('unread-dot')).toBeNull()
 })

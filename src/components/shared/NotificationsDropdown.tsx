@@ -3,14 +3,12 @@
 // (localStorage 'grotto-notif-read') — mở panel = đánh dấu đã đọc.
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useQuery } from '@tanstack/react-query'
 import { Activity as ActivityIcon, Bell, CheckCircle2, Plus, Trash2 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { api } from '@/lib/api'
 import { relTime } from '@/lib/format'
+import { useActivity } from '@/features/dashboards/api'
 import { useUsers } from '@/features/users/api'
 import { EmptyState } from './EmptyState'
-import type { ActivityLog } from '@/types'
 
 const READ_KEY = 'grotto-notif-read'
 
@@ -31,10 +29,7 @@ export function NotificationsDropdown() {
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [readAt, setReadAt] = useState(() => Number(localStorage.getItem(READ_KEY) ?? 0))
-  const { data: logs = [] } = useQuery({
-    queryKey: ['activity'],
-    queryFn: () => api<ActivityLog[]>('/activity'),
-  })
+  const { data: logs = [] } = useActivity()
   const { data: users = [] } = useUsers()
 
   const items = logs.slice(0, 10)
@@ -43,9 +38,11 @@ export function NotificationsDropdown() {
 
   const toggle = () => {
     if (!open) {
-      // Đánh dấu đã đọc lúc mở panel: lưu timestamp của activity mới nhất
-      // (dùng Date.now() sẽ sai khi seed có mốc tương lai — dot không bao giờ tắt).
-      const now = items.length ? new Date(items[0].at).getTime() : Date.now()
+      // Đánh dấu đã đọc lúc mở: max(timestamp activity mới nhất, Date.now()) —
+      // dùng Date.now() một mình sẽ không tắt dot với seed mốc tương lai; dùng
+      // maxAt một mình sẽ bỏ sót activity tạo sau này (log mới mang `at` = now).
+      const maxAt = items.length ? new Date(items[0].at).getTime() : 0
+      const now = Math.max(maxAt, Date.now())
       localStorage.setItem(READ_KEY, String(now))
       setReadAt(now)
     }
@@ -65,7 +62,11 @@ export function NotificationsDropdown() {
       >
         <Bell className="size-5" />
         {hasUnread && (
-          <span className="absolute right-2.5 top-2.5 size-2 rounded-full bg-grotto-brick" aria-hidden />
+          <span
+            data-testid="unread-dot"
+            className="absolute right-2.5 top-2.5 size-2 rounded-full bg-grotto-brick"
+            aria-hidden
+          />
         )}
       </button>
       {open && (

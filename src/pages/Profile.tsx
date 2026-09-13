@@ -47,11 +47,14 @@ function ProfileForm({ user, onSaved }: { user: User; onSaved: () => Promise<unk
   const onSubmit = async (data: FormData) => {
     try {
       await update.mutateAsync({ id: user.id, name: data.name, skills: data.skills })
-      await onSaved()
-      toast(t('profile.saved'))
     } catch {
       toast(t('common.error'), 'alert')
+      return
     }
+    // PATCH đã thành công — refresh context fail không kéo theo toast lỗi
+    // (header sẽ tự cập nhật lần fetch sau), chỉ log.
+    await onSaved().catch((e: unknown) => console.error('profile refresh failed', e))
+    toast(t('profile.saved'))
   }
 
   return (
