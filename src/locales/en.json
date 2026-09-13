@@ -294,5 +294,7 @@
   "features.support.coordinated": "{{name}} coordinated",
   "features.support.resolve": "Mark resolved",
   "features.support.resolved": "Support request resolved",
+  "features.support.assignee": "Assignee",
+  "features.support.resolveUncoordinated": "No volunteer has been coordinated yet. Resolve anyway?",
   "nav.leader.support": "Support requests"
 }

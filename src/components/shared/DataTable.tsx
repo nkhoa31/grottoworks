@@ -20,6 +20,7 @@ export interface DataTableProps<T> {
   onRowClick?: (row: T) => void
   searchKeys?: string[] // key của row đưa vào chuỗi tìm kiếm
   filters?: { key: string; options: string[] }[] // chip lọc, '' = tất cả
+  defaultFilters?: Record<string, string> // chip active lúc mount (vd default PENDING)
   pageSize?: number
   emptyText?: string
   keyExtractor?: (row: T, index: number) => string // mặc định: row.id, fallback index
@@ -41,13 +42,14 @@ export function DataTable<T>({
   onRowClick,
   searchKeys,
   filters,
+  defaultFilters,
   pageSize = 8,
   emptyText,
   keyExtractor,
 }: DataTableProps<T>) {
   const { t } = useTranslation()
   const [q, setQ] = useState('')
-  const [active, setActive] = useState<Record<string, string>>({})
+  const [active, setActive] = useState<Record<string, string>>(defaultFilters ?? {})
   const [page, setPage] = useState(0)
 
   const filtered = useMemo(() => {

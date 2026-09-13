@@ -37,3 +37,15 @@ test('resolve support request: status RESOLVED + activity log', async () => {
   const logs = await (await fetch(`${base}/api/activity`)).json() as ActivityLog[]
   expect(logs.some((l) => l.action.includes('cập nhật yêu cầu hỗ trợ') && l.target === 'sr1')).toBe(true)
 })
+
+test('coordinate support request: status COORDINATED + assigneeId persisted', async () => {
+  const { result } = renderHook(() => useUpdateSupportRequest(), { wrapper })
+  // sr1 seed: OPEN. PATCH 1 lần gửi cả status + assigneeId.
+  await act(async () => {
+    await result.current.mutateAsync({ id: 'sr1', status: 'COORDINATED', assigneeId: 'u10' })
+  })
+
+  const sr = await (await fetch(`${base}/api/supportRequests/sr1`)).json() as SupportRequest
+  expect(sr.status).toBe('COORDINATED')
+  expect(sr.assigneeId).toBe('u10')
+})
