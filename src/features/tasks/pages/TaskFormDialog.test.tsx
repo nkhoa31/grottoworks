@@ -1,12 +1,12 @@
-// AreaListPage render 5 AreaCard từ msw GET /api/areas (db seed localStorage).
-// Page điều hướng khi click (Task 5) → cần bọc MemoryRouter.
+// Validation TaskFormDialog: submit thiếu title (và khu) → lỗi zod hiển thị.
+// Dialog dùng useAreas/useSkills/useMaterials → cần msw server; zodResolver
+// validate async nên phải findByText.
 import { afterAll, beforeAll, beforeEach, expect, test } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { MemoryRouter } from 'react-router-dom'
 import { setupServer } from 'msw/node'
 import { ToastProvider } from '@/components/ui/toast'
-import AreaListPage from './AreaListPage'
+import { TaskFormDialog } from './TaskFormDialog'
 import { handlers } from '@/mocks/handlers'
 import { resetDb } from '@/lib/db'
 
@@ -15,24 +15,15 @@ beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))
 beforeEach(() => resetDb())
 afterAll(() => server.close())
 
-test('hiện 5 thẻ khu vực (grid mặc định) từ seed', async () => {
+test('submit thiếu title → hiện lỗi zod "Vui lòng nhập tên việc"', async () => {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
   render(
     <QueryClientProvider client={client}>
       <ToastProvider>
-        <MemoryRouter>
-          <AreaListPage />
-        </MemoryRouter>
+        <TaskFormDialog onClose={() => {}} />
       </ToastProvider>
     </QueryClientProvider>,
   )
-  for (const name of [
-    'Hang đá Bê-lem',
-    'Cây thông lớn',
-    'Ánh sáng & đèn',
-    'Sân khấu',
-    'Sân nhà thờ',
-  ]) {
-    expect(await screen.findByText(name)).toBeDefined()
-  }
+  fireEvent.submit(document.getElementById('task-form')!)
+  expect(await screen.findByText('Vui lòng nhập tên việc')).toBeDefined()
 })

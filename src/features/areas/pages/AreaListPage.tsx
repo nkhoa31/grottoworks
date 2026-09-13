@@ -1,7 +1,8 @@
 // Trang khu vực công tác (COMMITTEE): grid AreaCard + DataTable (toggle),
 // tạo/sửa qua AreaFormDialog, xoá qua ConfirmDialog.
-// Click card/row: Task 5 sẽ nối sang trang chi tiết khu — tạm no-op.
+// Click card/row → /committee/areas/:id/tasks (TaskListPage read-only).
 import { useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { LayoutGrid, Table2, Pencil, Trash2, Plus, UserPlus } from 'lucide-react'
 import { PageHeader } from '@/components/shared/PageHeader'
@@ -23,6 +24,7 @@ type View = 'grid' | 'table'
 export default function AreaListPage() {
   const { t } = useTranslation()
   const toast = useToast()
+  const navigate = useNavigate()
   const { data: areas = [], isPending } = useAreas()
   const { data: users = [] } = useUsers()
   const deleteArea = useDeleteArea()
@@ -156,7 +158,12 @@ export default function AreaListPage() {
         areas.length ? (
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5">
             {areas.map((a, i) => (
-              <AreaCard key={a.id} area={a} index={i} />
+              <AreaCard
+                key={a.id}
+                area={a}
+                index={i}
+                onClick={(x) => navigate(`/committee/areas/${x.id}/tasks`)}
+              />
             ))}
           </div>
         ) : (
@@ -169,6 +176,7 @@ export default function AreaListPage() {
           searchKeys={['name']}
           pageSize={8}
           emptyText={t('features.areas.empty')}
+          onRowClick={(a) => navigate(`/committee/areas/${a.id}/tasks`)}
         />
       )}
 
