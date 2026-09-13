@@ -309,7 +309,8 @@ export default function PurchaseConfirmPage() {
       {recording && (
         <RecordDialog
           request={recording}
-          materials={materials.filter((m) => recording.materialIds.includes(m.id))}
+          // Chỉ material thuộc request VÀ khu officer phụ trách (inMyAreas).
+          materials={materials.filter((m) => recording.materialIds.includes(m.id) && inMyAreas(m))}
           onClose={() => setRecording(null)}
         />
       )}

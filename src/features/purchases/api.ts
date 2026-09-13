@@ -41,7 +41,8 @@ function usePurchaseMutation<TVars>(fn: (vars: TVars) => Promise<unknown>) {
   })
 }
 
-// createdBy optional: không có user (lý thuyết) thì mock tự suy actor.
+// createdBy optional: mock POST persist body nguyên dạng — thiếu key thì
+// request không có createdBy và bảng hiển thị '—' (fallback userName).
 export function useCreatePurchaseRequest() {
   return usePurchaseMutation((data: Omit<PurchaseRequest, 'id' | 'createdBy'> & { createdBy?: string }) =>
     api<PurchaseRequest>('/purchaseRequests', { method: 'POST', body: JSON.stringify(data) }),
