@@ -22,6 +22,10 @@ const VolunteerListPage = lazy(() => import('@/features/volunteers/pages/Volunte
 const VolunteerDetailPage = lazy(() => import('@/features/volunteers/pages/VolunteerDetailPage'))
 const RegsApprovalPage = lazy(() => import('@/features/volunteerRegs/pages/RegsApprovalPage'))
 const SupportListPage = lazy(() => import('@/features/support/pages/SupportListPage'))
+const MaterialListPage = lazy(() => import('@/features/materials/pages/MaterialListPage'))
+const PurchaseListPage = lazy(() => import('@/features/purchases/pages/PurchaseListPage'))
+const PurchaseConfirmPage = lazy(() => import('@/features/purchases/pages/PurchaseConfirmPage'))
+const CommitteeApprovalPage = lazy(() => import('@/features/purchases/pages/CommitteeApprovalPage'))
 
 // Trang thật theo route `to` của nav-config; mục chưa có → Placeholder.
 // Task 5+ thêm dần vào map này (pattern lazy page).
@@ -35,6 +39,10 @@ const PAGES: Record<string, ComponentType> = {
   '/leader/regs': RegsApprovalPage,
   '/leader/support': SupportListPage,
   '/committee/support': SupportListPage,
+  '/officer/materials': MaterialListPage,
+  '/officer/purchases': PurchaseListPage,
+  '/officer/purchases-confirm': PurchaseConfirmPage,
+  '/committee/purchases': CommitteeApprovalPage,
 }
 
 // Route có param — nav-config không mô tả được, khai báo tường minh theo role
