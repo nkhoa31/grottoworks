@@ -1,6 +1,7 @@
 // Dropdown thông báo từ AppShell: chuông mở panel 10 activity mới nhất
-// (GET /api/activity). Dot đỏ khi có activity mới hơn timestamp đã đọc
-// (localStorage 'grotto-notif-read') — mở panel = đánh dấu đã đọc.
+// (GET /api/activity). Dot đỏ khi có log mới hơn log mới nhất đã xem — so id
+// log ('grotto-notif-read' lưu lastSeenId, so số hậu tố 'log{N}') — mở panel
+// = đánh dấu đã đọc.
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Activity as ActivityIcon, Bell, CheckCircle2, Plus, Trash2 } from 'lucide-react'
@@ -11,6 +12,20 @@ import { useUsers } from '@/features/users/api'
 import { EmptyState } from './EmptyState'
 
 const READ_KEY = 'grotto-notif-read'
+
+// Id log do nextId sinh tăng dần ('log41' > 'log40'...). Timestamp không so được:
+// seed có mốc tương lai còn log mới mang `at` = now (thực tế NHỎ hơn seed) —
+// nên so số hậu tố 'log{N}'; id lạ thì fallback so chuỗi.
+const logNum = (id: string): number | null => {
+  const m = /^log(\d+)$/.exec(id)
+  return m ? Number(m[1]) : null
+}
+const isNewer = (id: string, seen: string | null): boolean => {
+  if (!seen) return true
+  const a = logNum(id)
+  const b = logNum(seen)
+  return a != null && b != null ? a > b : id > seen
+}
 
 // Icon theo động từ trong action (seed/logMutation là chuỗi tiếng Việt).
 const ICON_RULES: [string, LucideIcon][] = [
@@ -28,23 +43,21 @@ const iconOf = (action: string) => ICON_RULES.find(([k]) => action.includes(k))?
 export function NotificationsDropdown() {
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
-  const [readAt, setReadAt] = useState(() => Number(localStorage.getItem(READ_KEY) ?? 0))
+  // Id log mới nhất đã xem — so id (logNum) thay timestamp.
+  const [lastSeenId, setLastSeenId] = useState(() => localStorage.getItem(READ_KEY))
   const { data: logs = [] } = useActivity()
   const { data: users = [] } = useUsers()
 
   const items = logs.slice(0, 10)
-  const hasUnread = items.some((x) => new Date(x.at).getTime() > readAt)
+  const hasUnread = items.some((x) => isNewer(x.id, lastSeenId))
   const nameOf = (id: string) => users.find((u) => u.id === id)?.name ?? id
 
   const toggle = () => {
-    if (!open) {
-      // Đánh dấu đã đọc lúc mở: max(timestamp activity mới nhất, Date.now()) —
-      // dùng Date.now() một mình sẽ không tắt dot với seed mốc tương lai; dùng
-      // maxAt một mình sẽ bỏ sót activity tạo sau này (log mới mang `at` = now).
-      const maxAt = items.length ? new Date(items[0].at).getTime() : 0
-      const now = Math.max(maxAt, Date.now())
-      localStorage.setItem(READ_KEY, String(now))
-      setReadAt(now)
+    if (!open && items.length) {
+      // Đánh dấu đã đọc lúc mở: lưu id của log mới nhất (đứng đầu list) —
+      // log sinh sau đó có id lớn hơn → dot sáng lại đúng, không lệ thuộc đồng hồ.
+      localStorage.setItem(READ_KEY, items[0].id)
+      setLastSeenId(items[0].id)
     }
     setOpen(!open)
   }

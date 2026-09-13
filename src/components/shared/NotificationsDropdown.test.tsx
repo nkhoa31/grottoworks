@@ -1,5 +1,6 @@
 // NotificationsDropdown: mở panel → 10 activity mới nhất từ GET /api/activity
-// (log31–log40 seed, log40 đứng đầu); dot unread tắt khi mở (đánh dấu đã đọc).
+// (log31–log40 seed, log40 đứng đầu); dot unread tắt khi mở (lastSeenId = log40)
+// và SÁNG LẠI khi có log mới (log41 sinh qua POST /api/tasks).
 import { afterAll, beforeAll, beforeEach, expect, test } from 'vitest'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -18,17 +19,18 @@ afterAll(() => server.close())
 
 function mount() {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
-  return render(
+  render(
     <QueryClientProvider client={client}>
       <NotificationsDropdown />
     </QueryClientProvider>,
   )
+  return client
 }
 
-test('mở panel → 10 hoạt động mới nhất, dot unread tắt sau khi mở', async () => {
-  mount()
+test('mở panel → 10 hoạt động mới nhất; dot tắt sau mở, sáng lại khi có log mới', async () => {
+  const client = mount()
 
-  // Activity về sau: có log mới hơn timestamp 0 → dot đỏ xuất hiện.
+  // Activity về sau (chưa có lastSeenId) → dot đỏ xuất hiện.
   expect(await screen.findByTestId('unread-dot')).toBeDefined()
 
   fireEvent.click(screen.getByRole('button', { name: 'Thông báo' }))
@@ -38,6 +40,16 @@ test('mở panel → 10 hoạt động mới nhất, dot unread tắt sau khi m�
   expect(screen.getByText('Giuse Trần Văn Bình')).toBeDefined() // actor u2
   expect(screen.getByText('xác nhận hóa đơn')).toBeDefined()
   expect(screen.getByText('pc4')).toBeDefined()
-  // Mở panel = đánh dấu đã đọc → dot biến mất.
+  // Mở panel = đánh dấu đã đọc (lastSeenId = log40) → dot biến mất.
   expect(screen.queryByTestId('unread-dot')).toBeNull()
+
+  // Log mới (id log41, `at` = now < mốc seed tương lai — timestamp không so được,
+  // phải so id) sinh qua mutation → dot sáng lại.
+  const res = await fetch(`${location.origin}/api/tasks`, {
+    method: 'POST',
+    body: JSON.stringify({ areaId: 'a1', title: 'Task dot test', status: 'TODO' }),
+  })
+  expect(res.status).toBe(201)
+  await client.invalidateQueries({ queryKey: ['activity'] })
+  expect(await screen.findByTestId('unread-dot')).toBeDefined()
 })
