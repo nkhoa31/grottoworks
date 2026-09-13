@@ -22,6 +22,7 @@ export interface DataTableProps<T> {
   filters?: { key: string; options: string[] }[] // chip lọc, '' = tất cả
   pageSize?: number
   emptyText?: string
+  keyExtractor?: (row: T, index: number) => string // mặc định: row.id, fallback index
 }
 
 // ponytail: search/filter/pagination hoàn toàn client-side — dữ liệu mỗi trang
@@ -42,6 +43,7 @@ export function DataTable<T>({
   filters,
   pageSize = 8,
   emptyText,
+  keyExtractor,
 }: DataTableProps<T>) {
   const { t } = useTranslation()
   const [q, setQ] = useState('')
@@ -114,7 +116,11 @@ export function DataTable<T>({
           <thead>
             <tr className="border-b border-grotto-hair">
               {columns.map((c) => (
-                <th key={c.key} className={cn('lbl-mono px-4 py-3', ALIGN[c.align ?? 'left'])}>
+                <th
+                  key={c.key}
+                  scope="col"
+                  className={cn('lbl-mono px-4 py-3', ALIGN[c.align ?? 'left'])}
+                >
                   {c.header}
                 </th>
               ))}
@@ -123,9 +129,17 @@ export function DataTable<T>({
           <tbody className="stagger">
             {view.map((row, i) => (
               <tr
-                key={i}
+                key={keyExtractor?.(row, i) ?? String(cell(row, 'id') ?? i)}
                 style={{ '--d': i } as CSSProperties}
                 onClick={onRowClick ? () => onRowClick(row) : undefined}
+                tabIndex={onRowClick ? 0 : undefined}
+                onKeyDown={
+                  onRowClick
+                    ? (e) => {
+                        if (e.key === 'Enter') onRowClick(row)
+                      }
+                    : undefined
+                }
                 className={cn(
                   'border-b border-grotto-hair/60 transition-[transform,box-shadow] last:border-0',
                   onRowClick && 'cursor-pointer hover:-translate-y-0.5 hover:shadow-md',

@@ -57,6 +57,7 @@ export const NAV: Record<Role, NavGroup[]> = {
       items: [
         { label: 'nav.leader.dashboard', to: '/leader', icon: 'dashboard' },
         { label: 'nav.leader.tasks', to: '/leader/tasks', icon: 'tasks' },
+        { label: 'nav.leader.assignments', to: '/leader/assignments', icon: 'assign' },
         { label: 'nav.leader.regs', to: '/leader/regs', icon: 'inbox', badge: 'support' },
         { label: 'nav.leader.volunteers', to: '/leader/volunteers', icon: 'users' },
         { label: 'nav.leader.timesheets', to: '/leader/timesheets', icon: 'clock' },
@@ -76,6 +77,7 @@ export const NAV: Record<Role, NavGroup[]> = {
           icon: 'cart',
           badge: 'purchases',
         },
+        { label: 'nav.officer.purchases-confirm', to: '/officer/purchases-confirm', icon: 'confirm' },
         { label: 'nav.officer.donations', to: '/officer/donations', icon: 'gift' },
         { label: 'nav.officer.borrowed', to: '/officer/borrowed', icon: 'borrowed' },
         { label: 'nav.officer.allocations', to: '/officer/allocations', icon: 'boxes' },
