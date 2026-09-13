@@ -58,6 +58,11 @@ test('POST task persist rồi GET thấy, kèm activity log', async () => {
   ).toBe(true)
 })
 
+test('DELETE id không tồn tại → 404', async () => {
+  const res = await fetch(`${base}/api/tasks/t999`, { method: 'DELETE' })
+  expect(res.status).toBe(404)
+})
+
 test('PATCH material cập nhật số lượng + tính lại status', async () => {
   const res = await fetch(`${base}/api/materials/m5`, {
     method: 'PATCH',
