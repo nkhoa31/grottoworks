@@ -1,0 +1,116 @@
+{
+  "title": "Chọn thế giới hình ảnh cho GrottoWorks",
+  "question": "Con roll giao hướng 'Sắc Phụng Vụ'. Giữ nó, lấy hướng khác, hay roll lại.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "Sắc Phụng Vụ",
+      "kicker": "THE ROLL",
+      "lineage": "sách phụng vụ & lịch phụng vụ giáo xứ Việt Nam",
+      "thesis": "Mùa chuẩn bị Giáng sinh hiện lên như một mùa phụng vụ: sắc tím Mầu Vọng dẫn dắt giao diện, mọi tiến độ là một bước trong lịch về Lễ.",
+      "palette": ["#3B2E5A", "#C8A24B", "#F5F2EA", "#8A8578"],
+      "materials": ["giấy in phụng vụ", "vạt lễ", "bảng kẻ hairline"],
+      "viewport": "Dashboard Mùa Vọng: thanh tiến độ mùa như nến Ád Ven, 4 thẻ khu vực làm việc tint theo tiến độ, bảng nhiệm vụ kẻ hairline với nhãn mono uppercase.",
+      "risk": "Sắc tím dễ trầm và buồn nếu không giữ đủ tương phản và khoảng trắng; phải kiểm soát độ đậm của nền tím ở mức tint, không dùng tím đậm làm nền chữ.",
+      "raised": [
+        {
+          "from": "challenger-design-annual",
+          "raise": "Bảng dữ liệu kẻ hairline 1px + nhãn 11px mono uppercase 0.14em, một grotesque duy nhất toàn hệ — kỷ luật bảng dày mà hướng phụng vụ gốc thiếu."
+        },
+        {
+          "from": "challenger-cutting-bench",
+          "raise": "Trạng thái là một DẤU chứ không chỉ một màu: mỗi trạng thái duyệt mang glyph riêng (✓/✗/⚑) bên cạnh màu — người lớn tuổi và người mù màu đọc được."
+        }
+      ]
+    },
+    {
+      "id": "model-pick",
+      "label": "Sổ Giáo Họ",
+      "kicker": "IMPECCABLE'S PICK",
+      "lineage": "sổ ghi chép thủ quỹ giáo họ — kẻ cột mực xanh, cột tổng gạch đỏ",
+      "thesis": "Cả hệ thống là quyển sổ giáo họ được số hóa: mỗi trang là một trang sổ kẻ sẵn, số tiền và giờ công được 'ghi mực' vào dòng, cột thiếu được khoanh đỏ.",
+      "palette": ["#1F3A5F", "#B3261E", "#FBF8F1", "#0E1626"],
+      "materials": ["sổ kẻ dòng", "mực ghi", "bìa cứng"],
+      "viewport": "Sổ vật tư mở sang trang khu hang đá: dòng kẻ ngang hairline, cột số lượng căn phải, dòng còn thiếu được khoanh đỏ như thủ quỹ khoanh nợ.",
+      "risk": "Là hướng dễ đoán nhất trong danh sách của tôi — 'sổ tay số hóa' là nơi đa số run trong chủ đề sổ sách sẽ hạ cánh.",
+      "raised": [
+        {
+          "from": "challenger-cutting-bench",
+          "raise": "Cột thiếu/khoanh đỏ luôn đi kèm glyph dấu, không chỉ màu đỏ."
+        }
+      ]
+    },
+    {
+      "id": "challenger-design-annual",
+      "label": "Đánh Giá Thiết Kế (Plate Section)",
+      "verdict": "competitive",
+      "lineage": "mục plate trong annual thiết kế, giấy uncoated gần trắng",
+      "thesis": "Giao diện như trang plate in ấn: registration crosshair đánh dấu góc mọi bảng, một grotesque duy nhất, hairline chia vùng, con dấu tròn chứng con người đã duyệt.",
+      "palette": ["#16181A", "#F5F4F6", "#DCDDF3", "#C9C7C4"],
+      "materials": ["giấy uncoated", "letterpress", "hairline 1px"],
+      "viewport": "Bảng nhiệm vụ 12 cột, hairline chia, nhãn mono, con dấu 'ĐÃ DUYỆT' tròn xoay chậm nửa chèn mép bảng.",
+      "case": "Fuse sạch: bảng dày ánh xạ sang bảng nhiệm vụ/vật tư hoàn hảo; thua hẳn trục khán giả — giáo dân Việt không nhận ra annual thiết kế.",
+      "risk": "Lạnh và kỹ thuật với người dùng lứa tuổi giáo xứ; thiếu ấm áp mùa Giáng sinh."
+    },
+    {
+      "id": "challenger-cutting-bench",
+      "label": "Bàn Dựng Phim",
+      "verdict": "competitive",
+      "lineage": "bàn dựng phim: thanh chọn răng lược, cờ băng dính, ghim treo",
+      "thesis": "Thanh 'select rail' ngang mọi màn hình, khu vực là khung phim nối nhau, cái đang chờ là cờ cam gập, cái gác lại còn treo trên ghim bên dưới.",
+      "palette": ["#0E0E0E", "#E8641B", "#F5F1E8", "#8A8578"],
+      "materials": ["phim 35mm", "băng dính gập", "đèn bàn"],
+      "case": "Trạng thái là dấu (grease cross, cờ, ghim) — kỷ luật state mạnh nhất cho flow duyệt; thua trục khán giả và nền đen gây khó đọc bảng dày.",
+      "risk": "Nền đen + cam chiếm 1/3 màn hình không phù hợp người dùng lớn tuổi dùng ngoài sáng."
+    },
+    {
+      "id": "challenger-elbow-console",
+      "label": "Bảng Điều Khiển Màu Kẹo",
+      "verdict": "declined",
+      "lineage": "panel phi thuyền pastel trên nền đen",
+      "case": "Scaffold bảng vĩa (elbow frame) làm grid layout khá hay; pastel trên đen không khán giả giáo xứ.",
+      "kept": "Câu trục layout tôn vinh khối màu gốc đã quy về bảng hairline của hướng chính."
+    },
+    {
+      "id": "challenger-miura",
+      "label": "Túi Gấp Miura",
+      "verdict": "declined",
+      "lineage": "tấm gấp deployable vàng bạc",
+      "case": "Bao vàng nhỏ mở thành lưới — đẹp cho landing, không giúp bảng dữ liệu.",
+      "kept": "Sự cam kết một màu đậm cho một khối lớn đã quy về tint tím theo tiến độ."
+    },
+    {
+      "id": "challenger-cloud",
+      "label": "Mây Viền Cầu Vồng",
+      "verdict": "declined",
+      "case": "Viền pastel mỏng trên trắng — quá nhạt cho dấu hiệu trạng thái bảng dày.",
+      "kept": "Chuyện giữ phần lớn bề mặt achromatic, màu chỉ ở chỗ cần — đã áp vào bảng."
+    },
+    {
+      "id": "challenger-onebit",
+      "label": "Desktop 1-bit",
+      "verdict": "declined",
+      "case": "Dither gây khó đọc trên màn hiển DPI thấp, khán giả không nhận ra.",
+      "kept": "Kỷ luật trạng thái-invert cho hàng đang chọn (hàng chọn đảo nền/ink)."
+    },
+    {
+      "id": "canon",
+      "label": "Admin Chuẩn Sạch",
+      "kicker": "CANON",
+      "lineage": "shadcn/ui mặc định + Inter, sidebar trái, thẻ trắng nền xám",
+      "thesis": "Đúng admin dashboard chuẩn mọi người thấy ở mọi SaaS: sidebar trái, card trắng bo góc, badge màu paste, không cá tính gì thêm.",
+      "palette": ["#0F172A", "#F8FAFC", "#64748B", "#2563EB"],
+      "materials": ["card bo góc 8px", "đổ bóng nhẹ", "badge pill"],
+      "viewport": "Sidebar xám đậm trái, 4 stat card, bảng bo góc, badge xanh 'Đang làm'.",
+      "risk": "Không ai nhớ nó — đúng mọi nơi, thuộc về không nơi nào. Chọn nếu bạn muốn an toàn tuyệt đối cho buổi bảo vệ."
+    },
+    {
+      "id": "reroll",
+      "label": "Roll lại",
+      "kicker": "REROLL",
+      "thesis": "Chia tay 4 hướng trên, chia 3 nhịp: thường (vòng mới cùng phổ), an toàn (các hướng logic + canon), táo bạo (dạng lạ, cam kết full).",
+      "steer": true,
+      "registers": ["plain", "safer", "bolder"]
+    }
+  ]
+}
