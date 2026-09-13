@@ -26,6 +26,9 @@ const MaterialListPage = lazy(() => import('@/features/materials/pages/MaterialL
 const PurchaseListPage = lazy(() => import('@/features/purchases/pages/PurchaseListPage'))
 const PurchaseConfirmPage = lazy(() => import('@/features/purchases/pages/PurchaseConfirmPage'))
 const CommitteeApprovalPage = lazy(() => import('@/features/purchases/pages/CommitteeApprovalPage'))
+const DonationListPage = lazy(() => import('@/features/donations/pages/DonationListPage'))
+const BorrowedListPage = lazy(() => import('@/features/borrowed/pages/BorrowedListPage'))
+const AllocationPage = lazy(() => import('@/features/allocations/pages/AllocationPage'))
 
 // Trang thật theo route `to` của nav-config; mục chưa có → Placeholder.
 // Task 5+ thêm dần vào map này (pattern lazy page).
@@ -42,6 +45,9 @@ const PAGES: Record<string, ComponentType> = {
   '/officer/materials': MaterialListPage,
   '/officer/purchases': PurchaseListPage,
   '/officer/purchases-confirm': PurchaseConfirmPage,
+  '/officer/donations': DonationListPage,
+  '/officer/borrowed': BorrowedListPage,
+  '/officer/allocations': AllocationPage,
   '/committee/purchases': CommitteeApprovalPage,
 }
 
