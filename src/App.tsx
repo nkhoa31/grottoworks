@@ -1,4 +1,5 @@
 import { Suspense, lazy, useEffect } from 'react'
+import type { ComponentType } from 'react'
 import { BrowserRouter, Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
@@ -13,6 +14,15 @@ import type { Role } from '@/types'
 const Login = lazy(() => import('@/pages/Login'))
 const NotFound = lazy(() => import('@/pages/NotFound'))
 const Profile = lazy(() => import('@/pages/Profile'))
+const SeasonListPage = lazy(() => import('@/features/season/pages/SeasonListPage'))
+const AreaListPage = lazy(() => import('@/features/areas/pages/AreaListPage'))
+
+// Trang thật theo route `to` của nav-config; mục chưa có → Placeholder.
+// Task 5+ thêm dần vào map này (pattern lazy page).
+const PAGES: Record<string, ComponentType> = {
+  '/committee/seasons': SeasonListPage,
+  '/committee/areas': AreaListPage,
+}
 
 const queryClient = new QueryClient()
 const ROLES: Role[] = ['COMMITTEE', 'LEADER', 'OFFICER', 'ADMIN']
@@ -77,13 +87,16 @@ function roleRoutes(role: Role) {
       <Route index element={<Placeholder label={items[0].label} />} />
       {items
         .filter((i) => i.to !== prefix)
-        .map((i) => (
-          <Route
-            key={i.to}
-            path={i.to.slice(prefix.length + 1)}
-            element={<Placeholder label={i.label} />}
-          />
-        ))}
+        .map((i) => {
+          const Page = PAGES[i.to]
+          return (
+            <Route
+              key={i.to}
+              path={i.to.slice(prefix.length + 1)}
+              element={Page ? <Page /> : <Placeholder label={i.label} />}
+            />
+          )
+        })}
     </Route>
   )
 }

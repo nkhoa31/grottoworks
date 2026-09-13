@@ -11,6 +11,7 @@ type HasHeaders = { headers: { get(name: string): string | null } }
 // prefix id cho nextId: 'users' → 'u41', 'tasks' → 't41', ...
 const PREFIX: Record<string, string> = {
   users: 'u',
+  seasons: 's',
   communities: 'c',
   areas: 'a',
   tasks: 't',
@@ -29,6 +30,7 @@ const PREFIX: Record<string, string> = {
 // label tiếng Việt cho ActivityLog action, theo style seed.
 const LABEL: Record<string, string> = {
   users: 'người dùng',
+  seasons: 'mùa',
   communities: 'giáo khu',
   areas: 'khu',
   tasks: 'nhiệm vụ',
@@ -248,11 +250,11 @@ export const handlers = [
   ),
   // Seed key dạng object đơn (không phải mảng) — chỉ GET.
   http.get('/api/parish', () => HttpResponse.json(loadDb().parish)),
-  http.get('/api/season', () => HttpResponse.json(loadDb().season)),
   // skills là string[] (danh mục, không phải record) — GET-only nguyên dạng.
   http.get('/api/skills', () => HttpResponse.json(loadDb().skills)),
   // CRUD cho mọi resource key mảng của seed.
   ...crud('users'),
+  ...crud('seasons'),
   ...crud('communities'),
   ...crud('areas'),
   ...crud('tasks'),
