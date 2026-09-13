@@ -147,8 +147,12 @@ export default function ChecklistPage() {
   const { data: items = [], isPending } = useChecklist()
 
   // Leader: các khu mình lãnh (được toggle); committee/admin: mọi khu read-only.
+  // Memo hóa — totals dưới đây deps vào mảng này, không tạo mảng mới mỗi render.
   const isLeader = user?.role === 'LEADER'
-  const myAreas = isLeader ? areas.filter((a) => a.leaderId === user?.id) : areas
+  const myAreas = useMemo(
+    () => (isLeader ? areas.filter((a) => a.leaderId === user?.id) : areas),
+    [isLeader, areas, user?.id],
+  )
 
   const itemsOf = (areaId: string) => items.filter((x) => x.areaId === areaId)
 

@@ -38,14 +38,14 @@ test('approve correction: hours updated 3→5, status CLOSED, correctionRequest 
   expect(ts.correctionRequest ?? null).toBe(null)
 })
 
-test('reject correction: correctionRequest cleared, status stays PENDING_FIX', async () => {
+test('reject correction: correctionRequest cleared, status CLOSED (ca đóng không chỉnh)', async () => {
   const { result } = renderHook(() => useRejectCorrection(), { wrapper })
   await act(async () => {
     await result.current.mutateAsync('ts31')
   })
 
   const ts = (await (await fetch(`${base}/api/timesheets/ts31`)).json()) as Timesheet
-  expect(ts.status).toBe('PENDING_FIX')
+  expect(ts.status).toBe('CLOSED')
   expect(ts.correctionRequest ?? null).toBe(null)
 })
 

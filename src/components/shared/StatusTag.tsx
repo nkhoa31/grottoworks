@@ -23,18 +23,29 @@ const STYLE = {
 
 const GLYPH = { ok: '✓', warn: '◐', alert: '✕', soft: '◇' } as const
 
-export function StatusTag({ status, className }: { status: string; className?: string }) {
+export function StatusTag({
+  status,
+  glyph,
+  tone,
+  className,
+}: {
+  status: string
+  /** Override glyph/tone theo ngữ cảnh (vd TimesheetPage) — mặc định lấy map theo status. */
+  glyph?: string
+  tone?: keyof typeof STYLE
+  className?: string
+}) {
   const { t } = useTranslation()
-  const tone = TONE[status] ?? 'soft'
+  const activeTone = tone ?? TONE[status] ?? 'soft'
   return (
     <span
       className={cn(
         'inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-0.5 font-mono text-[11px] font-semibold uppercase tracking-wide',
-        STYLE[tone],
+        STYLE[activeTone],
         className,
       )}
     >
-      <span aria-hidden>{GLYPH[tone]}</span>
+      <span aria-hidden>{glyph ?? GLYPH[activeTone]}</span>
       {t(`status.${status}`, { defaultValue: status })}
     </span>
   )

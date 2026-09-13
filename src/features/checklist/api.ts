@@ -20,10 +20,10 @@ export function useChecklist(areaId?: string) {
 export function useToggleItem() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: ({ id, done, note }: { id: string; done: boolean; note?: string }) =>
+    mutationFn: ({ id, done }: { id: string; done: boolean }) =>
       api<ChecklistItem>(`/checklists/${id}`, {
         method: 'PATCH',
-        body: JSON.stringify(note !== undefined ? { done, note } : { done }),
+        body: JSON.stringify({ done }),
       }),
     onSuccess: () => qc.invalidateQueries({ queryKey: checklistKeys.all }),
   })

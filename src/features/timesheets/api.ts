@@ -52,7 +52,10 @@ export function useApproveCorrection() {
   )
 }
 
-// Từ chối: chỉ xoá yêu cầu sửa, trạng thái giữ nguyên.
+// Từ chối: xoá yêu cầu sửa và đóng ca luôn (không chỉnh giờ) → row khỏi
+// PENDING_FIX, nút "Xử lý" tự ẩn.
 export function useRejectCorrection() {
-  return useTimesheetMutation((id: string) => patch(id, { correctionRequest: null }))
+  return useTimesheetMutation((id: string) =>
+    patch(id, { correctionRequest: null, status: 'CLOSED' }),
+  )
 }
