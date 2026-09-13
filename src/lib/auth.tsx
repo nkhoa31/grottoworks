@@ -1,10 +1,10 @@
 // Auth context: login qua /api/auth/login, lưu token vào localStorage
 // 'grotto-token', boot lại phiên bằng /auth/me khi đã có token.
+// Chặn route theo role: xem src/routes/RequireRole.tsx.
 import { createContext, useContext, useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
-import { Navigate } from 'react-router-dom'
 import { api } from './api'
-import type { Role, User } from '../types'
+import type { User } from '../types'
 
 interface AuthContextValue {
   user: User | null
@@ -58,16 +58,4 @@ export function useAuth(): AuthContextValue {
   const ctx = useContext(AuthContext)
   if (!ctx) throw new Error('useAuth phải dùng bên trong AuthProvider')
   return ctx
-}
-
-// Chặn route theo role: chưa đăng nhập → /login; sai role → 403 inline
-// (trang Forbidden thật thuộc Task 3).
-export function RequireRole({ roles, children }: { roles: Role[]; children: ReactNode }) {
-  const { user, isPending } = useAuth()
-  if (isPending) return null
-  if (!user) return <Navigate to="/login" replace />
-  if (!roles.includes(user.role)) {
-    return <div className="p-10 text-center">403 — Không đủ quyền</div>
-  }
-  return <>{children}</>
 }

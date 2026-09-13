@@ -52,6 +52,12 @@
   animation-delay: calc(var(--d, 0) * 70ms);
 }
 
+/* Biến thể dùng trực tiếp trên một phần tử (nav item, hàng bảng…). */
+.g-item {
+  animation: g-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: calc(var(--d, 0) * 70ms);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
