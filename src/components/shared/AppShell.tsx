@@ -11,11 +11,12 @@ import {
 import type { LucideIcon } from 'lucide-react'
 import { api } from '@/lib/api'
 import { useAuth } from '@/lib/auth'
+import { useSupportRequests } from '@/features/support/api'
 import { NAV } from './nav-config'
 import { Avatar } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import type { PurchaseRequest, Role, SupportRequest } from '@/types'
+import type { PurchaseRequest, Role } from '@/types'
 
 // Icon lucide theo key `icon` trong nav-config.
 const ICONS: Record<string, LucideIcon> = {
@@ -35,11 +36,8 @@ export function AppShell({ role }: { role?: Role }) {
   const r: Role = role ?? user?.role ?? 'COMMITTEE'
   const groups = NAV[r]
 
-  // Badge: hỗ trợ khẩn cấp đang mở + đề nghị mua chờ duyệt (Task 4+ dùng chung cache key).
-  const { data: support } = useQuery({
-    queryKey: ['supportRequests'],
-    queryFn: () => api<SupportRequest[]>('/supportRequests'),
-  })
+  // Badge: hỗ trợ khẩn cấp đang mở + đề nghị mua chờ duyệt (dùng chung cache key qua hook).
+  const { data: support } = useSupportRequests()
   const { data: purchases } = useQuery({
     queryKey: ['purchaseRequests'],
     queryFn: () => api<PurchaseRequest[]>('/purchaseRequests'),

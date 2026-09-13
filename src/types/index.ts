@@ -71,7 +71,7 @@ export interface Timesheet {
 
 export interface SupportRequest {
   id: string; areaId: string; kind: 'PEOPLE' | 'SKILL' | 'MATERIAL';
-  detail: string; status: 'OPEN' | 'COORDINATED' | 'RESOLVED';
+  detail: string; status: 'OPEN' | 'COORDINATED' | 'RESOLVED'; assigneeId?: string;
 }
 
 export interface ChecklistItem { id: string; areaId: string; label: string; done: boolean; note?: string }

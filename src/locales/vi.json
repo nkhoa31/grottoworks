@@ -294,5 +294,7 @@
   "features.support.coordinated": "Đã điều phối {{name}}",
   "features.support.resolve": "Đánh dấu đã giải quyết",
   "features.support.resolved": "Đã xử lý yêu cầu hỗ trợ",
+  "features.support.assignee": "Người hỗ trợ",
+  "features.support.resolveUncoordinated": "Yêu cầu chưa điều phối người hỗ trợ. Giải quyết luôn?",
   "nav.leader.support": "Hỗ trợ"
 }

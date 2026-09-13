@@ -10,6 +10,7 @@ import { Plus } from 'lucide-react'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { DataTable } from '@/components/shared/DataTable'
 import { StatusTag } from '@/components/shared/StatusTag'
+import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
 import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
@@ -22,6 +23,9 @@ import { SELECT_CLS, SupportFormDialog } from './SupportFormDialog'
 import type { SupportRequest } from '@/types'
 
 // Detail dialog (committee): info yêu cầu + điều phối (chọn TNV) / giải quyết.
+// Điều phối PATCH cả status + assigneeId (1 lần) — persist người được gán.
+// ADMIN/COMMITTEE không phải TNV — loại khỏi select điều phối.
+// OPEN→RESOLVED trực tiếp được phép nhưng xác nhận lại (chưa gán ai hỗ trợ).
 function SupportDetailDialog({ item, onClose }: { item: SupportRequest; onClose: () => void }) {
   const { t } = useTranslation()
   const toast = useToast()
@@ -30,9 +34,14 @@ function SupportDetailDialog({ item, onClose }: { item: SupportRequest; onClose:
   const update = useUpdateSupportRequest()
   const [volunteerId, setVolunteerId] = useState('')
   const [missing, setMissing] = useState(false)
+  const [confirmResolve, setConfirmResolve] = useState(false)
 
   const area = areas.find((a) => a.id === item.areaId)
+  const volunteers = users.filter((u) => u.role !== 'ADMIN' && u.role !== 'COMMITTEE')
   const volunteerName = users.find((u) => u.id === volunteerId)?.name
+  const assigneeName = item.assigneeId
+    ? (users.find((u) => u.id === item.assigneeId)?.name ?? '—')
+    : undefined
 
   const act = async (patch: Partial<SupportRequest>, msg: string) => {
     try {
@@ -45,10 +54,11 @@ function SupportDetailDialog({ item, onClose }: { item: SupportRequest; onClose:
   }
 
   return (
-    <Dialog
-      open
-      onClose={onClose}
-      title={t('features.support.detailTitle')}
+    <>
+      <Dialog
+        open
+        onClose={onClose}
+        title={t('features.support.detailTitle')}
       footer={
         item.status === 'RESOLVED' ? (
           <Button variant="outline" onClick={onClose}>
@@ -64,7 +74,7 @@ function SupportDetailDialog({ item, onClose }: { item: SupportRequest; onClose:
                     return
                   }
                   void act(
-                    { status: 'COORDINATED' },
+                    { status: 'COORDINATED', assigneeId: volunteerId },
                     t('features.support.coordinated', { name: volunteerName ?? '' }),
                   )
                 }}
@@ -74,7 +84,11 @@ function SupportDetailDialog({ item, onClose }: { item: SupportRequest; onClose:
             )}
             <Button
               variant="outline"
-              onClick={() => void act({ status: 'RESOLVED' }, t('features.support.resolved'))}
+              onClick={() =>
+                item.status === 'OPEN' && !item.assigneeId
+                  ? setConfirmResolve(true)
+                  : void act({ status: 'RESOLVED' }, t('features.support.resolved'))
+              }
             >
               {t('features.support.resolve')}
             </Button>
@@ -90,6 +104,14 @@ function SupportDetailDialog({ item, onClose }: { item: SupportRequest; onClose:
           </span>
         </div>
         <p className="text-sm text-grotto-ink">{item.detail}</p>
+        {assigneeName && (
+          <p className="text-sm">
+            <span className="font-semibold text-grotto-ink">
+              {t('features.support.assignee')}:
+            </span>{' '}
+            {assigneeName}
+          </p>
+        )}
         {item.status === 'OPEN' && (
           <div>
             <Label htmlFor="support-volunteer">{t('features.support.volunteer')}</Label>
@@ -103,7 +125,7 @@ function SupportDetailDialog({ item, onClose }: { item: SupportRequest; onClose:
               }}
             >
               <option value="">{t('features.tasks.selectPlaceholder')}</option>
-              {users.map((u) => (
+              {volunteers.map((u) => (
                 <option key={u.id} value={u.id}>
                   {u.name}
                 </option>
@@ -117,7 +139,18 @@ function SupportDetailDialog({ item, onClose }: { item: SupportRequest; onClose:
           </div>
         )}
       </div>
-    </Dialog>
+      </Dialog>
+      {confirmResolve && (
+        <ConfirmDialog
+          open
+          title={t('features.support.resolve')}
+          description={t('features.support.resolveUncoordinated')}
+          confirmLabel={t('features.support.resolve')}
+          onConfirm={() => void act({ status: 'RESOLVED' }, t('features.support.resolved'))}
+          onClose={() => setConfirmResolve(false)}
+        />
+      )}
+    </>
   )
 }
 
@@ -125,6 +158,7 @@ export default function SupportListPage() {
   const { t } = useTranslation()
   const { user } = useAuth()
   const { data: areas = [] } = useAreas()
+  const { data: users = [] } = useUsers()
   const { data: requests = [], isPending } = useSupportRequests()
 
   const isLeader = user?.role === 'LEADER'
@@ -158,12 +192,22 @@ export default function SupportListPage() {
         render: (r: SupportRequest) => <span className="text-grotto-soft">{r.detail}</span>,
       },
       {
+        key: 'assignee',
+        header: t('features.support.assignee'),
+        render: (r: SupportRequest) =>
+          r.assigneeId ? (
+            (users.find((u) => u.id === r.assigneeId)?.name ?? '—')
+          ) : (
+            <span className="text-grotto-soft">—</span>
+          ),
+      },
+      {
         key: 'status',
         header: t('common.status'),
         render: (r: SupportRequest) => <StatusTag status={r.status} />,
       },
     ],
-    [t, areas],
+    [t, areas, users],
   )
 
   return (

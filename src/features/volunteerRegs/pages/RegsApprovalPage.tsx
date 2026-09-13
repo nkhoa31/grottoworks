@@ -127,6 +127,8 @@ export default function RegsApprovalPage() {
           rows={rows}
           columns={columns}
           filters={[{ key: 'status', options: ['PENDING', 'APPROVED', 'REJECTED'] }]}
+          // Mặc định hiện reg chờ duyệt — bấm "Tất cả" để xem hết.
+          defaultFilters={{ status: 'PENDING' }}
           emptyText={t('features.volunteers.regsEmpty')}
         />
       )}

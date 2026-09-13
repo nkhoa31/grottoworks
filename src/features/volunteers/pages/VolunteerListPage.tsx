@@ -36,7 +36,11 @@ export default function VolunteerListPage() {
     return m
   }, [timesheets])
 
-  const rows = skill ? users.filter((u) => u.skills.includes(skill)) : users
+  // ADMIN/COMMITTEE không phải TNV — loại khỏi danh sách (Role không có
+  // VOLUNTEER, giáo dân là user thường).
+  const rows = users
+    .filter((u) => u.role !== 'ADMIN' && u.role !== 'COMMITTEE')
+    .filter((u) => !skill || u.skills.includes(skill))
 
   const columns = useMemo(
     () => [
