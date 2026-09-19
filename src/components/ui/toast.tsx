@@ -18,9 +18,14 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   const nextId = useRef(0)
 
   const toast = useCallback<ToastFn>((msg, tone = 'ok') => {
+    if (typeof window === 'undefined') return
     const id = ++nextId.current
     setItems((xs) => [...xs, { id, msg, tone }])
-    setTimeout(() => setItems((xs) => xs.filter((x) => x.id !== id)), 4000)
+    setTimeout(() => {
+      if (typeof window !== 'undefined') {
+        setItems((xs) => xs.filter((x) => x.id !== id))
+      }
+    }, 4000)
   }, [])
 
   return (

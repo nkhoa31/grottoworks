@@ -2,7 +2,7 @@
 // (mọi field + materials chips + StatusTag) + timeline (submittedNotes +
 // status hiện tại); phải assignee chips (X = bỏ phân công), dialog phân công
 // TNV (sort khớp kỹ năng lên đầu) và các nút chuyển trạng thái.
-// Mount dưới /committee/* → read-only (không nút thao tác).
+// Mount dưới /community/* → read-only (không nút thao tác).
 import { useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -188,7 +188,7 @@ export default function TaskDetailPage() {
   const { id = '' } = useParams()
   const navigate = useNavigate()
   const { pathname } = useLocation()
-  const readOnly = pathname.startsWith('/committee/')
+  const readOnly = pathname.startsWith('/community/')
 
   const { data: task, isPending } = useTask(id)
   const { data: areas = [] } = useAreas()
@@ -391,6 +391,19 @@ export default function TaskDetailPage() {
                     {t('features.tasks.requestRevision')}
                   </Button>
                 </>
+              )}
+              {task.status === 'REVISE' && (
+                <Button
+                  className="w-full"
+                  onClick={() =>
+                    run(
+                      () => update.mutateAsync({ id: task.id, status: 'DOING' }),
+                      t('features.tasks.reopened', { name: task.title }),
+                    )
+                  }
+                >
+                  {t('features.tasks.reopen')}
+                </Button>
               )}
             </Card>
           )}

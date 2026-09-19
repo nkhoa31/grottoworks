@@ -32,7 +32,7 @@ export function AreaAssignDialog({
   const update = useUpdateArea()
 
   const leaders = users.filter((u) => u.role === 'LEADER')
-  const officers = users.filter((u) => u.role === 'OFFICER')
+  const officers = users.filter((u) => u.role === 'MATERIAL_OFFICER')
 
   const {
     register,

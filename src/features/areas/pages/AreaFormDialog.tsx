@@ -1,6 +1,7 @@
 // Dialog tạo/sửa khu vực — RHF + zod: name, type, level (PARISH/COMMUNITY +
 // communityId khi COMMUNITY), leaderId (LEADER), officerId (OFFICER).
 // Select dùng <select> native — style trùng Input (không thêm dependency).
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -10,6 +11,7 @@ import { Dialog } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useToast } from '@/components/ui/toast'
+import { useAuth } from '@/lib/auth'
 import { useCommunities, useCreateArea, useUpdateArea, useUsers } from '../api'
 import type { WorkArea } from '@/types'
 
@@ -36,7 +38,7 @@ type FormData = z.infer<typeof schema>
 // cần search/tích hợp nhiều option (users > 30). Export để dialog khác
 // (AreaAssignDialog) dùng chung style.
 export const SELECT_CLS =
-  'flex h-10 w-full rounded-md border border-grotto-hair bg-grotto-panel px-3 py-2 text-sm text-grotto-ink transition-colors focus-visible:outline-none focus-visible:border-grotto-terra focus-visible:ring-2 focus-visible:ring-grotto-terra/30'
+  'flex h-10 w-full rounded-md border border-grotto-hair bg-grotto-panel px-3 py-2 text-sm text-grotto-ink transition-colors focus-visible:outline-none focus-visible:border-grotto-terra focus-visible:ring-2 focus-visible:ring-grotto-terra/30 disabled:cursor-not-allowed disabled:opacity-60'
 
 export function AreaFormDialog({
   onClose,
@@ -47,6 +49,8 @@ export function AreaFormDialog({
 }) {
   const { t } = useTranslation()
   const toast = useToast()
+  const { user } = useAuth()
+  const isCommunity = user?.role === 'COMMUNITY'
   const { data: users = [] } = useUsers()
   const { data: communities = [] } = useCommunities()
   const create = useCreateArea()
@@ -55,12 +59,13 @@ export function AreaFormDialog({
 
   // Select options: lọc theo role — leader từ LEADER, officer từ OFFICER.
   const leaders = users.filter((u) => u.role === 'LEADER')
-  const officers = users.filter((u) => u.role === 'OFFICER')
+  const officers = users.filter((u) => u.role === 'MATERIAL_OFFICER')
 
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -70,25 +75,33 @@ export function AreaFormDialog({
           name: area.name,
           type: area.type,
           level: area.level,
-          communityId: area.communityId ?? '',
+          communityId: area.communityId ?? (isCommunity ? (user?.communityId ?? '') : ''),
           leaderId: area.leaderId,
           officerId: area.officerId,
         }
       : {
           name: '',
           type: 'GROTTO',
-          level: 'PARISH',
-          communityId: '',
+          level: isCommunity ? 'COMMUNITY' : 'PARISH',
+          communityId: isCommunity ? (user?.communityId ?? '') : '',
           leaderId: '',
           officerId: '',
         },
   })
   const level = watch('level')
 
+  useEffect(() => {
+    if (isCommunity && user?.communityId) {
+      if (!editing) setValue('level', 'COMMUNITY')
+      setValue('communityId', user.communityId)
+    }
+  }, [isCommunity, user?.communityId, editing, setValue])
+
   const onSubmit = async (data: FormData) => {
     // PARISH: update gửi null để mock PATCH xoá communityId cũ (shallow merge
     // giữ key); create bỏ key (undefined khỏi JSON).
-    const communityId = data.level === 'COMMUNITY' ? data.communityId : null
+    const rawCommunityId = isCommunity ? (user?.communityId ?? '') : data.communityId
+    const communityId = data.level === 'COMMUNITY' ? rawCommunityId : null
     try {
       if (editing && area) {
         await update.mutateAsync({ id: area.id, ...data, communityId })
@@ -161,7 +174,12 @@ export function AreaFormDialog({
         {level === 'COMMUNITY' && (
           <div>
             <Label htmlFor="area-community">{t('features.areas.community')}</Label>
-            <select id="area-community" className={SELECT_CLS} {...register('communityId')}>
+            <select
+              id="area-community"
+              className={SELECT_CLS}
+              disabled={isCommunity}
+              {...register('communityId')}
+            >
               <option value="">{t('features.areas.selectPlaceholder')}</option>
               {communities.map((c) => (
                 <option key={c.id} value={c.id}>

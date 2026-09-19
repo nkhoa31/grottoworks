@@ -19,10 +19,10 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>
 
 const DEMO: { role: Role; email: string }[] = [
-  { role: 'ADMIN', email: 'admin@grottoworks.vn' },
-  { role: 'COMMITTEE', email: 'committee@grottoworks.vn' },
+  { role: 'PARISH', email: 'admin@grottoworks.vn' },
+  { role: 'COMMUNITY', email: 'committee@grottoworks.vn' },
   { role: 'LEADER', email: 'leader@grottoworks.vn' },
-  { role: 'OFFICER', email: 'officer@grottoworks.vn' },
+  { role: 'MATERIAL_OFFICER', email: 'officer@grottoworks.vn' },
 ]
 
 export default function Login() {
@@ -48,7 +48,7 @@ export default function Login() {
     setServerError('')
     try {
       const user = await login(data.email, data.password)
-      navigate(`/${user.role.toLowerCase()}`)
+      navigate(`/${user.role === 'MATERIAL_OFFICER' ? 'material-officer' : user.role.toLowerCase()}`)
     } catch {
       // ponytail: mock chỉ có 2 dạng lỗi — 401 sai tài khoản; còn lại hiển thị
       // chung thông điệp tương tự, log để debug.

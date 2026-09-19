@@ -1,4 +1,4 @@
-// Chi tiết TNV (route /leader/volunteers/:id + /committee/volunteers/:id):
+// Chi tiết TNV (route /leader/volunteers/:id + /community/volunteers/:id):
 // profile (avatar hue, giáo khu), StatCard điểm + giờ công, bảng giờ công,
 // nhiệm vụ đang/đã tham gia (assignees chứa id), đóng góp (quyên góp đối
 // chiếu donorName — donation không có volunteerId, khớp chuỗi con vì seed
@@ -32,7 +32,7 @@ export default function VolunteerDetailPage() {
   const { id = '' } = useParams()
   const navigate = useNavigate()
   const { pathname } = useLocation()
-  const prefix = pathname.startsWith('/committee') ? '/committee' : '/leader'
+  const prefix = pathname.startsWith('/community') ? '/community' : '/leader'
 
   const { data: users = [], isPending } = useUsers()
   const { data: communities = [] } = useCommunities()

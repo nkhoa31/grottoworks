@@ -1,4 +1,4 @@
-// Yêu cầu mua của khu officer phụ trách (route /officer/purchases):
+// Yêu cầu mua của khu officer phụ trách (route /material-officer/purchases):
 // DataTable đề nghị mua (mã, vật tư, tổng, note, status), tạo qua
 // PurchaseFormDialog (DRAFT), row action "Gửi duyệt" (DRAFT → PENDING).
 // Committee duyệt/từ chối ở CommitteeApprovalPage riêng.

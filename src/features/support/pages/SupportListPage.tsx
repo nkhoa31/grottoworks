@@ -1,4 +1,4 @@
-// Danh sách yêu cầu hỗ trợ (route /leader/support + /committee/support).
+// Danh sách yêu cầu hỗ trợ (route /leader/support + /community/support).
 // - Leader: thấy yêu cầu khu mình lãnh + nút "Tạo yêu cầu hỗ trợ" (dialog
 //   form ở SupportFormDialog, khu khóa về khu mình).
 // - Committee: view điều phối — click row mở detail dialog: chọn TNV rồi
@@ -37,7 +37,7 @@ function SupportDetailDialog({ item, onClose }: { item: SupportRequest; onClose:
   const [confirmResolve, setConfirmResolve] = useState(false)
 
   const area = areas.find((a) => a.id === item.areaId)
-  const volunteers = users.filter((u) => u.role !== 'ADMIN' && u.role !== 'COMMITTEE')
+  const volunteers = users.filter((u) => u.role !== 'PARISH' && u.role !== 'COMMUNITY')
   const volunteerName = users.find((u) => u.id === volunteerId)?.name
   const assigneeName = item.assigneeId
     ? (users.find((u) => u.id === item.assigneeId)?.name ?? '—')
@@ -166,7 +166,7 @@ export default function SupportListPage() {
   const myAreaIds = new Set(myAreas.map((a) => a.id))
   const areaName = (id: string) => areas.find((a) => a.id === id)?.name ?? '—'
 
-  // Leader: yêu cầu của khu mình lãnh; committee/admin: tất cả.
+  // Leader: yêu cầu của khu mình lãnh; committee/parish: tất cả.
   const rows = isLeader ? requests.filter((r) => myAreaIds.has(r.areaId)) : requests
 
   const [creating, setCreating] = useState(false)

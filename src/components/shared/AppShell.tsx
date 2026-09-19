@@ -34,7 +34,7 @@ export function AppShell({ role }: { role?: Role }) {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { pathname } = useLocation()
-  const r: Role = role ?? user?.role ?? 'COMMITTEE'
+  const r: Role = role ?? user?.role ?? 'COMMUNITY'
   const groups = NAV[r]
 
   // Badge: hỗ trợ khẩn cấp đang mở + đề nghị mua chờ duyệt (dùng chung cache key qua hook).
