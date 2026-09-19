@@ -11,6 +11,10 @@ import { ToastProvider } from '@/components/ui/toast'
 import { Card } from '@/components/ui/card'
 import type { Role } from '@/types'
 
+function rolePrefix(role: Role): string {
+  return role === 'MATERIAL_OFFICER' ? 'material-officer' : role.toLowerCase()
+}
+
 const Login = lazy(() => import('@/pages/Login'))
 const NotFound = lazy(() => import('@/pages/NotFound'))
 const Profile = lazy(() => import('@/pages/Profile'))
@@ -35,58 +39,63 @@ const ReportPage = lazy(() => import('@/features/reports/pages/ReportPage'))
 const CommitteeDashboard = lazy(() => import('@/features/dashboards/CommitteeDashboard'))
 const LeaderDashboard = lazy(() => import('@/features/dashboards/LeaderDashboard'))
 const OfficerDashboard = lazy(() => import('@/features/dashboards/OfficerDashboard'))
-const AccountsPage = lazy(() => import('@/features/admin/pages/AccountsPage'))
-const CommunitiesPage = lazy(() => import('@/features/admin/pages/CommunitiesPage'))
-const CategoriesPage = lazy(() => import('@/features/admin/pages/CategoriesPage'))
-const PointRulesPage = lazy(() => import('@/features/admin/pages/PointRulesPage'))
-const NotificationsPage = lazy(() => import('@/features/admin/pages/NotificationsPage'))
-const ActivityPage = lazy(() => import('@/features/admin/pages/ActivityPage'))
-const BackupPage = lazy(() => import('@/features/admin/pages/BackupPage'))
+const AccountsPage = lazy(() => import('@/features/parish/pages/AccountsPage'))
+const CommunitiesPage = lazy(() => import('@/features/parish/pages/CommunitiesPage'))
+const CategoriesPage = lazy(() => import('@/features/parish/pages/CategoriesPage'))
+const PointRulesPage = lazy(() => import('@/features/parish/pages/PointRulesPage'))
+const NotificationsPage = lazy(() => import('@/features/parish/pages/NotificationsPage'))
+const ActivityPage = lazy(() => import('@/features/parish/pages/ActivityPage'))
+const BackupPage = lazy(() => import('@/features/parish/pages/BackupPage'))
 
 // Trang thật theo route `to` của nav-config; mục chưa có → Placeholder.
 // Task 5+ thêm dần vào map này (pattern lazy page).
 const PAGES: Record<string, ComponentType> = {
-  '/committee/seasons': SeasonListPage,
-  '/committee/areas': AreaListPage,
+  '/parish/seasons': SeasonListPage,
+  '/parish/areas': AreaListPage,
+  '/community/areas': AreaListPage,
   '/leader/tasks': TaskListPage,
   '/leader/assignments': TaskListPage,
   '/leader/volunteers': VolunteerListPage,
-  '/committee/volunteers': VolunteerListPage,
+  '/community/volunteers': VolunteerListPage,
   '/leader/regs': RegsApprovalPage,
   '/leader/support': SupportListPage,
-  '/committee/support': SupportListPage,
-  '/officer/materials': MaterialListPage,
-  '/officer/purchases': PurchaseListPage,
-  '/officer/purchases-confirm': PurchaseConfirmPage,
-  '/officer/donations': DonationListPage,
-  '/officer/borrowed': BorrowedListPage,
-  '/officer/allocations': AllocationPage,
-  '/committee/purchases': CommitteeApprovalPage,
+  '/community/support': SupportListPage,
+  '/material-officer/materials': MaterialListPage,
+  '/material-officer/purchases': PurchaseListPage,
+  '/material-officer/purchases-confirm': PurchaseConfirmPage,
+  '/material-officer/donations': DonationListPage,
+  '/material-officer/borrowed': BorrowedListPage,
+  '/material-officer/allocations': AllocationPage,
+  '/parish/purchases': CommitteeApprovalPage,
   '/leader/timesheets': TimesheetPage,
   '/leader/checklist': ChecklistPage,
-  '/committee/checklist': ChecklistPage,
-  '/committee/reports': ReportPage,
-  '/admin/accounts': AccountsPage,
-  '/admin/communities': CommunitiesPage,
-  '/admin/categories': CategoriesPage,
-  '/admin/point-rules': PointRulesPage,
-  '/admin/notifications': NotificationsPage,
-  '/admin/activity': ActivityPage,
-  '/admin/backup': BackupPage,
+  '/community/checklist': ChecklistPage,
+  '/community/reports': ReportPage,
+  '/parish/accounts': AccountsPage,
+  '/parish/communities': CommunitiesPage,
+  '/parish/categories': CategoriesPage,
+  '/parish/point-rules': PointRulesPage,
+  '/parish/notifications': NotificationsPage,
+  '/parish/activity': ActivityPage,
+  '/parish/backup': BackupPage,
 }
 
 // Route có param — nav-config không mô tả được, khai báo tường minh theo role
 // (page tự đọc useParams/useLocation để biết ngữ cảnh mount).
 const DYNAMIC: Partial<Record<Role, { path: string; Page: ComponentType }[]>> = {
   LEADER: [{ path: 'tasks/:id', Page: TaskDetailPage }, { path: 'volunteers/:id', Page: VolunteerDetailPage }],
-  COMMITTEE: [
+  COMMUNITY: [
+    { path: 'areas', Page: AreaListPage },
     { path: 'areas/:id/tasks', Page: TaskListPage },
     { path: 'volunteers/:id', Page: VolunteerDetailPage },
+  ],
+  PARISH: [
+    { path: 'areas/:id/tasks', Page: TaskListPage },
   ],
 }
 
 const queryClient = new QueryClient()
-const ROLES: Role[] = ['COMMITTEE', 'LEADER', 'OFFICER', 'ADMIN']
+const ROLES: Role[] = ['COMMUNITY', 'LEADER', 'MATERIAL_OFFICER', 'PARISH']
 
 // Placeholder lazy cho mọi route con — Task 4+ thay bằng page thật.
 function Placeholder({ label }: { label: string }) {
@@ -104,14 +113,14 @@ function Placeholder({ label }: { label: string }) {
 function RootRedirect() {
   const { user, isPending } = useAuth()
   if (isPending) return null
-  return <Navigate to={user ? `/${user.role.toLowerCase()}` : '/login'} replace />
+  return <Navigate to={user ? `/${rolePrefix(user.role)}` : '/login'} replace />
 }
 
 // /login khi đã có phiên → thẳng dashboard role, không hiện form lần nữa.
 function LoginGate() {
   const { user, isPending } = useAuth()
   if (isPending) return null
-  if (user) return <Navigate to={`/${user.role.toLowerCase()}`} replace />
+  if (user) return <Navigate to={`/${rolePrefix(user.role)}`} replace />
   return <Login />
 }
 
@@ -133,7 +142,7 @@ function SessionWatch() {
 // Mỗi role prefix một layout route: RequireRole + AppShell, route con sinh
 // từ nav-config (index = mục dashboard của role đó).
 function roleRoutes(role: Role) {
-  const prefix = `/${role.toLowerCase()}`
+  const prefix = `/${rolePrefix(role)}`
   const items = NAV[role].flatMap((g) => g.items)
   return (
     <Route
@@ -151,7 +160,7 @@ function roleRoutes(role: Role) {
       <Route
         index
         element={
-          role === 'COMMITTEE' ? (
+          role === 'COMMUNITY' ? (
             <Suspense fallback={null}>
               <CommitteeDashboard />
             </Suspense>
@@ -159,7 +168,7 @@ function roleRoutes(role: Role) {
             <Suspense fallback={null}>
               <LeaderDashboard />
             </Suspense>
-          ) : role === 'OFFICER' ? (
+          ) : role === 'MATERIAL_OFFICER' ? (
             <Suspense fallback={null}>
               <OfficerDashboard />
             </Suspense>

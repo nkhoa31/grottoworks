@@ -1,4 +1,4 @@
-// Đồ mượn (route /officer/borrowed): officer xem đồ khu mình phụ trách.
+// Đồ mượn (route /material-officer/borrowed): officer xem đồ khu mình phụ trách.
 // Hẹn trả quá hạn (new Date() thật) → chữ brick "Quá hạn X ngày"; tình trạng
 // trả là StatusTag (chưa trả ◇ / GOOD ✓ / DAMAGED ✕ / LOST ✕). Nút "Đã trả"
 // mở dialog chọn tình trạng (useMarkReturned).
@@ -102,7 +102,7 @@ export default function BorrowedListPage() {
   const { data: areas = [], isPending: areasPending } = useAreas()
   const { data: items = [], isPending } = useBorrowedItems()
 
-  const isOfficer = user?.role === 'OFFICER'
+  const isOfficer = user?.role === 'MATERIAL_OFFICER'
   const myAreas = isOfficer ? areas.filter((a) => a.officerId === user.id) : areas
   const myAreaIds = new Set(myAreas.map((a) => a.id))
   const rows = isOfficer ? items.filter((b) => myAreaIds.has(b.areaId)) : items

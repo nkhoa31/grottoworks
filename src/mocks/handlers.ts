@@ -150,7 +150,7 @@ export function leaderSummary(db: any, request: HasHeaders) {
 }
 
 export function officerSummary(db: any, request: HasHeaders) {
-  const me = tokenUser(db, request) ?? db.users.find((u: any) => u.role === 'OFFICER')
+  const me = tokenUser(db, request) ?? db.users.find((u: any) => u.role === 'MATERIAL_OFFICER')
   const area = db.areas.find((a: any) => a.officerId === me.id) ?? null
   const from = weekFrom(db)
   if (!area) return { area: null, shortageList: [], pendingPurchases: [], weekHours: 0 }
@@ -236,11 +236,11 @@ export const handlers = [
   }),
   http.post('/api/auth/logout', () => new HttpResponse(null, { status: 204 })),
   // Dashboard summaries.
-  http.get('/api/dashboard/committee', () => HttpResponse.json(committeeSummary(loadDb()))),
+  http.get('/api/dashboard/community', () => HttpResponse.json(committeeSummary(loadDb()))),
   http.get('/api/dashboard/leader', ({ request }) =>
     HttpResponse.json(leaderSummary(loadDb(), request)),
   ),
-  http.get('/api/dashboard/officer', ({ request }) =>
+  http.get('/api/dashboard/material-officer', ({ request }) =>
     HttpResponse.json(officerSummary(loadDb(), request)),
   ),
   // 50 dòng activity mới nhất (mới nhất đứng đầu).

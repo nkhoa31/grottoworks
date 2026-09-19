@@ -1,4 +1,4 @@
-// Trang báo cáo tổng kết (route /committee/reports) — 4 bảng tổng kết
+// Trang báo cáo tổng kết (route /community/reports) — 4 bảng tổng kết
 // (chi phí, quyên góp, giờ công, nhiệm vụ hoàn thành) + Bảng vinh danh
 // RecognitionBoard. Mỗi bảng có nút "Xuất CSV" dùng exportCsv có sẵn
 // (src/lib/csv.ts — BOM + ';' cho Excel vi). Tổng hợp client-side.
@@ -155,7 +155,7 @@ export default function ReportPage() {
       for (const id of x.assignees) tasksDone.set(id, (tasksDone.get(id) ?? 0) + 1)
     }
     return (data?.users ?? [])
-      .filter((u) => u.role !== 'ADMIN' && u.role !== 'COMMITTEE')
+      .filter((u) => u.role !== 'PARISH' && u.role !== 'COMMUNITY')
       .map((u) => ({
         id: u.id,
         name: u.name,

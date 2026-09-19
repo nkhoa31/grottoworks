@@ -1,8 +1,8 @@
 // Trang khu vực công tác (COMMITTEE): grid AreaCard + DataTable (toggle),
 // tạo/sửa qua AreaFormDialog, xoá qua ConfirmDialog.
-// Click card/row → /committee/areas/:id/tasks (TaskListPage read-only).
+// Click card/row → /community/areas/:id/tasks (TaskListPage read-only).
 import { useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { LayoutGrid, Table2, Pencil, Trash2, Plus, UserPlus } from 'lucide-react'
 import { PageHeader } from '@/components/shared/PageHeader'
@@ -12,6 +12,7 @@ import { StatusTag } from '@/components/shared/StatusTag'
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/toast'
+import { useAuth } from '@/lib/auth'
 import { cn } from '@/lib/utils'
 import { useAreas, useUsers, useDeleteArea } from '../api'
 import { AreaCard } from '../components/AreaCard'
@@ -25,9 +26,18 @@ export default function AreaListPage() {
   const { t } = useTranslation()
   const toast = useToast()
   const navigate = useNavigate()
-  const { data: areas = [], isPending } = useAreas()
+  const { pathname } = useLocation()
+  const { user } = useAuth()
+  const { data: rawAreas = [], isPending } = useAreas()
   const { data: users = [] } = useUsers()
   const deleteArea = useDeleteArea()
+
+  const areas = useMemo(() => {
+    if (user?.role === 'COMMUNITY') {
+      return rawAreas.filter((a) => a.communityId === user.communityId)
+    }
+    return rawAreas
+  }, [rawAreas, user])
 
   const [view, setView] = useState<View>('grid')
   const [formOpen, setFormOpen] = useState(false)
@@ -162,7 +172,11 @@ export default function AreaListPage() {
                 key={a.id}
                 area={a}
                 index={i}
-                onClick={(x) => navigate(`/committee/areas/${x.id}/tasks`)}
+                onClick={(x) =>
+                  navigate(
+                    `${pathname.startsWith('/parish') ? '/parish' : '/community'}/areas/${x.id}/tasks`,
+                  )
+                }
               />
             ))}
           </div>
@@ -176,7 +190,11 @@ export default function AreaListPage() {
           searchKeys={['name']}
           pageSize={8}
           emptyText={t('features.areas.empty')}
-          onRowClick={(a) => navigate(`/committee/areas/${a.id}/tasks`)}
+          onRowClick={(a) =>
+            navigate(
+              `${pathname.startsWith('/parish') ? '/parish' : '/community'}/areas/${a.id}/tasks`,
+            )
+          }
         />
       )}
 

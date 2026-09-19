@@ -1,6 +1,6 @@
-// Dashboard ban tổ chức (route /committee, index route): dải tiến độ mùa +
+// Dashboard ban tổ chức (route /community, index route): dải tiến độ mùa +
 // 4 StatCard count-up, khu vực vòm (animated progress), HoursChart tuần
-// hiện tại, bảng "Việc cần chú ý". Dữ liệu: GET /api/dashboard/committee +
+// hiện tại, bảng "Việc cần chú ý". Dữ liệu: GET /api/dashboard/community +
 // seasons (mùa ACTIVE) + timesheets (vẽ chart) + activity (nhật ký).
 import { useNavigate } from 'react-router-dom'
 import { useMemo } from 'react'
@@ -129,7 +129,7 @@ export default function CommitteeDashboard() {
             <Card className="p-5">
                 <div className="mb-4 flex items-center justify-between gap-3">
                   <p className="lbl-mono">{t('features.dashboards.areasOverview')}</p>
-                  <Button variant="ghost" size="sm" onClick={() => navigate('/committee/areas')}>
+                  <Button variant="ghost" size="sm" onClick={() => navigate('/community/areas')}>
                     {t('features.dashboards.viewAllAreas')}
                   </Button>
                 </div>
@@ -188,7 +188,7 @@ export default function CommitteeDashboard() {
               <Card className="p-5">
                 <div className="mb-3 flex items-center justify-between gap-3">
                   <p className="lbl-mono">{t('features.dashboards.attention')}</p>
-                  <Button variant="ghost" size="sm" onClick={() => navigate('/committee/support')}>
+                  <Button variant="ghost" size="sm" onClick={() => navigate('/community/support')}>
                     {t('features.dashboards.viewSupport')}
                   </Button>
                 </div>

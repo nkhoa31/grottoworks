@@ -1,4 +1,4 @@
-// Trang danh mục (route /admin/categories) — 4 tab theo plan:
+// Trang danh mục (route /parish/categories) — 4 tab theo plan:
 //   • Loại khu vực (areaType): enum WorkArea.type — READ-ONLY + đếm khu theo loại.
 //   • Kỹ năng (skill): db.skills — CRUD thật qua /api/skills; xoá bị mock chặn
 //     409 khi còn user/task tham chiếu (đếm tham chiếu hiển thị trước nút xoá).
@@ -63,7 +63,7 @@ const TABS = ['areaType', 'skill', 'unit', 'donationKind'] as const
 type Tab = (typeof TABS)[number]
 
 const schema = z.object({
-  name: z.string().trim().min(1, 'features.admin.categoryNameRequired'),
+  name: z.string().trim().min(1, 'features.parish.categoryNameRequired'),
 })
 type FormData = z.infer<typeof schema>
 
@@ -104,7 +104,7 @@ function CategoryRow({
           <Input
             value={draft}
             autoFocus
-            aria-label={t('features.admin.categoryName')}
+            aria-label={t('features.parish.categoryName')}
             onChange={(e) => setDraft(e.target.value)}
           />
           <Button type="submit" variant="ghost" size="icon" aria-label={t('common.confirm')}>
@@ -179,11 +179,11 @@ function AddCategoryForm({ onAdd }: { onAdd: (name: string) => void | Promise<un
     >
       <div className="flex-1">
         <Label htmlFor="add-category" className="sr-only">
-          {t('features.admin.categoryName')}
+          {t('features.parish.categoryName')}
         </Label>
         <Input
           id="add-category"
-          placeholder={t('features.admin.categoryAddPlaceholder')}
+          placeholder={t('features.parish.categoryAddPlaceholder')}
           {...register('name')}
         />
         {errors.name?.message && (
@@ -231,7 +231,7 @@ export default function CategoriesPage() {
   const addSkill = async (name: string) => {
     try {
       await createSkill.mutateAsync(name)
-      toast(t('features.admin.created', { name }))
+      toast(t('features.parish.created', { name }))
     } catch (e) {
       toast(e instanceof Error ? e.message : t('common.error'), 'alert')
       throw e
@@ -240,7 +240,7 @@ export default function CategoriesPage() {
   const renameSkillAt = async (index: number, name: string) => {
     try {
       await renameSkill.mutateAsync({ index, name })
-      toast(t('features.admin.updated', { name }))
+      toast(t('features.parish.updated', { name }))
     } catch (e) {
       toast(e instanceof Error ? e.message : t('common.error'), 'alert')
     }
@@ -248,7 +248,7 @@ export default function CategoriesPage() {
   const deleteSkillAt = async (index: number) => {
     try {
       await deleteSkill.mutateAsync(index)
-      toast(t('features.admin.deleted', { name: skills[index] }))
+      toast(t('features.parish.deleted', { name: skills[index] }))
     } catch (e) {
       // 409: mock trả "Kỹ năng … đang được dùng — không thể xoá" hiện nguyên văn.
       toast(e instanceof Error ? e.message : t('common.error'), 'alert')
@@ -258,11 +258,11 @@ export default function CategoriesPage() {
   // Units — delta so với mặc định; đếm tham chiếu chặn xoá khi còn vật tư.
   const addUnit = (name: string) => {
     if (units.includes(name)) {
-      toast(t('features.admin.categoryDuplicate', { name }), 'alert')
+      toast(t('features.parish.categoryDuplicate', { name }), 'alert')
       return
     }
     saveUnits({ ...unitsDelta, added: [...unitsDelta.added, name] })
-    toast(t('features.admin.created', { name }))
+    toast(t('features.parish.created', { name }))
   }
   const renameUnitAt = (index: number, name: string) => {
     const current = [...units]
@@ -272,12 +272,12 @@ export default function CategoriesPage() {
       removedDefaults: DEFAULT_UNITS.filter((u) => !current.includes(u)),
       added: current.filter((u) => !DEFAULT_UNITS.includes(u)),
     })
-    toast(t('features.admin.updated', { name: old }))
+    toast(t('features.parish.updated', { name: old }))
   }
   const deleteUnitAt = (index: number) => {
     const name = units[index]
     if (unitUses(name) > 0) {
-      toast(t('features.admin.categoryInUse', { name }), 'alert')
+      toast(t('features.parish.categoryInUse', { name }), 'alert')
       return
     }
     if (DEFAULT_UNITS.includes(name)) {
@@ -285,17 +285,17 @@ export default function CategoriesPage() {
     } else {
       saveUnits({ ...unitsDelta, added: unitsDelta.added.filter((u) => u !== name) })
     }
-    toast(t('features.admin.deleted', { name }))
+    toast(t('features.parish.deleted', { name }))
   }
 
   return (
     <div>
-      <PageHeader title={t('features.admin.categoriesTitle')} sub={t('features.admin.categoriesSub')} />
+      <PageHeader title={t('features.parish.categoriesTitle')} sub={t('features.parish.categoriesSub')} />
 
       <div
         className="mb-5 flex flex-wrap gap-1.5"
         role="tablist"
-        aria-label={t('features.admin.categoriesTitle')}
+        aria-label={t('features.parish.categoriesTitle')}
       >
         {TABS.map((x) => (
           <button
@@ -311,7 +311,7 @@ export default function CategoriesPage() {
                 : 'border-grotto-hair bg-grotto-panel text-grotto-soft hover:border-grotto-terra hover:text-grotto-terra',
             )}
           >
-            {t(`features.admin.catTab.${x}`)}
+            {t(`features.parish.catTab.${x}`)}
           </button>
         ))}
       </div>
@@ -319,14 +319,14 @@ export default function CategoriesPage() {
       <Card className="p-5">
         {tab === 'areaType' && (
           <>
-            <p className="lbl-mono mb-2">{t('features.admin.catHint.areaType')}</p>
+            <p className="lbl-mono mb-2">{t('features.parish.catHint.areaType')}</p>
             <ul>
               {AREA_TYPES.map((x) => (
                 <CategoryRow
                   key={x}
                   name={t(`features.areas.areaType.${x}`)}
                   refCount={areas.filter((a) => a.type === x).length}
-                  refLabel={t('features.admin.refAreas')}
+                  refLabel={t('features.parish.refAreas')}
                 />
               ))}
             </ul>
@@ -341,13 +341,13 @@ export default function CategoriesPage() {
                   key={s}
                   name={s}
                   refCount={skillUses(s)}
-                  refLabel={t('features.admin.refUses')}
+                  refLabel={t('features.parish.refUses')}
                   onRename={(next) => void renameSkillAt(i, next)}
                   onDelete={() => void deleteSkillAt(i)}
                 />
               ))}
             </ul>
-            {!skills.length && <EmptyState text={t('features.admin.empty')} />}
+            {!skills.length && <EmptyState text={t('features.parish.empty')} />}
             <AddCategoryForm onAdd={addSkill} />
           </>
         )}
@@ -360,7 +360,7 @@ export default function CategoriesPage() {
                   key={u}
                   name={u}
                   refCount={unitUses(u)}
-                  refLabel={t('features.admin.refUses')}
+                  refLabel={t('features.parish.refUses')}
                   onRename={(next) => renameUnitAt(i, next)}
                   onDelete={() => deleteUnitAt(i)}
                 />
@@ -372,14 +372,14 @@ export default function CategoriesPage() {
 
         {tab === 'donationKind' && (
           <>
-            <p className="lbl-mono mb-2">{t('features.admin.catHint.donationKind')}</p>
+            <p className="lbl-mono mb-2">{t('features.parish.catHint.donationKind')}</p>
             <ul>
               {DONATION_KINDS.map((x) => (
                 <CategoryRow
                   key={x}
                   name={t(`features.donations.kind.${x}`)}
                   refCount={donations.filter((d) => (x === 'MATERIAL' ? d.materialId : d.monetary)).length}
-                  refLabel={t('features.admin.refUses')}
+                  refLabel={t('features.parish.refUses')}
                 />
               ))}
             </ul>

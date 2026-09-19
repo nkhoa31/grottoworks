@@ -1,4 +1,4 @@
-// Trang lịch sử hệ thống (route /admin/activity): audit log table — thời gian,
+// Trang lịch sử hệ thống (route /parish/activity): audit log table — thời gian,
 // người thực hiện, hành động, đối tượng. GET /api/activity (50 dòng mới nhất,
 // mới nhất đứng đầu — handlers.ts). Chip filter theo action (suy từ dữ liệu,
 // DataTable tự lọc client-side).
@@ -35,12 +35,12 @@ export default function ActivityPage() {
     () => [
       {
         key: 'at',
-        header: t('features.admin.logTime'),
+        header: t('features.parish.logTime'),
         render: (l: ActivityLog) => <span className="tabular whitespace-nowrap">{stamp(l.at)}</span>,
       },
       {
         key: 'actor',
-        header: t('features.admin.logActor'),
+        header: t('features.parish.logActor'),
         render: (l: ActivityLog) => {
           const u = users.find((x) => x.id === l.actor)
           return (
@@ -51,15 +51,15 @@ export default function ActivityPage() {
           )
         },
       },
-      { key: 'action', header: t('features.admin.logAction') },
-      { key: 'target', header: t('features.admin.logTarget') },
+      { key: 'action', header: t('features.parish.logAction') },
+      { key: 'target', header: t('features.parish.logTarget') },
     ],
     [t, users],
   )
 
   return (
     <div>
-      <PageHeader title={t('features.admin.activityTitle')} sub={t('features.admin.activitySub')} />
+      <PageHeader title={t('features.parish.activityTitle')} sub={t('features.parish.activitySub')} />
 
       {isPending ? (
         <p className="lbl-mono">{t('common.loading')}</p>
@@ -69,7 +69,7 @@ export default function ActivityPage() {
           columns={columns}
           searchKeys={['action', 'target']}
           filters={[{ key: 'action', options: actions }]}
-          emptyText={t('features.admin.empty')}
+          emptyText={t('features.parish.empty')}
         />
       )}
     </div>

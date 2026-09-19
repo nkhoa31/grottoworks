@@ -62,8 +62,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   )
 }
 
+const DEFAULT_AUTH: AuthContextValue = {
+  user: null,
+  isPending: false,
+  login: async () => { throw new Error('AuthProvider missing') },
+  logout: async () => {},
+  refresh: async () => { throw new Error('AuthProvider missing') },
+}
+
 export function useAuth(): AuthContextValue {
   const ctx = useContext(AuthContext)
-  if (!ctx) throw new Error('useAuth phải dùng bên trong AuthProvider')
-  return ctx
+  return ctx ?? DEFAULT_AUTH
 }

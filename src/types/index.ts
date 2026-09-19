@@ -1,5 +1,5 @@
 // GrottoWorks domain types — phiên bản chữ là bản thật, mọi task sau phụ thuộc file này.
-export type Role = 'ADMIN' | 'COMMITTEE' | 'LEADER' | 'OFFICER';
+export type Role = 'PARISH' | 'COMMUNITY' | 'LEADER' | 'MATERIAL_OFFICER';
 
 export interface Parish { id: string; name: string }
 export interface Community { id: string; name: string; parishId: string }

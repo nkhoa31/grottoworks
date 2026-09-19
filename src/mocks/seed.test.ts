@@ -22,7 +22,7 @@ describe('seed invariants', () => {
     expect(new Set(demo.map((u) => u.role)).size).toBe(4);
   });
 
-  it('mọi area.leaderId/officerId tồn tại trong users', () => {
+  it('mọi area.leaderId/material-officerId tồn tại trong users', () => {
     seed.areas.forEach((a) => {
       expect(userIds.has(a.leaderId)).toBe(true);
       expect(userIds.has(a.officerId)).toBe(true);

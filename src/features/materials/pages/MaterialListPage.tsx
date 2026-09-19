@@ -1,5 +1,5 @@
-// Sổ vật tư theo khu (route /officer/materials): officer xem khu mình phụ
-// trách (1 khu → khóa; nhiều khu → chọn), committee/admin chọn khu hoặc tất
+// Sổ vật tư theo khu (route /material-officer/materials): officer xem khu mình phụ
+// trách (1 khu → khóa; nhiều khu → chọn), committee/parish chọn khu hoặc tất
 // cả. Ledger đúng demo đã duyệt + filter chips theo status, search, pagination.
 // Xuất CSV qua exportCsv (BOM + ';').
 import { useMemo, useState } from 'react'
@@ -32,9 +32,9 @@ export default function MaterialListPage() {
   const { data: areas = [], isPending: areasPending } = useAreas()
   const { data: users = [] } = useUsers()
 
-  // Officer: khu mình phụ trách; committee/admin: mọi khu (chọn hoặc tất cả).
+  // Officer: khu mình phụ trách; committee/parish: mọi khu (chọn hoặc tất cả).
   const myAreas =
-    user?.role === 'OFFICER' ? areas.filter((a) => a.officerId === user.id) : areas
+    user?.role === 'MATERIAL_OFFICER' ? areas.filter((a) => a.officerId === user.id) : areas
   // 1 khu → khóa luôn (kể cả khi areas load xong sau render đầu); nhiều khu → chọn.
   const fixed = myAreas.length === 1 ? myAreas[0] : null
   const [picked, setPicked] = useState('')

@@ -1,4 +1,4 @@
-// Trang quy tắc điểm (route /admin/point-rules): bảng hành động → điểm cộng,
+// Trang quy tắc điểm (route /parish/point-rules): bảng hành động → điểm cộng,
 // mỗi hàng input số editable. KHÔNG có model pointRules trong types/seed —
 // state tĩnh trong component, persist localStorage 'grotto-point-rules'
 // (nếu không có → dùng RULES mặc định). Lưu toàn bộ → toast.
@@ -67,7 +67,7 @@ export default function PointRulesPage() {
   const save = () => {
     localStorage.setItem(RULES_KEY, JSON.stringify(rules))
     setDirty(false)
-    toast(t('features.admin.rulesSaved'))
+    toast(t('features.parish.rulesSaved'))
   }
 
   const total = rules.reduce((acc, r) => acc + r.points, 0)
@@ -75,8 +75,8 @@ export default function PointRulesPage() {
   return (
     <div>
       <PageHeader
-        title={t('features.admin.rulesTitle')}
-        sub={t('features.admin.rulesSub')}
+        title={t('features.parish.rulesTitle')}
+        sub={t('features.parish.rulesSub')}
         actions={
           <Button onClick={save} disabled={!dirty}>
             <Save className="size-4" />
@@ -91,10 +91,10 @@ export default function PointRulesPage() {
             <thead>
               <tr className="border-b border-grotto-hair">
                 <th scope="col" className="lbl-mono px-4 py-3 text-left">
-                  {t('features.admin.ruleAction')}
+                  {t('features.parish.ruleAction')}
                 </th>
                 <th scope="col" className="lbl-mono px-4 py-3 text-right">
-                  {t('features.admin.rulePoints')}
+                  {t('features.parish.rulePoints')}
                 </th>
               </tr>
             </thead>
@@ -108,7 +108,7 @@ export default function PointRulesPage() {
                   <td className="px-4 py-2.5 font-semibold text-grotto-ink">{r.action}</td>
                   <td className="px-4 py-2.5">
                     <Label htmlFor={`rule-${i}`} className="sr-only">
-                      {t('features.admin.rulePoints')}
+                      {t('features.parish.rulePoints')}
                     </Label>
                     <Input
                       id={`rule-${i}`}
@@ -128,7 +128,7 @@ export default function PointRulesPage() {
       </Card>
 
       <p className="lbl-mono mt-3">
-        {t('common.total', { n: total })} {t('features.admin.rulePointsUnit')}
+        {t('common.total', { n: total })} {t('features.parish.rulePointsUnit')}
       </p>
     </div>
   )
