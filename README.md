@@ -37,12 +37,12 @@ Trước đây, công tác điều phối thường diễn ra phân tán qua tin
 
 | Dashboard Ban Điều Phối | Quản Lý Khu Vực Công Tác |
 |:---:|:---:|
-| ![Dashboard](https://via.placeholder.com/600x340/FBF6E9/3E2F23?text=GrottoWorks+Season+Dashboard) | ![Work Areas](https://via.placeholder.com/600x340/FBF6E9/3E2F23?text=Bethlehem+Grotto+Work+Areas) |
+| ![Dashboard Ban Điều Phối](./docs/screenshots/dashboard.png) | ![Quản Lý Khu Vực Công Tác](./docs/screenshots/areas.png) |
 | *Theo dõi tiến độ Mùa Vọng, giờ công và việc cần chú ý* | *Quản lý 5 khu vực: Hang đá, Cây thông, Đèn, Sân khấu, Sân* |
 
 | Kho Vật Tư & Đề Nghị Mua Sắm | Báo Cáo & Vinh Danh Đóng Góp |
 |:---:|:---:|
-| ![Materials](https://via.placeholder.com/600x340/FBF6E9/3E2F23?text=Materials+Ledger+%26+Purchases) | ![Reports](https://via.placeholder.com/600x340/FBF6E9/3E2F23?text=Final+Reports+%26+Recognition) |
+| ![Kho Vật Tư & Đề Nghị Mua Sắm](./docs/screenshots/materials.png) | ![Báo Cáo & Vinh Danh Đóng Góp](./docs/screenshots/reports.png) |
 | *Bảng cân đối thiếu hụt vật tư & duyệt hồ sơ mua sắm* | *Bảng vinh danh điểm thưởng và xuất báo cáo CSV chi phí* |
 
 ---
