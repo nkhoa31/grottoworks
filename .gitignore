@@ -3,6 +3,7 @@ dist/
 .playwright-mcp/
 superpowers/
 *.png
+!docs/screenshots/*.png
 coverage/
 *.tsbuildinfo
 .tmp-verify/
