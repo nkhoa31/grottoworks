@@ -1,6 +1,6 @@
-// Dashboard trưởng nhóm vật tư (route /officer, index route): số mặt hàng
+// Dashboard trưởng nhóm vật tư (route /material-officer, index route): số mặt hàng
 // thiếu, đề nghị mua chờ duyệt, % quyên góp đã về và danh sách hàng sắp về /
-// đơn chờ duyệt. Dữ liệu: GET /api/dashboard/officer (suy khu từ Bearer
+// đơn chờ duyệt. Dữ liệu: GET /api/dashboard/material-officer (suy khu từ Bearer
 // token, fallback u4) + materials (danh sách INCOMING sắp về).
 import { useMemo } from 'react'
 import type { CSSProperties } from 'react'
@@ -175,7 +175,7 @@ export default function OfficerDashboard() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => navigate('/officer/materials')}
+                  onClick={() => navigate('/material-officer/materials')}
                 >
                   {t('features.dashboards.viewMaterials')}
                 </Button>
@@ -194,7 +194,7 @@ export default function OfficerDashboard() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => navigate('/officer/purchases')}
+                  onClick={() => navigate('/material-officer/purchases')}
                 >
                   {t('features.dashboards.viewPurchases')}
                 </Button>

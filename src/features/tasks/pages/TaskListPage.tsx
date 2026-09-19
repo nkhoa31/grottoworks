@@ -1,8 +1,8 @@
 // Danh sách nhiệm vụ. Mount ở 4 nơi, phân biệt theo route:
 // - /leader/tasks: leader thấy việc các khu mình lãnh (nhiều khu → select khu),
-//   committee/admin thấy tất cả (route committee tương lai).
+//   committee/parish thấy tất cả (route committee tương lai).
 // - /leader/assignments: chỉ việc chưa đủ assignees.
-// - /committee/areas/:id/tasks: read-only (ẩn tạo/sửa/xoá), khoá theo :id.
+// - /community/areas/:id/tasks: read-only (ẩn tạo/sửa/xoá), khoá theo :id.
 // Status tabs = chip filter của DataTable (client-side trên key 'status').
 import { useMemo, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
@@ -31,7 +31,7 @@ export default function TaskListPage() {
   const { id: areaParam } = useParams()
   const { user } = useAuth()
 
-  const readOnly = pathname.startsWith('/committee/')
+  const readOnly = pathname.startsWith('/community/') || pathname.startsWith('/parish/')
   const assignments = pathname.startsWith('/leader/assignments')
 
   const { data: areas = [] } = useAreas()
@@ -196,7 +196,7 @@ export default function TaskListPage() {
           rows={tasks}
           columns={columns}
           searchKeys={['title']}
-          filters={[{ key: 'status', options: ['TODO', 'DOING', 'REVIEW', 'DONE'] }]}
+          filters={[{ key: 'status', options: ['TODO', 'DOING', 'REVIEW', 'DONE', 'REVISE'] }]}
           pageSize={8}
           emptyText={t('features.tasks.empty')}
           onRowClick={readOnly ? undefined : (x) => navigate(`/leader/tasks/${x.id}`)}

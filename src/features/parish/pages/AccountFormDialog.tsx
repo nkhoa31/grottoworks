@@ -19,23 +19,23 @@ export const SELECT_CLS =
 
 const CHECK_CLS = 'size-4 rounded border border-grotto-hair bg-grotto-panel accent-grotto-terra'
 
-const ROLES = ['ADMIN', 'COMMITTEE', 'LEADER', 'OFFICER'] as const
+const ROLES = ['PARISH', 'COMMUNITY', 'LEADER', 'MATERIAL_OFFICER'] as const
 
 const schema = z
   .object({
-    name: z.string().trim().min(1, 'features.admin.nameRequired'),
+    name: z.string().trim().min(1, 'features.parish.nameRequired'),
     email: z
       .string()
       .trim()
-      .min(1, 'features.admin.emailRequired')
-      .email('features.admin.emailInvalid'),
+      .min(1, 'features.parish.emailRequired')
+      .email('features.parish.emailInvalid'),
     role: z.enum(ROLES),
     communityId: z.string(),
     skills: z.array(z.string()),
   })
-  .refine((d) => d.role === 'ADMIN' || d.communityId !== '', {
+  .refine((d) => d.role === 'PARISH' || d.communityId !== '', {
     path: ['communityId'],
-    message: 'features.admin.communityRequired',
+    message: 'features.parish.communityRequired',
   })
 
 type FormData = z.infer<typeof schema>
@@ -76,7 +76,7 @@ export function AccountFormDialog({
           communityId: account.communityId ?? '',
           skills: account.skills,
         }
-      : { name: '', email: '', role: 'OFFICER', communityId: '', skills: [] },
+      : { name: '', email: '', role: 'MATERIAL_OFFICER', communityId: '', skills: [] },
   })
 
   const onSubmit = async (data: FormData) => {
@@ -89,22 +89,22 @@ export function AccountFormDialog({
           role: data.role,
           // ADMIN không thuộc giáo khu — PATCH null để mock xoá field (shallow
           // merge giữ key null, xem handlers.ts).
-          communityId: data.role === 'ADMIN' ? null : data.communityId,
+          communityId: data.role === 'PARISH' ? null : data.communityId,
           skills: data.skills,
         })
-        toast(t('features.admin.updated', { name: data.name }))
+        toast(t('features.parish.updated', { name: data.name }))
       } else {
         await create.mutateAsync({
           name: data.name,
           email: data.email,
           role: data.role,
-          // ADMIN: bỏ key (undefined khỏi JSON) thay vì gửi ''.
-          communityId: data.role === 'ADMIN' ? undefined : data.communityId,
+          // PARISH: bỏ key (undefined khỏi JSON) thay vì gửi ''.
+          communityId: data.role === 'PARISH' ? undefined : data.communityId,
           skills: data.skills,
           points: 0,
           avatarHue: hueOf(data.email),
         })
-        toast(t('features.admin.created', { name: data.name }))
+        toast(t('features.parish.created', { name: data.name }))
       }
       onClose()
     } catch {
@@ -119,7 +119,7 @@ export function AccountFormDialog({
     <Dialog
       open
       onClose={onClose}
-      title={editing ? t('features.admin.editAccount') : t('features.admin.createAccount')}
+      title={editing ? t('features.parish.editAccount') : t('features.parish.createAccount')}
       footer={
         <>
           <Button variant="outline" onClick={onClose}>
@@ -133,18 +133,18 @@ export function AccountFormDialog({
     >
       <form id="account-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
-          <Label htmlFor="account-name">{t('features.admin.name')}</Label>
+          <Label htmlFor="account-name">{t('features.parish.name')}</Label>
           <Input id="account-name" {...register('name')} />
           {err(errors.name?.message)}
         </div>
         <div>
-          <Label htmlFor="account-email">{t('features.admin.email')}</Label>
+          <Label htmlFor="account-email">{t('features.parish.email')}</Label>
           <Input id="account-email" type="email" {...register('email')} />
           {err(errors.email?.message)}
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <Label htmlFor="account-role">{t('features.admin.role')}</Label>
+            <Label htmlFor="account-role">{t('features.parish.role')}</Label>
             <select id="account-role" className={SELECT_CLS} {...register('role')}>
               {ROLES.map((r) => (
                 <option key={r} value={r}>
@@ -154,9 +154,9 @@ export function AccountFormDialog({
             </select>
           </div>
           <div>
-            <Label htmlFor="account-community">{t('features.admin.community')}</Label>
+            <Label htmlFor="account-community">{t('features.parish.community')}</Label>
             <select id="account-community" className={SELECT_CLS} {...register('communityId')}>
-              <option value="">{t('features.admin.selectPlaceholder')}</option>
+              <option value="">{t('features.parish.selectPlaceholder')}</option>
               {communities.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.name}
@@ -167,7 +167,7 @@ export function AccountFormDialog({
           </div>
         </div>
         <div>
-          <Label>{t('features.admin.skills')}</Label>
+          <Label>{t('features.parish.skills')}</Label>
           <div className="flex flex-wrap gap-x-4 gap-y-2">
             {skills.map((s) => (
               <label key={s} className="flex items-center gap-1.5 text-sm text-grotto-ink">

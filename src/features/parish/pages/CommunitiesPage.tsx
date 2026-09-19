@@ -1,4 +1,4 @@
-// Trang giáo xứ & cộng đoàn (route /admin/communities): chỉnh tên giáo xứ
+// Trang giáo xứ & cộng đoàn (route /parish/communities): chỉnh tên giáo xứ
 // (parish object đơn — PATCH /api/parish) + CRUD giáo khu (communities) qua
 // bảng + dialog. Xoá giáo khu bị chặn khi còn user/area tham chiếu (client
 // check trước khi gọi API → toast alert, không mutate).
@@ -30,7 +30,7 @@ import {
 import type { Community } from '@/types'
 
 const schema = z.object({
-  name: z.string().trim().min(1, 'features.admin.communityNameRequired'),
+  name: z.string().trim().min(1, 'features.parish.communityNameRequired'),
 })
 type FormData = z.infer<typeof schema>
 
@@ -61,11 +61,11 @@ function CommunityFormDialog({
     try {
       if (editing && community) {
         await update.mutateAsync({ id: community.id, name: data.name })
-        toast(t('features.admin.updated', { name: data.name }))
+        toast(t('features.parish.updated', { name: data.name }))
       } else {
         // parishId: giáo xứ demo duy nhất 'p1' (seed).
         await create.mutateAsync({ name: data.name, parishId: 'p1' })
-        toast(t('features.admin.created', { name: data.name }))
+        toast(t('features.parish.created', { name: data.name }))
       }
       onClose()
     } catch {
@@ -80,7 +80,7 @@ function CommunityFormDialog({
     <Dialog
       open
       onClose={onClose}
-      title={editing ? t('features.admin.editCommunity') : t('features.admin.createCommunity')}
+      title={editing ? t('features.parish.editCommunity') : t('features.parish.createCommunity')}
       footer={
         <>
           <Button variant="outline" onClick={onClose}>
@@ -94,7 +94,7 @@ function CommunityFormDialog({
     >
       <form id="community-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
-          <Label htmlFor="community-name">{t('features.admin.communityName')}</Label>
+          <Label htmlFor="community-name">{t('features.parish.communityName')}</Label>
           <Input id="community-name" {...register('name')} />
           {err(errors.name?.message)}
         </div>
@@ -117,7 +117,7 @@ function ParishCard() {
     if (!v || v === parish?.name) return
     try {
       await rename.mutateAsync(v)
-      toast(t('features.admin.updated', { name: v }))
+      toast(t('features.parish.updated', { name: v }))
       setName(null)
     } catch {
       toast(t('common.error'), 'alert')
@@ -126,10 +126,10 @@ function ParishCard() {
 
   return (
     <Card className="mb-5 p-5">
-      <p className="lbl-mono">{t('features.admin.parishName')}</p>
+      <p className="lbl-mono">{t('features.parish.parishName')}</p>
       <div className="mt-2 flex max-w-md gap-2">
         <Input
-          aria-label={t('features.admin.parishName')}
+          aria-label={t('features.parish.parishName')}
           value={value}
           onChange={(e) => setName(e.target.value)}
           onBlur={() => void save()}
@@ -159,12 +159,12 @@ export default function CommunitiesPage() {
     const used =
       users.some((u) => u.communityId === c.id) || areas.some((a) => a.communityId === c.id)
     if (used) {
-      toast(t('features.admin.communityInUse', { name: c.name }), 'alert')
+      toast(t('features.parish.communityInUse', { name: c.name }), 'alert')
       return
     }
     try {
       await deleteCommunity.mutateAsync(c.id)
-      toast(t('features.admin.deleted', { name: c.name }))
+      toast(t('features.parish.deleted', { name: c.name }))
     } catch {
       toast(t('common.error'), 'alert')
     }
@@ -174,12 +174,12 @@ export default function CommunitiesPage() {
     () => [
       {
         key: 'name',
-        header: t('features.admin.communityName'),
+        header: t('features.parish.communityName'),
         render: (c: Community) => <span className="font-semibold">{c.name}</span>,
       },
       {
         key: 'members',
-        header: t('features.admin.members'),
+        header: t('features.parish.members'),
         align: 'right' as const,
         render: (c: Community) => (
           <span className="tabular">{users.filter((u) => u.communityId === c.id).length}</span>
@@ -227,8 +227,8 @@ export default function CommunitiesPage() {
   return (
     <div>
       <PageHeader
-        title={t('features.admin.communitiesTitle')}
-        sub={t('features.admin.communitiesSub')}
+        title={t('features.parish.communitiesTitle')}
+        sub={t('features.parish.communitiesSub')}
         actions={
           <Button
             onClick={() => {
@@ -237,7 +237,7 @@ export default function CommunitiesPage() {
             }}
           >
             <Plus className="size-4" />
-            {t('features.admin.createCommunity')}
+            {t('features.parish.createCommunity')}
           </Button>
         }
       />
@@ -251,15 +251,15 @@ export default function CommunitiesPage() {
           rows={communities}
           columns={columns}
           searchKeys={['name']}
-          emptyText={t('features.admin.empty')}
+          emptyText={t('features.parish.empty')}
         />
       )}
 
       {formOpen && <CommunityFormDialog community={editing} onClose={() => setFormOpen(false)} />}
       <ConfirmDialog
         open={Boolean(deleting)}
-        title={t('features.admin.deleteTitle')}
-        description={deleting ? t('features.admin.deleteConfirm', { name: deleting.name }) : undefined}
+        title={t('features.parish.deleteTitle')}
+        description={deleting ? t('features.parish.deleteConfirm', { name: deleting.name }) : undefined}
         confirmLabel={t('common.delete')}
         tone="destructive"
         onConfirm={() => deleting && onDelete(deleting)}

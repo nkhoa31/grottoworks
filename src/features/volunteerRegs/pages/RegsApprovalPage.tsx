@@ -1,6 +1,6 @@
 // Duyệt đăng ký TNV (route /leader/regs, committee cũng mở được qua URL).
 // Leader chỉ thấy reg của nhiệm vụ thuộc khu mình lãnh (area leaderId);
-// committee/admin thấy tất cả. Nút Duyệt/Từ chối từng row — duyệt chạy
+// committee/parish thấy tất cả. Nút Duyệt/Từ chối từng row — duyệt chạy
 // 2 bước trong useApproveReg (reg APPROVED + volunteer vào assignees).
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -34,7 +34,7 @@ export default function RegsApprovalPage() {
   const volunteerName = (id: string) => users.find((u) => u.id === id)?.name ?? '—'
   const areaName = (id: string) => areas.find((a) => a.id === id)?.name ?? '—'
 
-  // Leader: chỉ reg của task thuộc khu mình lãnh; committee/admin: tất cả.
+  // Leader: chỉ reg của task thuộc khu mình lãnh; committee/parish: tất cả.
   const rows = regs.filter((r) =>
     user?.role === 'LEADER' ? myAreaIds.has(taskOf(r.taskId)?.areaId ?? '') : true,
   )

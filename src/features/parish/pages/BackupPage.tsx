@@ -1,4 +1,4 @@
-// Trang xuất & sao lưu (route /admin/backup):
+// Trang xuất & sao lưu (route /parish/backup):
 //   • "Tải backup JSON" — POST /api/export/backup → blob download
 //     (endpoint có thật: handlers.ts trả toàn bộ db + header attachment).
 //   • "Đặt lại dữ liệu demo" — resetDb() (xoá 'grotto-db-v1') + reload;
@@ -32,7 +32,7 @@ export default function BackupPage() {
       a.download = 'grottoworks-backup.json'
       a.click()
       URL.revokeObjectURL(url)
-      toast(t('features.admin.backupDone'))
+      toast(t('features.parish.backupDone'))
     } catch {
       toast(t('common.error'), 'alert')
     }
@@ -47,37 +47,37 @@ export default function BackupPage() {
 
   return (
     <div>
-      <PageHeader title={t('features.admin.backupTitle')} sub={t('features.admin.backupSub')} />
+      <PageHeader title={t('features.parish.backupTitle')} sub={t('features.parish.backupSub')} />
 
       <div className="grid gap-5 md:grid-cols-2">
         <Card className="flex flex-col justify-between p-5">
           <div>
-            <p className="lbl-mono">{t('features.admin.backupExport')}</p>
-            <p className="mt-2 text-sm text-grotto-soft">{t('features.admin.backupExportSub')}</p>
+            <p className="lbl-mono">{t('features.parish.backupExport')}</p>
+            <p className="mt-2 text-sm text-grotto-soft">{t('features.parish.backupExportSub')}</p>
           </div>
           <Button className="mt-5 self-start" onClick={() => void download()} disabled={backup.isPending}>
             <Download className="size-4" />
-            {backup.isPending ? t('common.loading') : t('features.admin.backupDownload')}
+            {backup.isPending ? t('common.loading') : t('features.parish.backupDownload')}
           </Button>
         </Card>
 
         <Card className="flex flex-col justify-between p-5">
           <div>
-            <p className="lbl-mono">{t('features.admin.backupReset')}</p>
-            <p className="mt-2 text-sm text-grotto-soft">{t('features.admin.backupResetSub')}</p>
+            <p className="lbl-mono">{t('features.parish.backupReset')}</p>
+            <p className="mt-2 text-sm text-grotto-soft">{t('features.parish.backupResetSub')}</p>
           </div>
           <Button variant="destructive" className="mt-5 self-start" onClick={() => setConfirmReset(true)}>
             <RotateCcw className="size-4" />
-            {t('features.admin.backupResetBtn')}
+            {t('features.parish.backupResetBtn')}
           </Button>
         </Card>
       </div>
 
       <ConfirmDialog
         open={confirmReset}
-        title={t('features.admin.resetTitle')}
-        description={t('features.admin.resetConfirm')}
-        confirmLabel={t('features.admin.backupResetBtn')}
+        title={t('features.parish.resetTitle')}
+        description={t('features.parish.resetConfirm')}
+        confirmLabel={t('features.parish.backupResetBtn')}
         tone="destructive"
         onConfirm={doReset}
         onClose={() => setConfirmReset(false)}

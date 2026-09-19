@@ -1,5 +1,5 @@
-// Sổ quyên góp (route /officer/donations): officer xem cam kết vật tư khu
-// mình phụ trách + quà tiền; committee/admin thấy tất cả. "Ghi nhận quyên
+// Sổ quyên góp (route /material-officer/donations): officer xem cam kết vật tư khu
+// mình phụ trách + quà tiền; committee/parish thấy tất cả. "Ghi nhận quyên
 // góp" (dialog nhập TỔNG số đã nhận → status tự suy + material.donatedReceived
 // đồng bộ theo delta) và "Thêm cam kết" (DonationFormDialog). Filter chips
 // theo status, search theo donorName, xuất CSV.
@@ -117,7 +117,7 @@ export default function DonationListPage() {
   const update = useUpdateDonation()
 
   // Officer: cam kết vật tư khu mình phụ trách + quà tiền (không gắn khu).
-  const isOfficer = user?.role === 'OFFICER'
+  const isOfficer = user?.role === 'MATERIAL_OFFICER'
   const myAreaIds = new Set(
     isOfficer ? areas.filter((a) => a.officerId === user.id).map((a) => a.id) : [],
   )

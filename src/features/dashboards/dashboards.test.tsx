@@ -1,8 +1,8 @@
 // Dashboard render stat từ mocked summary endpoints (msw/node + resetDb
 // mỗi test, pattern như AreaListPage.test.tsx): committee 4 StatCard theo
 // seed, leader donut + checklist + trễ hạn, officer shortage list.
-// Leader/officer summary suy user từ Bearer token; không có token (test
-// chạy chưa đăng nhập) → handlers fallback u3/u4 (leader/officer đầu tiên,
+// Leader/material-officer summary suy user từ Bearer token; không có token (test
+// chạy chưa đăng nhập) → handlers fallback u3/u4 (leader/material-officer đầu tiên,
 // cả hai phụ trách a1) nên data xác định theo seed.
 import { afterAll, beforeAll, beforeEach, expect, test } from 'vitest'
 import type { ReactNode } from 'react'
@@ -93,7 +93,7 @@ test('OfficerDashboard renders thiếu hụt khu a1: Xi măng PCB40, Bạt che m
   }
 })
 
-test('leader/officer summary hooks: khu a1, taskCounts + shortageList khớp seed', async () => {
+test('leader/material-officer summary hooks: khu a1, taskCounts + shortageList khớp seed', async () => {
   const leader = renderHook(() => useLeaderSummary(), {
     wrapper: ({ children }: { children: ReactNode }) => (
       <QueryClientProvider client={newClient()}>{children}</QueryClientProvider>

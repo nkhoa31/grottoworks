@@ -1,6 +1,6 @@
 // Dashboards domain — query key ['dashboard', <role>] theo contract chung.
 // 3 summary endpoint đã có sẵn trong src/mocks/handlers.ts (committeeSummary/
-// leaderSummary/officerSummary), FE chỉ bọc useQuery. "Tuần hiện tại" phía
+// leaderSummary/material-officerSummary), FE chỉ bọc useQuery. "Tuần hiện tại" phía
 // server = 7 ngày tính từ ngày chấm công cuối của db (weekFrom, handlers.ts).
 import { useQuery } from '@tanstack/react-query'
 import { api } from '@/lib/api'
@@ -46,12 +46,12 @@ export interface OfficerSummary {
 export function useCommitteeSummary() {
   return useQuery({
     queryKey: dashboardKeys.committee,
-    queryFn: () => api<CommitteeSummary>('/dashboard/committee'),
+    queryFn: () => api<CommitteeSummary>('/dashboard/community'),
   })
 }
 
-// Leader/officer endpoint suy người dùng từ Bearer token; không có token
-// (chưa đăng nhập / trong test) → mock fallback leader/officer đầu tiên.
+// Leader/material-officer endpoint suy người dùng từ Bearer token; không có token
+// (chưa đăng nhập / trong test) → mock fallback leader/material-officer đầu tiên.
 export function useLeaderSummary() {
   return useQuery({
     queryKey: dashboardKeys.leader,
@@ -62,7 +62,7 @@ export function useLeaderSummary() {
 export function useOfficerSummary() {
   return useQuery({
     queryKey: dashboardKeys.officer,
-    queryFn: () => api<OfficerSummary>('/dashboard/officer'),
+    queryFn: () => api<OfficerSummary>('/dashboard/material-officer'),
   })
 }
 

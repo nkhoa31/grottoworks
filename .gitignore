@@ -6,3 +6,6 @@ superpowers/
 coverage/
 *.tsbuildinfo
 .tmp-verify/
+ORCHESTRATION.md
+*.docx
+ui-demo.html

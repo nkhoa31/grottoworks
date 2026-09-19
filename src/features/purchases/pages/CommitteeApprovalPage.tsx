@@ -1,4 +1,4 @@
-// Duyệt mua lớn (route /committee/purchases): DataTable đề nghị mua, mặc định
+// Duyệt mua lớn (route /community/purchases): DataTable đề nghị mua, mặc định
 // lọc PENDING. Duyệt = PATCH APPROVED; Từ chối qua dialog lý do (required)
 // → PATCH REJECTED + note = lý do. Vật tư không bị đụng khi từ chối.
 import { useMemo, useState } from 'react'
