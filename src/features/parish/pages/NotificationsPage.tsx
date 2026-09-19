@@ -1,4 +1,4 @@
-// Trang thông báo (route /admin/notifications): chọn loại sự kiện nào sẽ sinh
+// Trang thông báo (route /parish/notifications): chọn loại sự kiện nào sẽ sinh
 // thông báo cho hệ thống (mọi role đều nhận). KHÔNG có model notifications
 // trong seed — prefs lưu localStorage 'grotto-notification-prefs' theo event
 // key; mặc định bật hết.
@@ -77,14 +77,14 @@ export default function NotificationsPage() {
 
   const toggle = (k: EventKey) => {
     setPrefs((p) => ({ ...p, [k]: !isOn(p, k) }))
-    toast(t(isOn(prefs, k) ? 'features.admin.notifOff' : 'features.admin.notifOn', { name: t(`features.admin.notifEvent.${k}`) }))
+    toast(t(isOn(prefs, k) ? 'features.parish.notifOff' : 'features.parish.notifOn', { name: t(`features.parish.notifEvent.${k}`) }))
   }
 
   const onCount = EVENTS.filter((k) => isOn(prefs, k)).length
 
   return (
     <div>
-      <PageHeader title={t('features.admin.notificationsTitle')} sub={t('features.admin.notificationsSub')} />
+      <PageHeader title={t('features.parish.notificationsTitle')} sub={t('features.parish.notificationsSub')} />
 
       <Card className="p-5">
         <div className="mb-4 flex items-center gap-2 rounded-md border border-grotto-hair bg-grotto-ground px-3 py-2 text-sm text-grotto-soft">
@@ -92,7 +92,7 @@ export default function NotificationsPage() {
           <span className="tabular">
             {onCount}/{EVENTS.length}
           </span>
-          {t('features.admin.notificationsOn')}
+          {t('features.parish.notificationsOn')}
         </div>
         <ul>
           {EVENTS.map((k, i) => (
@@ -103,13 +103,13 @@ export default function NotificationsPage() {
             >
               <div className="min-w-0">
                 <p className="truncate text-sm font-semibold text-grotto-ink">
-                  {t(`features.admin.notifEvent.${k}`)}
+                  {t(`features.parish.notifEvent.${k}`)}
                 </p>
-                <p className="text-xs text-grotto-soft">{t(`features.admin.notifEventSub.${k}`)}</p>
+                <p className="text-xs text-grotto-soft">{t(`features.parish.notifEventSub.${k}`)}</p>
               </div>
               <Toggle
                 checked={isOn(prefs, k)}
-                label={t(`features.admin.notifEvent.${k}`)}
+                label={t(`features.parish.notifEvent.${k}`)}
                 onToggle={() => toggle(k)}
               />
             </li>

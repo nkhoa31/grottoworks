@@ -16,28 +16,20 @@ export interface NavGroup {
 }
 
 export const NAV: Record<Role, NavGroup[]> = {
-  COMMITTEE: [
+  COMMUNITY: [
     {
       section: 'nav.section.overview',
       items: [
-        { label: 'nav.committee.dashboard', to: '/committee', icon: 'dashboard' },
-        { label: 'nav.committee.seasons', to: '/committee/seasons', icon: 'calendar' },
+        { label: 'nav.community.dashboard', to: '/community', icon: 'dashboard' },
       ],
     },
     {
       section: 'nav.section.coordination',
       items: [
-        { label: 'nav.committee.areas', to: '/committee/areas', icon: 'areas' },
-        { label: 'nav.committee.volunteers', to: '/committee/volunteers', icon: 'users' },
+        { label: 'nav.community.volunteers', to: '/community/volunteers', icon: 'users' },
         {
-          label: 'nav.committee.purchases',
-          to: '/committee/purchases',
-          icon: 'cart',
-          badge: 'purchases',
-        },
-        {
-          label: 'nav.committee.support',
-          to: '/committee/support',
+          label: 'nav.community.support',
+          to: '/community/support',
           icon: 'lifebuoy',
           badge: 'support',
         },
@@ -46,8 +38,8 @@ export const NAV: Record<Role, NavGroup[]> = {
     {
       section: 'nav.section.wrapup',
       items: [
-        { label: 'nav.committee.checklist', to: '/committee/checklist', icon: 'checklist' },
-        { label: 'nav.committee.reports', to: '/committee/reports', icon: 'reports' },
+        { label: 'nav.community.checklist', to: '/community/checklist', icon: 'checklist' },
+        { label: 'nav.community.reports', to: '/community/reports', icon: 'reports' },
       ],
     },
   ],
@@ -66,37 +58,45 @@ export const NAV: Record<Role, NavGroup[]> = {
       ],
     },
   ],
-  OFFICER: [
+  MATERIAL_OFFICER: [
     {
       section: '',
       items: [
-        { label: 'nav.officer.dashboard', to: '/officer', icon: 'dashboard' },
-        { label: 'nav.officer.materials', to: '/officer/materials', icon: 'materials' },
+        { label: 'nav.material-officer.dashboard', to: '/material-officer', icon: 'dashboard' },
+        { label: 'nav.material-officer.materials', to: '/material-officer/materials', icon: 'materials' },
         {
-          label: 'nav.officer.purchases',
-          to: '/officer/purchases',
+          label: 'nav.material-officer.purchases',
+          to: '/material-officer/purchases',
           icon: 'cart',
           badge: 'purchases',
         },
-        { label: 'nav.officer.purchases-confirm', to: '/officer/purchases-confirm', icon: 'confirm' },
-        { label: 'nav.officer.donations', to: '/officer/donations', icon: 'gift' },
-        { label: 'nav.officer.borrowed', to: '/officer/borrowed', icon: 'borrowed' },
-        { label: 'nav.officer.allocations', to: '/officer/allocations', icon: 'boxes' },
+        { label: 'nav.material-officer.purchases-confirm', to: '/material-officer/purchases-confirm', icon: 'confirm' },
+        { label: 'nav.material-officer.donations', to: '/material-officer/donations', icon: 'gift' },
+        { label: 'nav.material-officer.borrowed', to: '/material-officer/borrowed', icon: 'borrowed' },
+        { label: 'nav.material-officer.allocations', to: '/material-officer/allocations', icon: 'boxes' },
       ],
     },
   ],
-  ADMIN: [
+  PARISH: [
     {
       section: '',
       items: [
-        { label: 'nav.admin.dashboard', to: '/admin', icon: 'dashboard' },
-        { label: 'nav.admin.accounts', to: '/admin/accounts', icon: 'accounts' },
-        { label: 'nav.admin.communities', to: '/admin/communities', icon: 'church' },
-        { label: 'nav.admin.categories', to: '/admin/categories', icon: 'tags' },
-        { label: 'nav.admin.point-rules', to: '/admin/point-rules', icon: 'star' },
-        { label: 'nav.admin.notifications', to: '/admin/notifications', icon: 'bell' },
-        { label: 'nav.admin.activity', to: '/admin/activity', icon: 'history' },
-        { label: 'nav.admin.backup', to: '/admin/backup', icon: 'backup' },
+        { label: 'nav.parish.dashboard', to: '/parish', icon: 'dashboard' },
+        { label: 'nav.parish.seasons', to: '/parish/seasons', icon: 'calendar' },
+        { label: 'nav.parish.areas', to: '/parish/areas', icon: 'areas' },
+        {
+          label: 'nav.parish.purchases',
+          to: '/parish/purchases',
+          icon: 'cart',
+          badge: 'purchases',
+        },
+        { label: 'nav.parish.accounts', to: '/parish/accounts', icon: 'accounts' },
+        { label: 'nav.parish.communities', to: '/parish/communities', icon: 'church' },
+        { label: 'nav.parish.categories', to: '/parish/categories', icon: 'tags' },
+        { label: 'nav.parish.point-rules', to: '/parish/point-rules', icon: 'star' },
+        { label: 'nav.parish.notifications', to: '/parish/notifications', icon: 'bell' },
+        { label: 'nav.parish.activity', to: '/parish/activity', icon: 'history' },
+        { label: 'nav.parish.backup', to: '/parish/backup', icon: 'backup' },
       ],
     },
   ],

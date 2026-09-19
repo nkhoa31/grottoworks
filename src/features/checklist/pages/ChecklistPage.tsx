@@ -1,7 +1,7 @@
-// Trang checklist sẵn sàng (route /leader/checklist + /committee/checklist):
+// Trang checklist sẵn sàng (route /leader/checklist + /community/checklist):
 // mỗi khu 1 card vòm — tên khu + vòng % hoàn thành (Recharts RadialBar) +
 // danh sách items với switch. Leader toggle được (toast sau mutation);
-// committee/admin xem read-only. Banner tổng: mọi khu 100% → moss
+// committee/parish xem read-only. Banner tổng: mọi khu 100% → moss
 // "Sẵn sàng đón Lễ", ngược lại straw "Đang chuẩn bị X/Y mục".
 import { useMemo } from 'react'
 import type { CSSProperties } from 'react'
@@ -146,7 +146,7 @@ export default function ChecklistPage() {
   const { data: areas = [] } = useAreas()
   const { data: items = [], isPending } = useChecklist()
 
-  // Leader: các khu mình lãnh (được toggle); committee/admin: mọi khu read-only.
+  // Leader: các khu mình lãnh (được toggle); committee/parish: mọi khu read-only.
   // Memo hóa — totals dưới đây deps vào mảng này, không tạo mảng mới mỗi render.
   const isLeader = user?.role === 'LEADER'
   const myAreas = useMemo(

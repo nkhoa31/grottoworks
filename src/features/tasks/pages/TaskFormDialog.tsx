@@ -1,5 +1,5 @@
 // Dialog tạo/sửa việc — RHF + zod: title, area (leader khóa về khu của mình
-// qua fixedAreaId; committee/admin tự chọn), skills (checkbox group
+// qua fixedAreaId; committee/parish tự chọn), skills (checkbox group
 // /api/skills), estimateHours, volunteersNeeded, materialIds (checkbox group
 // vật tư của khu đang chọn), dueDate. Select native + style trùng Input.
 import { useForm } from 'react-hook-form'

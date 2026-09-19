@@ -1,4 +1,4 @@
-// Xác nhận mua (route /officer/purchases-confirm): request APPROVED chờ xử
+// Xác nhận mua (route /material-officer/purchases-confirm): request APPROVED chờ xử
 // lý → gán người mua (TNV, không ADMIN/COMMITTEE) + tạo hồ sơ giao hàng
 // (qty, cost thực tế, supplier, date, hoá đơn objectURL preview). Tạo record
 // cộng purchased → received tăng (useCreatePurchaseRecord). Bảng dưới: hồ sơ
@@ -77,7 +77,7 @@ function RecordDialog({ request, materials, onClose }: {
   })
 
   // ADMIN/COMMITTEE không mua hộ — loại khỏi select (pattern Task 6).
-  const volunteers = users.filter((u) => u.role !== 'ADMIN' && u.role !== 'COMMITTEE')
+  const volunteers = users.filter((u) => u.role !== 'PARISH' && u.role !== 'COMMUNITY')
 
   const onSubmit = async (data: FormData) => {
     try {

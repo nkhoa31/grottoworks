@@ -1,4 +1,4 @@
-// Phân bổ vật tư (route /officer/allocations): form tạo phân bổ vật tư đã
+// Phân bổ vật tư (route /material-officer/allocations): form tạo phân bổ vật tư đã
 // nhận của khu officer cho nhiệm vụ (theo khu) hoặc khu khác. Validate
 // qty ≤ available (received − đã phân bổ) — hiện available cạnh vật tư khi
 // chọn. Bảng phân bổ đã tạo: vật tư, số lượng, đích, ngày, người phân bổ.
@@ -54,7 +54,7 @@ export default function AllocationPage() {
 
   // Officer: vật tư + nhiệm vụ khu mình phụ trách (pattern Task 7 RecordDialog);
   // khác: mọi khu.
-  const isOfficer = user?.role === 'OFFICER'
+  const isOfficer = user?.role === 'MATERIAL_OFFICER'
   const myAreas = isOfficer ? areas.filter((a) => a.officerId === user.id) : areas
   const myAreaIds = new Set(myAreas.map((a) => a.id))
   const materials = isOfficer ? allMaterials.filter((m) => myAreaIds.has(m.areaId)) : allMaterials

@@ -26,7 +26,7 @@ export default function VolunteerListPage() {
   const { data: timesheets = [] } = useTimesheets()
   const [skill, setSkill] = useState('')
 
-  const prefix = pathname.startsWith('/committee') ? '/committee' : '/leader'
+  const prefix = pathname.startsWith('/community') ? '/community' : '/leader'
   const communityName = (id?: string) => communities.find((c) => c.id === id)?.name ?? '—'
 
   // Tổng giờ công theo volunteerId — client-side (≤ vài trăm dòng).
@@ -39,7 +39,7 @@ export default function VolunteerListPage() {
   // ADMIN/COMMITTEE không phải TNV — loại khỏi danh sách (Role không có
   // VOLUNTEER, giáo dân là user thường).
   const rows = users
-    .filter((u) => u.role !== 'ADMIN' && u.role !== 'COMMITTEE')
+    .filter((u) => u.role !== 'PARISH' && u.role !== 'COMMUNITY')
     .filter((u) => !skill || u.skills.includes(skill))
 
   const columns = useMemo(

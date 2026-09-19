@@ -1,4 +1,4 @@
-// Trang tài khoản (route /admin/accounts): DataTable users + chip lọc role,
+// Trang tài khoản (route /parish/accounts): DataTable users + chip lọc role,
 // switch khoá/mở (user bị khoá → login 401, xem handlers.ts), sửa/xoá qua dialog.
 // Switch pattern ChecklistPage: role="switch" + knob transition-transform.
 import { useMemo, useState } from 'react'
@@ -68,7 +68,7 @@ export default function AccountsPage() {
   const toggleLock = async (u: User) => {
     try {
       await updateUser.mutateAsync({ id: u.id, locked: !u.locked })
-      toast(t(!u.locked ? 'features.admin.locked' : 'features.admin.unlocked', { name: u.name }))
+      toast(t(!u.locked ? 'features.parish.locked' : 'features.parish.unlocked', { name: u.name }))
     } catch {
       toast(t('common.error'), 'alert')
     }
@@ -76,25 +76,25 @@ export default function AccountsPage() {
 
   const columns = useMemo(
     () => [
-      { key: 'name', header: t('features.admin.name'), render: (u: User) => <span className="font-semibold">{u.name}</span> },
-      { key: 'email', header: t('features.admin.email') },
-      { key: 'role', header: t('features.admin.role'), render: (u: User) => t(`role.${u.role}`) },
-      { key: 'communityId', header: t('features.admin.community'), render: (u: User) => communityName(u.communityId) },
+      { key: 'name', header: t('features.parish.name'), render: (u: User) => <span className="font-semibold">{u.name}</span> },
+      { key: 'email', header: t('features.parish.email') },
+      { key: 'role', header: t('features.parish.role'), render: (u: User) => t(`role.${u.role}`) },
+      { key: 'communityId', header: t('features.parish.community'), render: (u: User) => communityName(u.communityId) },
       {
         key: 'skills',
-        header: t('features.admin.skills'),
+        header: t('features.parish.skills'),
         render: (u: User) => (u.skills.length ? u.skills.join(', ') : '—'),
       },
       { key: 'points', header: t('features.volunteers.points'), align: 'right' as const, render: (u: User) => <span className="tabular">{u.points}</span> },
       {
         key: 'locked',
-        header: t('features.admin.lockedCol'),
+        header: t('features.parish.lockedCol'),
         align: 'center' as const,
         render: (u: User) => (
           <div className="flex justify-center">
             <LockSwitch
               checked={Boolean(u.locked)}
-              label={t('features.admin.lockSwitch', { name: u.name })}
+              label={t('features.parish.lockSwitch', { name: u.name })}
               onToggle={() => void toggleLock(u)}
             />
           </div>
@@ -134,7 +134,7 @@ export default function AccountsPage() {
   const onDelete = async (u: User) => {
     try {
       await deleteUser.mutateAsync(u.id)
-      toast(t('features.admin.deleted', { name: u.name }))
+      toast(t('features.parish.deleted', { name: u.name }))
     } catch {
       toast(t('common.error'), 'alert')
     }
@@ -143,8 +143,8 @@ export default function AccountsPage() {
   return (
     <div>
       <PageHeader
-        title={t('features.admin.accountsTitle')}
-        sub={t('features.admin.accountsSub')}
+        title={t('features.parish.accountsTitle')}
+        sub={t('features.parish.accountsSub')}
         actions={
           <Button
             onClick={() => {
@@ -153,7 +153,7 @@ export default function AccountsPage() {
             }}
           >
             <Plus className="size-4" />
-            {t('features.admin.createAccount')}
+            {t('features.parish.createAccount')}
           </Button>
         }
       />
@@ -165,16 +165,16 @@ export default function AccountsPage() {
           rows={users}
           columns={columns}
           searchKeys={['name', 'email']}
-          filters={[{ key: 'role', options: ['ADMIN', 'COMMITTEE', 'LEADER', 'OFFICER'] }]}
-          emptyText={t('features.admin.empty')}
+          filters={[{ key: 'role', options: ['PARISH', 'COMMUNITY', 'LEADER', 'MATERIAL_OFFICER'] }]}
+          emptyText={t('features.parish.empty')}
         />
       )}
 
       {formOpen && <AccountFormDialog account={editing} onClose={() => setFormOpen(false)} />}
       <ConfirmDialog
         open={Boolean(deleting)}
-        title={t('features.admin.deleteTitle')}
-        description={deleting ? t('features.admin.deleteConfirm', { name: deleting.name }) : undefined}
+        title={t('features.parish.deleteTitle')}
+        description={deleting ? t('features.parish.deleteConfirm', { name: deleting.name }) : undefined}
         confirmLabel={t('common.delete')}
         tone="destructive"
         onConfirm={() => deleting && onDelete(deleting)}

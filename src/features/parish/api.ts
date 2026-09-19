@@ -130,9 +130,9 @@ export function useBackup() {
 
 export function useRoleLabel(): Record<Role, string> {
   return {
-    ADMIN: 'Quản trị',
-    COMMITTEE: 'Ban tổ chức',
+    PARISH: 'Quản trị',
+    COMMUNITY: 'Ban tổ chức',
     LEADER: 'Trưởng khu',
-    OFFICER: 'Trưởng nhóm vật tư',
+    MATERIAL_OFFICER: 'Trưởng nhóm vật tư',
   }
 }
