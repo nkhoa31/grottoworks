@@ -36,6 +36,16 @@ export function useUpdateSeason() {
   )
 }
 
+// Kích hoạt mùa: PATCH status='ACTIVE'.
+export function useActivateSeason() {
+  return useSeasonMutation((id: string) =>
+    api<Season>(`/seasons/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status: 'ACTIVE' }),
+    }),
+  )
+}
+
 // Chốt mùa: PATCH status='CLOSED'.
 export function useCloseSeason() {
   return useSeasonMutation((id: string) =>

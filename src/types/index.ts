@@ -12,6 +12,8 @@ export interface User {
 export interface Season {
   id: string; year: number; startDate: string; endDate: string;
   status: 'ACTIVE' | 'CLOSED' | 'PLANNED'; budget: number;
+  description?: string;
+  communityIds?: string[];
 }
 
 export type AreaType = 'GROTTO' | 'TREE' | 'LIGHTING' | 'YARD' | 'STAGE';
@@ -20,6 +22,9 @@ export interface WorkArea {
   id: string; name: string; type: AreaType; level: 'PARISH' | 'COMMUNITY'; communityId?: string;
   leaderId: string; officerId: string; progress: number; volunteerCount: number;
   taskCount: number; status: 'ON_TRACK' | 'AT_RISK' | 'LATE';
+  seasonId?: string;
+  deadline?: string;
+  description?: string;
 }
 
 export interface Task {

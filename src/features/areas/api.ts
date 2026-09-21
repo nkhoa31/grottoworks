@@ -7,6 +7,7 @@ import type { WorkArea } from '@/types'
 
 export { useUsers } from '@/features/users/api'
 export { useCommunities } from '@/features/communities/api'
+export { useSeasons } from '@/features/season/api'
 
 export const areaKeys = {
   all: ['areas'] as const,

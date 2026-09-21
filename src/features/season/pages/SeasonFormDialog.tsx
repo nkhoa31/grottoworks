@@ -1,5 +1,5 @@
-// Dialog tạo/sửa mùa — RHF + zod: year 2026–2035, start < end, budget ≥ 0.
-// Error message là i18n key (pattern của Login).
+// Dialog tạo/sửa mùa — RHF + zod: year 2026–2035, start < end, budget ≥ 0,
+// description tối đa 500 ký tự, chọn ít nhất 1 cộng đoàn tham gia.
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -9,6 +9,7 @@ import { Dialog } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useToast } from '@/components/ui/toast'
+import { useCommunities } from '@/features/communities/api'
 import { useCreateSeason, useUpdateSeason } from '../api'
 import type { Season } from '@/types'
 
@@ -27,6 +28,11 @@ const schema = z
       z.coerce
         .number({ invalid_type_error: 'features.season.budgetInvalid' })
         .min(0, 'features.season.budgetInvalid'),
+    ),
+    description: z.string().max(500, 'common.required').optional(),
+    communityIds: z.preprocess(
+      (v) => (Array.isArray(v) ? v : v ? [v] : []),
+      z.array(z.string()).min(1, 'features.season.communityRequired'),
     ),
   })
   .refine((d) => !d.startDate || !d.endDate || d.startDate < d.endDate, {
@@ -47,6 +53,7 @@ export function SeasonFormDialog({
   const toast = useToast()
   const create = useCreateSeason()
   const update = useUpdateSeason()
+  const { data: communities = [] } = useCommunities()
   const editing = Boolean(season)
 
   const {
@@ -63,8 +70,17 @@ export function SeasonFormDialog({
           startDate: season.startDate,
           endDate: season.endDate,
           budget: season.budget,
+          description: season.description ?? '',
+          communityIds: season.communityIds ?? [],
         }
-      : { year: 2026, startDate: '', endDate: '', budget: 0 },
+      : {
+          year: 2026,
+          startDate: '',
+          endDate: '',
+          budget: 0,
+          description: '',
+          communityIds: [],
+        },
   })
 
   const err = (msg?: string) =>
@@ -107,6 +123,7 @@ export function SeasonFormDialog({
           <Input id="season-year" type="number" inputMode="numeric" {...register('year')} />
           {err(errors.year?.message)}
         </div>
+
         <div className="grid grid-cols-2 gap-3">
           <div>
             <Label htmlFor="season-start">{t('features.season.startDate')}</Label>
@@ -119,10 +136,44 @@ export function SeasonFormDialog({
             {err(errors.endDate?.message)}
           </div>
         </div>
+
         <div>
           <Label htmlFor="season-budget">{t('features.season.budget')}</Label>
           <Input id="season-budget" type="number" inputMode="numeric" min={0} {...register('budget')} />
           {err(errors.budget?.message)}
+        </div>
+
+        <div>
+          <Label htmlFor="season-description">{t('features.season.description')}</Label>
+          <textarea
+            id="season-description"
+            rows={3}
+            placeholder={t('features.season.descriptionPlaceholder')}
+            className="mt-1 flex w-full rounded-md border border-grotto-hair bg-grotto-panel px-3 py-2 text-sm text-grotto-ink placeholder:text-grotto-soft focus-visible:border-grotto-terra focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-grotto-terra/30 disabled:cursor-not-allowed disabled:opacity-50"
+            {...register('description')}
+          />
+          {err(errors.description?.message)}
+        </div>
+
+        <div>
+          <Label>{t('features.season.communityIds')}</Label>
+          <div className="mt-1.5 grid grid-cols-1 gap-2 sm:grid-cols-3">
+            {communities.map((c) => (
+              <label
+                key={c.id}
+                className="flex cursor-pointer items-center gap-2 rounded-md border border-grotto-hair bg-grotto-panel px-3 py-2 text-sm text-grotto-ink transition-colors hover:border-grotto-terra"
+              >
+                <input
+                  type="checkbox"
+                  value={c.id}
+                  className="size-4 rounded border-grotto-hair text-grotto-terra accent-grotto-terra focus:ring-grotto-terra"
+                  {...register('communityIds')}
+                />
+                <span className="font-medium">{c.name}</span>
+              </label>
+            ))}
+          </div>
+          {err(errors.communityIds?.message)}
         </div>
       </form>
     </Dialog>
