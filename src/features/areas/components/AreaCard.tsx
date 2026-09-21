@@ -1,9 +1,10 @@
 // Thẻ khu vực dạng vòm hang đá: dải terra trên với mái vòm panel (pattern
-// Login), icon theo type, StatusTag, thanh tiến độ moss vươn từ 0 (.g-bar).
+// Login), icon theo type, StatusTag, deadline, season badge, thanh tiến độ moss vươn từ 0 (.g-bar).
 import type { CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Landmark, TreePine, Lightbulb, Trees, Theater } from 'lucide-react'
 import { StatusTag } from '@/components/shared/StatusTag'
+import { viDate } from '@/lib/format'
 import { cn } from '@/lib/utils'
 import type { AreaType, WorkArea } from '@/types'
 
@@ -20,10 +21,12 @@ export const AREA_ICONS: Record<AreaType, typeof Landmark> = {
 export function AreaCard({
   area,
   index,
+  seasonYear,
   onClick,
 }: {
   area: WorkArea
   index: number
+  seasonYear?: number
   onClick?: (area: WorkArea) => void
 }) {
   const { t } = useTranslation()
@@ -62,12 +65,29 @@ export function AreaCard({
         </div>
       </div>
       <div className="p-5">
-        <p className="lbl-mono">
-          {t(`features.areas.areaType.${area.type}`)} · {t(`features.areas.level.${area.level}`)}
-        </p>
+        <div className="flex items-center justify-between gap-2">
+          <p className="lbl-mono">
+            {t(`features.areas.areaType.${area.type}`)} · {t(`features.areas.level.${area.level}`)}
+          </p>
+          {seasonYear ? (
+            <span className="inline-flex items-center rounded-full border border-grotto-hair bg-grotto-ground px-2 py-0.5 text-[10px] font-bold text-grotto-soft">
+              {t('features.areas.seasonBadge', { year: seasonYear })}
+            </span>
+          ) : null}
+        </div>
         <h3 className="mt-1 text-lg font-bold leading-tight text-grotto-ink">{area.name}</h3>
-        <div className="mt-2">
+        {area.description ? (
+          <p className="mt-1 line-clamp-1 text-xs text-grotto-soft" title={area.description}>
+            {area.description}
+          </p>
+        ) : null}
+        <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
           <StatusTag status={area.status} />
+          {area.deadline ? (
+            <span className="tabular text-xs text-grotto-soft">
+              {t('features.areas.deadline')}: <strong className="font-semibold text-grotto-ink">{viDate(area.deadline)}</strong>
+            </span>
+          ) : null}
         </div>
         <div className="mt-4">
           <div className="flex items-baseline justify-between">

@@ -1,13 +1,15 @@
 // Dialog gán nhanh trưởng khu + trưởng nhóm vật tư cho 1 khu (mở từ row
-// bảng): 2 select lọc theo role (như AreaFormDialog), PATCH areas/:id, toast.
+// bảng): hiển thị deadline/thông tin khu, 2 select lọc theo role, PATCH areas/:id, toast.
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useTranslation } from 'react-i18next'
+import { Calendar } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import { useToast } from '@/components/ui/toast'
+import { viDate } from '@/lib/format'
 import { useUpdateArea } from '../api'
 import { useUsers } from '@/features/users/api'
 import { SELECT_CLS } from './AreaFormDialog'
@@ -91,6 +93,29 @@ export function AreaAssignDialog({
         </>
       }
     >
+      <div className="mb-4 space-y-2 rounded-md border border-grotto-hair bg-grotto-ground/60 p-3 text-xs">
+        <div className="flex items-center justify-between">
+          <span className="text-grotto-soft">{t('features.areas.type')}:</span>
+          <span className="font-semibold text-grotto-ink">
+            {t(`features.areas.areaType.${area.type}`)} · {t(`features.areas.level.${area.level}`)}
+          </span>
+        </div>
+        {area.deadline ? (
+          <div className="flex items-center justify-between">
+            <span className="flex items-center gap-1 text-grotto-soft">
+              <Calendar className="size-3.5 text-grotto-terra" />
+              {t('features.areas.deadline')}:
+            </span>
+            <span className="tabular font-semibold text-grotto-ink">{viDate(area.deadline)}</span>
+          </div>
+        ) : null}
+        {area.description ? (
+          <p className="border-t border-grotto-hair/60 pt-1.5 text-grotto-soft">
+            {area.description}
+          </p>
+        ) : null}
+      </div>
+
       <form id="assign-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
         {select('leaderId', t('features.areas.leader'), leaders)}
         {select('officerId', t('features.areas.officer'), officers)}
