@@ -121,7 +121,7 @@ export default function RegsApprovalPage() {
         sub={t('features.volunteers.regsSub')}
       />
       {isPending ? (
-        <p className="lbl-mono">{t('common.loading')}</p>
+        <p className="lbl">{t('common.loading')}</p>
       ) : (
         <DataTable
           rows={rows}

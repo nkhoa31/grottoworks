@@ -94,7 +94,7 @@ export default function VolunteerListPage() {
       <PageHeader title={t('features.volunteers.title')} sub={t('features.volunteers.sub')} />
 
       {isPending ? (
-        <p className="lbl-mono">{t('common.loading')}</p>
+        <p className="lbl">{t('common.loading')}</p>
       ) : (
         <>
           <div

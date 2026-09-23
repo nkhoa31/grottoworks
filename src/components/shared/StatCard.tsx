@@ -48,7 +48,7 @@ export function StatCard({
   return (
     <Card className={cn('relative overflow-hidden p-5', className)}>
       <div className={cn('absolute inset-x-0 top-0 h-1.5', BAR[tone])} aria-hidden />
-      <p className="lbl-mono">{label}</p>
+      <p className="lbl">{label}</p>
       <p className="tabular mt-2 text-3xl font-extrabold text-grotto-ink">
         {v.toLocaleString(locale)}
         {unit && <span className="ml-1.5 text-sm font-semibold text-grotto-soft">{unit}</span>}

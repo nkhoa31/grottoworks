@@ -90,10 +90,10 @@ export default function PointRulesPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-grotto-hair">
-                <th scope="col" className="lbl-mono px-4 py-3 text-left">
+                <th scope="col" className="lbl px-4 py-3 text-left">
                   {t('features.admin.ruleAction')}
                 </th>
-                <th scope="col" className="lbl-mono px-4 py-3 text-right">
+                <th scope="col" className="lbl px-4 py-3 text-right">
                   {t('features.admin.rulePoints')}
                 </th>
               </tr>
@@ -127,7 +127,7 @@ export default function PointRulesPage() {
         </div>
       </Card>
 
-      <p className="lbl-mono mt-3">
+      <p className="lbl mt-3">
         {t('common.total', { n: total })} {t('features.admin.rulePointsUnit')}
       </p>
     </div>

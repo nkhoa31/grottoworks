@@ -124,7 +124,7 @@ function CategoryRow({
         <>
           <span className="font-semibold text-grotto-ink">{name}</span>
           <div className="flex items-center gap-1">
-            <span className="lbl-mono !text-[11px]">
+            <span className="lbl !text-[11px]">
               {refCount} {refLabel}
             </span>
             {onRename && (
@@ -319,7 +319,7 @@ export default function CategoriesPage() {
       <Card className="p-5">
         {tab === 'areaType' && (
           <>
-            <p className="lbl-mono mb-2">{t('features.admin.catHint.areaType')}</p>
+            <p className="lbl mb-2">{t('features.admin.catHint.areaType')}</p>
             <ul>
               {AREA_TYPES.map((x) => (
                 <CategoryRow
@@ -372,7 +372,7 @@ export default function CategoriesPage() {
 
         {tab === 'donationKind' && (
           <>
-            <p className="lbl-mono mb-2">{t('features.admin.catHint.donationKind')}</p>
+            <p className="lbl mb-2">{t('features.admin.catHint.donationKind')}</p>
             <ul>
               {DONATION_KINDS.map((x) => (
                 <CategoryRow

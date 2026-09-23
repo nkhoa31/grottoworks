@@ -13,11 +13,12 @@ const buttonVariants = {
   destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
 } as const
 
+// Chiều cao gọn hơn (bậc ~32–40px) cho UI dày đặc kiểu management dashboard.
 const buttonSizes = {
-  default: 'h-10 px-4 py-2',
-  sm: 'h-9 px-3',
-  lg: 'h-11 px-8',
-  icon: 'h-10 w-10',
+  default: 'h-8 px-3.5 py-1.5',
+  sm: 'h-7 px-2.5',
+  lg: 'h-9 px-5',
+  icon: 'h-8 w-8',
 } as const
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

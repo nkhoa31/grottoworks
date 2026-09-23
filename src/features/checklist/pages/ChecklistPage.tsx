@@ -107,7 +107,7 @@ function AreaChecklistCard({
         </div>
         <div className="min-w-0">
           <h3 className="text-base font-bold text-grotto-ink">{area.name}</h3>
-          <p className="lbl-mono mt-1">
+          <p className="lbl mt-1">
             {done}/{items.length} {t('features.checklist.itemUnit')}
           </p>
         </div>
@@ -177,7 +177,7 @@ export default function ChecklistPage() {
       />
 
       {isPending ? (
-        <p className="lbl-mono">{t('common.loading')}</p>
+        <p className="lbl">{t('common.loading')}</p>
       ) : isLeader && myAreas.length === 0 ? (
         <EmptyState text={t('features.tasks.noArea')} />
       ) : (

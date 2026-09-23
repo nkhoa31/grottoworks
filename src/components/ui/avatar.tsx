@@ -2,8 +2,8 @@ import { cn } from '@/lib/utils'
 
 const SIZES = {
   sm: 'size-8 text-xs',
-  md: 'size-10 text-sm',
-  lg: 'size-14 text-lg',
+  md: 'size-8 text-sm',
+  lg: 'size-10 text-lg',
 } as const
 
 /** Chip chữ cái đầu — nền pastel sinh từ avatarHue của user. */
@@ -29,7 +29,7 @@ export function Avatar({
     <span
       aria-hidden
       className={cn(
-        'grid shrink-0 select-none place-items-center rounded-[12px_12px_4px_4px] font-bold text-grotto-ink',
+        'grid shrink-0 select-none place-items-center rounded-[80px] font-bold text-grotto-ink border border-2 border-red-500',
         SIZES[size],
         className,
       )}

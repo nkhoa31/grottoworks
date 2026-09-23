@@ -13,7 +13,7 @@ export default function NotFound() {
   return (
     <main className="grid min-h-screen place-items-center bg-grotto-ground p-6">
       <div className="stagger text-center">
-        <p className="lbl-mono" style={d(0)}>
+        <p className="lbl" style={d(0)}>
           404
         </p>
         <h1 className="mt-2 text-3xl font-extrabold tracking-tight" style={d(1)}>

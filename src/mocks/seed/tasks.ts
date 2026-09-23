@@ -1,10 +1,12 @@
 import type { Task } from '../../types';
 
 // 40 nhiệm vụ, mỗi khu 8, trải đủ TODO/DOING/REVIEW/DONE/REVISE; hạn 20/09 → 12/12.
+// Vài nhiệm vụ có `assignments` (phân công trực tiếp) để minh hoạ PENDING/DECLINED.
 export const tasks: Task[] = [
   // a1 — Hang đá Bê-lem
   { id: 't1', areaId: 'a1', title: 'Xây nền hang đá', description: 'Đổ nền bê tông và lát đá nền hang theo mặt bằng đã duyệt.', skills: ['Mộc', 'Vận chuyển'], estimateHours: 24, volunteersNeeded: 4, assignees: ['u13', 'u14'], materialIds: ['m1', 'm2'], status: 'DONE', dueDate: '2026-09-28', submittedPhotos: 6 },
-  { id: 't2', areaId: 'a1', title: 'Xây tường gạch hình thức núi', description: 'Gạch đỏ xếp lớp tạo dáng núi, trát mờ ngoài.', skills: ['Mộc'], estimateHours: 36, volunteersNeeded: 4, assignees: ['u13'], materialIds: ['m2'], status: 'DOING', dueDate: '2026-11-10', submittedPhotos: 2 },
+
+  { id: 't2', areaId: 'a1', title: 'Xây tường gạch hình thức núi', description: 'Gạch đỏ xếp lớp tạo dáng núi, trát mờ ngoài.', skills: ['Mộc'], estimateHours: 36, volunteersNeeded: 4, assignees: ['u13'], materialIds: ['m2'], status: 'DOING', dueDate: '2026-11-10', submittedPhotos: 2, assignments: [{ volunteerId: 'u13', status: 'ACCEPTED' }, { volunteerId: 'u25', status: 'PENDING' }, { volunteerId: 'u19', status: 'DECLINED', note: 'Bận việc gia đình tuần này.' }] },
   { id: 't3', areaId: 'a1', title: 'Phủ rơm mái hang', description: 'Lợp rơm lên khung mái, uốn viền mái tự nhiên.', skills: ['Trang trí'], estimateHours: 12, volunteersNeeded: 3, assignees: [], materialIds: ['m3'], status: 'TODO', dueDate: '2026-11-22', submittedPhotos: 0 },
   { id: 't4', areaId: 'a1', title: 'Đào và tạo độ dốc hang', description: 'San đất tạo độ dốc nền hang, đầm chặt.', skills: ['Vận chuyển'], estimateHours: 16, volunteersNeeded: 4, assignees: ['u14', 'u15'], materialIds: [], status: 'DONE', dueDate: '2026-09-24', submittedPhotos: 4 },
   { id: 't5', areaId: 'a1', title: 'Lắp điện cố định trong hang', description: 'Đi dây âm, lắp ổ và công tắc bên trong hang.', skills: ['Điện'], estimateHours: 10, volunteersNeeded: 2, assignees: ['u7'], materialIds: ['m4'], status: 'DOING', dueDate: '2026-11-15', submittedPhotos: 1 },

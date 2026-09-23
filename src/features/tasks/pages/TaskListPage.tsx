@@ -176,7 +176,7 @@ export default function TaskListPage() {
       />
 
       {isPending ? (
-        <p className="lbl-mono">{t('common.loading')}</p>
+        <p className="lbl">{t('common.loading')}</p>
       ) : user?.role === 'LEADER' && myAreas.length === 0 ? (
         // Leader chưa lãnh khu nào (cả nhánh /leader/assignments) — không
         // đổ toàn bộ tasks, hướng liên hệ committee.
@@ -196,7 +196,7 @@ export default function TaskListPage() {
           rows={tasks}
           columns={columns}
           searchKeys={['title']}
-          filters={[{ key: 'status', options: ['TODO', 'DOING', 'REVIEW', 'DONE'] }]}
+          filters={[{ key: 'status', options: ['DRAFT', 'TODO', 'DOING', 'REVIEW', 'DONE'] }]}
           pageSize={8}
           emptyText={t('features.tasks.empty')}
           onRowClick={readOnly ? undefined : (x) => navigate(`/leader/tasks/${x.id}`)}

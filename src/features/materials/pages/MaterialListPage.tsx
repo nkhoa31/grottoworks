@@ -23,7 +23,7 @@ import { shortage } from '@/types'
 import type { Material } from '@/types'
 
 const SELECT_CLS =
-  'flex h-10 rounded-md border border-grotto-hair bg-grotto-panel px-3 py-2 text-sm text-grotto-ink transition-colors focus-visible:outline-none focus-visible:border-grotto-terra focus-visible:ring-2 focus-visible:ring-grotto-terra/30'
+  'flex h-8 rounded-md border border-grotto-hair bg-grotto-panel px-3.5 text-sm text-grotto-ink transition-colors focus-visible:outline-none focus-visible:border-grotto-terra focus-visible:ring-2 focus-visible:ring-grotto-terra/30'
 
 export default function MaterialListPage() {
   const { t } = useTranslation()
@@ -120,7 +120,7 @@ export default function MaterialListPage() {
     toast(t('features.materials.exported'))
   }
 
-  if (areasPending) return <p className="lbl-mono">{t('common.loading')}</p>
+  if (areasPending) return <p className="lbl">{t('common.loading')}</p>
   if (!myAreas.length) return <EmptyState text={t('features.materials.noArea')} />
 
   const n = (st: string) => materials.filter((m) => m.status === st).length
@@ -180,7 +180,7 @@ export default function MaterialListPage() {
       </div>
 
       {isPending ? (
-        <p className="lbl-mono">{t('common.loading')}</p>
+        <p className="lbl">{t('common.loading')}</p>
       ) : (
         <DataTable
           rows={materials}

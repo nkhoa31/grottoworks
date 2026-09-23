@@ -37,7 +37,7 @@ function Section({
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-lg font-extrabold tracking-tight text-grotto-ink">
           {title}
-          <span className="lbl-mono ml-2">{t('common.total', { n: count })}</span>
+          <span className="lbl ml-2">{t('common.total', { n: count })}</span>
         </h2>
         <Button variant="outline" size="sm" onClick={onExport} disabled={!count}>
           <Download className="size-4" />
@@ -280,7 +280,7 @@ export default function ReportPage() {
     onExported(t('features.reports.doneTitle'))
   }
 
-  if (isPending) return <p className="lbl-mono">{t('common.loading')}</p>
+  if (isPending) return <p className="lbl">{t('common.loading')}</p>
 
   return (
     <div>

@@ -25,6 +25,8 @@ import { useTasks } from '@/features/tasks/api'
 import { useTimesheets } from '@/features/timesheets/api'
 import { useUsers } from '@/features/users/api'
 import { viDate } from '@/lib/format'
+import { cn } from '@/lib/utils'
+import { WEEKDAYS } from '@/types'
 import type { Donation, PurchaseRecord, Task, Timesheet } from '@/types'
 
 export default function VolunteerDetailPage() {
@@ -89,7 +91,7 @@ export default function VolunteerDetailPage() {
   )
 
   const user = users.find((u) => u.id === id)
-  if (isPending) return <p className="lbl-mono">{t('common.loading')}</p>
+  if (isPending) return <p className="lbl">{t('common.loading')}</p>
   if (!user) {
     return (
       <div>
@@ -109,7 +111,7 @@ export default function VolunteerDetailPage() {
 
   const section = (label: string, table: ReactNode) => (
     <div className="space-y-2">
-      <p className="lbl-mono">{label}</p>
+      <p className="lbl">{label}</p>
       {table}
     </div>
   )
@@ -135,12 +137,37 @@ export default function VolunteerDetailPage() {
             <div className="min-w-0">
               <p className="truncate font-bold text-grotto-ink">{user.name}</p>
               <p className="truncate text-sm text-grotto-soft">{user.email}</p>
-              <div className="mt-1.5 flex flex-wrap gap-1">
+                            <div className="mt-1.5 flex flex-wrap gap-1">
                 {user.skills.length ? (
                   user.skills.map((s) => <Badge key={s}>{s}</Badge>)
                 ) : (
                   <span className="text-sm text-grotto-soft">—</span>
                 )}
+              </div>
+              {/* Lịch rảnh trong tuần — leader đối chiếu khi phân công. */}
+              <div className="mt-2">
+                <p className="lbl">{t('features.volunteers.availability')}</p>
+                <div className="mt-1 flex flex-wrap gap-1">
+                  {user.availability?.length ? (
+                    WEEKDAYS.map((d) => (
+                      <span
+                        key={d}
+                        className={cn(
+                          'rounded-full border px-2 py-0.5 text-[11px] font-semibold',
+                          user.availability?.includes(d)
+                            ? 'border-grotto-moss bg-grotto-moss/12 text-grotto-moss'
+                            : 'border-grotto-hair text-grotto-soft',
+                        )}
+                      >
+                        {d}
+                      </span>
+                    ))
+                  ) : (
+                    <span className="text-sm text-grotto-soft">
+                      {t('features.volunteers.availabilityNone')}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
           </div>

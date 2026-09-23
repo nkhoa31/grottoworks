@@ -52,7 +52,7 @@ export default function BackupPage() {
       <div className="grid gap-5 md:grid-cols-2">
         <Card className="flex flex-col justify-between p-5">
           <div>
-            <p className="lbl-mono">{t('features.admin.backupExport')}</p>
+            <p className="lbl">{t('features.admin.backupExport')}</p>
             <p className="mt-2 text-sm text-grotto-soft">{t('features.admin.backupExportSub')}</p>
           </div>
           <Button className="mt-5 self-start" onClick={() => void download()} disabled={backup.isPending}>
@@ -63,7 +63,7 @@ export default function BackupPage() {
 
         <Card className="flex flex-col justify-between p-5">
           <div>
-            <p className="lbl-mono">{t('features.admin.backupReset')}</p>
+            <p className="lbl">{t('features.admin.backupReset')}</p>
             <p className="mt-2 text-sm text-grotto-soft">{t('features.admin.backupResetSub')}</p>
           </div>
           <Button variant="destructive" className="mt-5 self-start" onClick={() => setConfirmReset(true)}>

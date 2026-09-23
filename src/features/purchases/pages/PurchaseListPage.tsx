@@ -42,7 +42,7 @@ export default function PurchaseListPage() {
         key: 'id',
         header: t('features.purchases.code'),
         render: (r: PurchaseRequest) => (
-          <span className="lbl-mono font-semibold text-grotto-ink">#{r.id}</span>
+          <span className="lbl font-semibold text-grotto-ink">#{r.id}</span>
         ),
       },
       {
@@ -111,7 +111,7 @@ export default function PurchaseListPage() {
     .filter((m) => myAreas.some((a) => a.id === m.areaId))
     .filter((m) => shortage(m) > 0)
 
-  if (areasPending) return <p className="lbl-mono">{t('common.loading')}</p>
+  if (areasPending) return <p className="lbl">{t('common.loading')}</p>
   if (!myAreas.length) return <EmptyState text={t('features.materials.noArea')} />
 
   return (
@@ -127,7 +127,7 @@ export default function PurchaseListPage() {
         }
       />
       {isPending ? (
-        <p className="lbl-mono">{t('common.loading')}</p>
+        <p className="lbl">{t('common.loading')}</p>
       ) : (
         <DataTable
           rows={rows}

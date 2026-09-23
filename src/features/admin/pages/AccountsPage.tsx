@@ -159,7 +159,7 @@ export default function AccountsPage() {
       />
 
       {isPending ? (
-        <p className="lbl-mono">{t('common.loading')}</p>
+        <p className="lbl">{t('common.loading')}</p>
       ) : (
         <DataTable
           rows={users}

@@ -10,6 +10,7 @@ import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useToast } from '@/components/ui/toast'
+import { Snowfall } from '@/components/shared/Snowfall'
 import type { Role } from '@/types'
 
 const schema = z.object({
@@ -58,9 +59,26 @@ export default function Login() {
     }
   }
 
-  return (
-    <main className="grid min-h-screen place-items-center bg-grotto-ground p-4">
-      <Card className="g-item w-full max-w-sm overflow-hidden">
+    return (
+    <main className="relative grid min-h-screen place-items-center overflow-hidden bg-grotto-ground p-4">
+      {/* Nền ảnh mùa Giáng sinh (Unsplash) + lớp phủ tối để card nổi bật. */}
+      <div
+        aria-hidden
+        className="absolute inset-0 z-0 bg-cover bg-center"
+        style={{
+          backgroundImage:
+            "url('https://cdn2.fptshop.com.vn/unsafe/800x0/Hinh_nen_Power_Point_Giang_sinh_2_f5da9b6b32.jpg')",
+        }}
+      />
+            <div
+        aria-hidden
+        className="absolute inset-0 z-0 bg-gradient-to-b from-grotto-ink/30 via-grotto-ink/50 to-grotto-ink/80"
+      />
+
+      {/* Tuyết rơi: lớp phủ trên nền, dưới card. */}
+      <Snowfall count={70} />
+
+      <Card className="g-item relative z-10 w-full max-w-sm overflow-hidden">
         {/* Vòm hang đá: dải terra với mái vòm panel cắt lên trên. */}
         <div className="relative h-28 bg-grotto-terra">
           <div className="absolute inset-x-0 bottom-0 mx-auto h-8 w-24 rounded-t-full bg-grotto-panel" />
@@ -76,7 +94,7 @@ export default function Login() {
           </h1>
           <p className="mt-0.5 text-sm text-grotto-soft">{t('login.subtitle')}</p>
 
-          <p className="lbl-mono mt-5">{t('login.demoAccounts')}</p>
+          <p className="lbl mt-5">{t('login.demoAccounts')}</p>
           <div className="mt-2 grid grid-cols-2 gap-2">
             {DEMO.map((d) => (
               <button

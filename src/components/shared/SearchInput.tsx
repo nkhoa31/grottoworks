@@ -16,8 +16,8 @@ export function SearchInput({
 }) {
   const { t } = useTranslation()
   const label = t('common.search')
-  return (
-    <div className={cn('relative', className)}>
+    return (
+    <div className={cn('relative w-full min-w-[220px] max-w-md', className)}>
       <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-grotto-soft" />
       <Input
         type="search"

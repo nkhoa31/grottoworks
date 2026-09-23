@@ -46,10 +46,9 @@ const BackupPage = lazy(() => import('@/features/admin/pages/BackupPage'))
 // Trang thật theo route `to` của nav-config; mục chưa có → Placeholder.
 // Task 5+ thêm dần vào map này (pattern lazy page).
 const PAGES: Record<string, ComponentType> = {
-  '/committee/seasons': SeasonListPage,
+    '/committee/seasons': SeasonListPage,
   '/committee/areas': AreaListPage,
   '/leader/tasks': TaskListPage,
-  '/leader/assignments': TaskListPage,
   '/leader/volunteers': VolunteerListPage,
   '/committee/volunteers': VolunteerListPage,
   '/leader/regs': RegsApprovalPage,

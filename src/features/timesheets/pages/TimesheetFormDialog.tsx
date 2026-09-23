@@ -14,7 +14,7 @@ import { useCreateTimesheet } from '../api'
 import type { User } from '@/types'
 
 export const SELECT_CLS =
-  'flex h-10 w-full rounded-md border border-grotto-hair bg-grotto-panel px-3 py-2 text-sm text-grotto-ink transition-colors focus-visible:outline-none focus-visible:border-grotto-terra focus-visible:ring-2 focus-visible:ring-grotto-terra/30'
+  'flex h-8 w-full rounded-md border border-grotto-hair bg-grotto-panel px-3.5 text-sm text-grotto-ink transition-colors focus-visible:outline-none focus-visible:border-grotto-terra focus-visible:ring-2 focus-visible:ring-grotto-terra/30'
 
 const num = (inner: z.ZodNumber) =>
   z.preprocess((v) => (v === '' || v == null ? undefined : v), inner)

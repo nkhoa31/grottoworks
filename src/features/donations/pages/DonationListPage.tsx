@@ -257,7 +257,7 @@ export default function DonationListPage() {
     toast(t('features.donations.exported'))
   }
 
-  if (areasPending) return <p className="lbl-mono">{t('common.loading')}</p>
+  if (areasPending) return <p className="lbl">{t('common.loading')}</p>
   if (isOfficer && !myAreaIds.size) return <EmptyState text={t('features.donations.noArea')} />
 
   return (
@@ -280,7 +280,7 @@ export default function DonationListPage() {
       />
 
       {isPending ? (
-        <p className="lbl-mono">{t('common.loading')}</p>
+        <p className="lbl">{t('common.loading')}</p>
       ) : (
         <DataTable
           rows={rows}

@@ -121,7 +121,7 @@ export function DataTable<T>({
                 <th
                   key={c.key}
                   scope="col"
-                  className={cn('lbl-mono px-4 py-3', ALIGN[c.align ?? 'left'])}
+                  className={cn('lbl px-4 py-3', ALIGN[c.align ?? 'left'])}
                 >
                   {c.header}
                 </th>
@@ -161,7 +161,7 @@ export function DataTable<T>({
 
       {filtered.length > pageSize && (
         <div className="mt-3 flex items-center justify-between">
-          <p className="lbl-mono">{t('common.total', { n: filtered.length })}</p>
+          <p className="lbl">{t('common.total', { n: filtered.length })}</p>
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
@@ -172,7 +172,7 @@ export function DataTable<T>({
               <ChevronLeft className="size-4" />
               {t('common.previous')}
             </Button>
-            <span className="lbl-mono">
+            <span className="lbl">
               {safePage + 1} / {pageCount}
             </span>
             <Button

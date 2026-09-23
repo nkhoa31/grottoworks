@@ -104,7 +104,7 @@ export default function LeaderDashboard() {
       />
 
       {isPending ? (
-        <p className="lbl-mono">{t('common.loading')}</p>
+        <p className="lbl">{t('common.loading')}</p>
       ) : !area || !summary ? (
         <EmptyState text={t('features.tasks.noArea')} />
       ) : (
@@ -146,7 +146,7 @@ export default function LeaderDashboard() {
             {/* Donut nhiệm vụ theo trạng thái + checklist sẵn sàng. */}
             <div className="space-y-6">
               <Card className="p-5">
-                <p className="lbl-mono mb-2">{t('features.dashboards.tasksByStatus')}</p>
+                <p className="lbl mb-2">{t('features.dashboards.tasksByStatus')}</p>
                 {donutData.length === 0 ? (
                   <EmptyState text={t('features.tasks.empty')} className="py-6" />
                 ) : (
@@ -193,7 +193,7 @@ export default function LeaderDashboard() {
               </Card>
 
               <Card className="p-5">
-                <p className="lbl-mono mb-2">{t('features.checklist.title')}</p>
+                <p className="lbl mb-2">{t('features.checklist.title')}</p>
                 <div className="flex items-baseline justify-between">
                   <p className="tabular text-2xl font-extrabold text-grotto-ink">
                     {summary.checklist.done}/{summary.checklist.total}
@@ -236,7 +236,7 @@ export default function LeaderDashboard() {
             <div className="space-y-6">
               <Card className="p-5">
                 <div className="mb-3 flex items-center justify-between gap-3">
-                  <p className="lbl-mono">{t('features.dashboards.lateTasks')}</p>
+                  <p className="lbl">{t('features.dashboards.lateTasks')}</p>
                   <span
                     className="tabular rounded-full bg-grotto-brick/12 px-2.5 py-0.5 font-mono text-[11px] font-semibold text-grotto-brick"
                     aria-label={t('features.dashboards.lateTasks')}
@@ -259,15 +259,15 @@ export default function LeaderDashboard() {
                       <Users className="size-5" />
                     </span>
                     <div>
-                      <p className="lbl-mono">{t('features.dashboards.volunteerGaps')}</p>
+                      <p className="lbl">{t('features.dashboards.volunteerGaps')}</p>
                       <p className="tabular text-2xl font-extrabold text-grotto-ink">{gaps}</p>
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    <Button
+                                        <Button
                       variant="secondary"
                       size="sm"
-                      onClick={() => navigate('/leader/assignments')}
+                      onClick={() => navigate('/leader/tasks')}
                     >
                       {t('features.tasks.assignmentsTitle')}
                     </Button>

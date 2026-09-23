@@ -88,7 +88,7 @@ export function NotificationsDropdown() {
           aria-label={t('shell.notifications')}
           className="absolute right-0 top-12 z-50 w-96 rounded-grotto border border-grotto-hair bg-grotto-panel shadow-lg"
         >
-          <p className="lbl-mono border-b border-grotto-hair px-4 py-3">
+          <p className="lbl border-b border-grotto-hair px-4 py-3">
             {t('shell.notifications')}
           </p>
           {items.length ? (
@@ -106,7 +106,7 @@ export function NotificationsDropdown() {
                         <span className="font-semibold">{nameOf(x.actor)}</span> {x.action}{' '}
                         <span className="font-semibold">{x.target}</span>
                       </p>
-                      <p className="lbl-mono mt-0.5">{relTime(x.at, t)}</p>
+                      <p className="lbl mt-0.5">{relTime(x.at, t)}</p>
                     </div>
                   </li>
                 )

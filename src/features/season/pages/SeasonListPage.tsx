@@ -111,7 +111,7 @@ export default function SeasonListPage() {
       </div>
 
       {isPending ? (
-        <p className="lbl-mono">{t('common.loading')}</p>
+        <p className="lbl">{t('common.loading')}</p>
       ) : (
         <DataTable rows={seasons} columns={columns} pageSize={8} emptyText={t('features.season.empty')} />
       )}

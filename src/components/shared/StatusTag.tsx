@@ -8,10 +8,13 @@ const TONE: Record<string, 'ok' | 'warn' | 'alert' | 'soft'> = {
   DOING: 'warn', INCOMING: 'warn', PENDING: 'warn', REVIEW: 'warn',
   COORDINATED: 'warn', PENDING_FIX: 'warn', RECEIVED_PARTIAL: 'warn', ACTIVE: 'warn',
   PLEDGED: 'warn',
-  LATE: 'alert', REVISE: 'alert', REJECTED: 'alert', SHORTAGE: 'alert',
+    LATE: 'alert', REVISE: 'alert', REJECTED: 'alert', SHORTAGE: 'alert',
   AT_RISK: 'alert', UNUSABLE: 'alert', DAMAGED: 'alert', LOST: 'alert',
+  DECLINED: 'alert', // phân công bị TNV từ chối
   OPEN: 'warn', // yêu cầu hỗ trợ đang chờ điều phối — tone straw urgent
   NOT_RETURNED: 'soft', // đồ mượn chưa trả
+  DRAFT: 'soft', // nhiệm vụ nháp
+  ACCEPTED: 'ok', // phân công đã được TNV nhận
 }
 
 const STYLE = {

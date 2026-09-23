@@ -99,7 +99,7 @@ export default function CommitteeApprovalPage() {
       {
         key: 'id',
         header: t('features.purchases.code'),
-        render: (r: PurchaseRequest) => <span className="lbl-mono font-semibold">#{r.id}</span>,
+        render: (r: PurchaseRequest) => <span className="lbl font-semibold">#{r.id}</span>,
       },
       {
         key: 'materials',
@@ -188,7 +188,7 @@ export default function CommitteeApprovalPage() {
     <div>
       <PageHeader title={t('features.purchases.committeeTitle')} sub={t('features.purchases.committeeSub')} />
       {isPending ? (
-        <p className="lbl-mono">{t('common.loading')}</p>
+        <p className="lbl">{t('common.loading')}</p>
       ) : (
         <DataTable
           rows={requests}

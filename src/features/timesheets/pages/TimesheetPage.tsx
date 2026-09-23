@@ -184,7 +184,7 @@ export default function TimesheetPage() {
       />
 
       {isPending ? (
-        <p className="lbl-mono">{t('common.loading')}</p>
+        <p className="lbl">{t('common.loading')}</p>
       ) : user?.role === 'LEADER' && myAreas.length === 0 ? (
         <EmptyState text={t('features.tasks.noArea')} />
       ) : (
@@ -200,7 +200,7 @@ export default function TimesheetPage() {
               </div>
             </div>
             <Card className="p-4" style={{ '--d': 1 } as CSSProperties}>
-              <p className="lbl-mono mb-2 px-1">{t('features.timesheets.hoursByDay')}</p>
+              <p className="lbl mb-2 px-1">{t('features.timesheets.hoursByDay')}</p>
               <div className="h-44">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={chartData} margin={{ top: 4, right: 8, bottom: 0, left: -16 }}>

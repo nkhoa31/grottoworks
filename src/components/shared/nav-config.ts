@@ -55,9 +55,8 @@ export const NAV: Record<Role, NavGroup[]> = {
     {
       section: '',
       items: [
-        { label: 'nav.leader.dashboard', to: '/leader', icon: 'dashboard' },
+                { label: 'nav.leader.dashboard', to: '/leader', icon: 'dashboard' },
         { label: 'nav.leader.tasks', to: '/leader/tasks', icon: 'tasks' },
-        { label: 'nav.leader.assignments', to: '/leader/assignments', icon: 'assign' },
         { label: 'nav.leader.regs', to: '/leader/regs', icon: 'inbox', badge: 'support' },
         { label: 'nav.leader.support', to: '/leader/support', icon: 'lifebuoy' },
         { label: 'nav.leader.volunteers', to: '/leader/volunteers', icon: 'users' },

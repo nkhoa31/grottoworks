@@ -129,7 +129,7 @@ export default function OfficerDashboard() {
       />
 
       {isPending ? (
-        <p className="lbl-mono">{t('common.loading')}</p>
+        <p className="lbl">{t('common.loading')}</p>
       ) : !area || !summary ? (
         <EmptyState text={t('features.materials.noArea')} />
       ) : (
@@ -171,7 +171,7 @@ export default function OfficerDashboard() {
           <div className="grid gap-6 xl:grid-cols-2">
             <Card className="p-5">
               <div className="mb-3 flex items-center justify-between gap-3">
-                <p className="lbl-mono">{t('features.dashboards.shortageList')}</p>
+                <p className="lbl">{t('features.dashboards.shortageList')}</p>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -190,7 +190,7 @@ export default function OfficerDashboard() {
 
             <Card className="p-5">
               <div className="mb-3 flex items-center justify-between gap-3">
-                <p className="lbl-mono">{t('features.dashboards.pendingPurchaseList')}</p>
+                <p className="lbl">{t('features.dashboards.pendingPurchaseList')}</p>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -208,7 +208,7 @@ export default function OfficerDashboard() {
             </Card>
 
             <Card className="p-5 xl:col-span-2">
-              <p className="lbl-mono mb-3">{t('features.dashboards.incomingDeliveries')}</p>
+              <p className="lbl mb-3">{t('features.dashboards.incomingDeliveries')}</p>
               {incoming.length === 0 ? (
                 <EmptyState text={t('features.donations.empty')} className="py-6" />
               ) : (

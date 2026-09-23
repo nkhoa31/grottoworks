@@ -34,18 +34,18 @@ export function AdventProgress({ season }: { season: Season }) {
           height={80}
           innerRadius="68%"
           outerRadius="100%"
-          data={[{ value: percent, fill: '#6B7D45' }]}
+                    data={[{ value: percent, fill: '#0A5C36' }]}
           startAngle={90}
           endAngle={-270}
         >
-          <RadialBar dataKey="value" background={{ fill: '#E0D2B8' }} cornerRadius={10} />
+          <RadialBar dataKey="value" background={{ fill: '#E9ECEF' }} cornerRadius={10} />
         </RadialBarChart>
         <p className="tabular absolute inset-0 grid place-items-center text-sm font-extrabold text-grotto-ink">
           {percent}%
         </p>
       </div>
       <div className="min-w-0">
-        <p className="lbl-mono">{t('features.dashboards.seasonProgress')}</p>
+        <p className="lbl">{t('features.dashboards.seasonProgress')}</p>
         <h2 className="mt-1 text-lg font-extrabold leading-tight text-grotto-ink">
           {t('features.dashboards.seasonTitle', { year: season.year })}
         </h2>

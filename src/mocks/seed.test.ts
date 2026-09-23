@@ -52,6 +52,15 @@ describe('seed invariants', () => {
     );
   });
 
+  it('mọi supportRequest.areaId thuộc areas; supportRegs trỏ tới request hợp lệ', () => {
+    const requestIds = new Set(seed.supportRequests.map((r) => r.id));
+    seed.supportRequests.forEach((r) => expect(areaIds.has(r.areaId)).toBe(true));
+    seed.supportRegs.forEach((g) => {
+      expect(requestIds.has(g.requestId)).toBe(true);
+      expect(userIds.has(g.volunteerId)).toBe(true);
+    });
+  });
+
   it('quy mô dữ liệu đúng đề bài', () => {
     expect(seed.users).toHaveLength(30);
     expect(seed.communities).toHaveLength(3);

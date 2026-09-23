@@ -62,7 +62,7 @@ export function AreaCard({
         </div>
       </div>
       <div className="p-5">
-        <p className="lbl-mono">
+        <p className="lbl">
           {t(`features.areas.areaType.${area.type}`)} · {t(`features.areas.level.${area.level}`)}
         </p>
         <h3 className="mt-1 text-lg font-bold leading-tight text-grotto-ink">{area.name}</h3>
@@ -71,7 +71,7 @@ export function AreaCard({
         </div>
         <div className="mt-4">
           <div className="flex items-baseline justify-between">
-            <span className="lbl-mono">{t('features.areas.progress')}</span>
+            <span className="lbl">{t('features.areas.progress')}</span>
             <span className="tabular text-sm font-extrabold text-grotto-ink">{area.progress}%</span>
           </div>
           <div

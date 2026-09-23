@@ -14,6 +14,7 @@ import { useAuth } from '@/lib/auth'
 import { useSupportRequests } from '@/features/support/api'
 import { NAV } from './nav-config'
 import { NotificationsDropdown } from './NotificationsDropdown'
+import { SeasonSelector } from './SeasonSelector'
 import { Avatar } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -62,23 +63,27 @@ export function AppShell({ role }: { role?: Role }) {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <aside className="flex w-64 shrink-0 flex-col bg-grotto-terra text-grotto-panel">
-        <div className="flex items-center gap-3 border-b border-white/10 px-5 py-5">
-          <div className="grid size-11 shrink-0 place-items-center rounded-[12px_12px_4px_4px] bg-grotto-terraDark text-lg font-extrabold">
+            {/* Sidebar (DESIGN_SYSTEM.md mục 5.3): nền trắng, resource-first.
+          Active = viền trái pine + nền pine-light + chữ pine — không tô đậm
+          toàn sidebar để giữ tính "management dashboard" trang nghiêm. */}
+      <aside className="flex w-sidebar shrink-0 flex-col border-r border-grotto-hair bg-grotto-panel">
+        <div className="flex items-center gap-3 border-b border-grotto-hair px-5 py-5">
+          <div className="grid size-11 shrink-0 place-items-center rounded-md bg-grotto-terra text-lg font-extrabold text-grotto-panel">
             G
           </div>
           <div className="min-w-0">
-            <p className="truncate text-base font-extrabold leading-tight tracking-tight">
+            <p className="truncate text-base font-extrabold leading-tight tracking-tight text-grotto-ink">
               {t('app.name')}
             </p>
-            <p className="truncate text-xs text-grotto-panel/70">{t('app.parish')}</p>
+            {/* Brand phụ đề theo role (mục 5.3 Brand Block). */}
+            <p className="truncate text-xs text-grotto-soft">{user ? t(`role.${user.role}`) : t('app.parish')}</p>
           </div>
         </div>
         <nav className="flex-1 space-y-5 overflow-y-auto px-3 py-4">
           {groups.map((g) => (
             <div key={g.section || 'main'}>
               {g.section && (
-                <p className="lbl-mono !mb-1.5 !px-3 !text-grotto-panel/60">{t(g.section)}</p>
+                <p className="lbl !mb-1.5 !px-3">{t(g.section)}</p>
               )}
               <div className="space-y-1">
                 {g.items.map((item) => {
@@ -92,19 +97,29 @@ export function AppShell({ role }: { role?: Role }) {
                       style={{ '--d': delayOf(item.to) } as CSSProperties}
                       className={({ isActive }) =>
                         cn(
-                          'g-item flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-semibold text-grotto-panel/85 transition-colors',
+                          'g-item relative flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-semibold transition-colors',
                           isActive
-                            ? 'bg-grotto-terraDark text-grotto-panel shadow-sm'
-                            : 'hover:bg-white/10 hover:text-grotto-panel',
+                            ? 'bg-grotto-moss/10 text-grotto-moss'
+                            : 'text-grotto-ink hover:bg-grotto-ground',
                         )
                       }
                     >
-                      {Icon && <Icon className="size-4 shrink-0" aria-hidden />}
-                      <span className="flex-1 truncate">{t(item.label)}</span>
-                      {n > 0 && (
-                        <span className="rounded-full bg-grotto-straw px-1.5 py-0.5 text-[10px] font-bold text-grotto-ink">
-                          {n}
-                        </span>
+                      {({ isActive }) => (
+                        <>
+                          {isActive && (
+                            <span
+                              aria-hidden
+                              className="absolute inset-y-1.5 left-0 w-0.5 rounded-full bg-grotto-moss"
+                            />
+                          )}
+                          {Icon && <Icon className="size-4 shrink-0" aria-hidden />}
+                          <span className="flex-1 truncate">{t(item.label)}</span>
+                          {n > 0 && (
+                            <span className="rounded-full bg-grotto-straw px-1.5 py-0.5 text-[10px] font-bold text-grotto-ink tabular">
+                              {n}
+                            </span>
+                          )}
+                        </>
                       )}
                     </NavLink>
                   )
@@ -116,13 +131,16 @@ export function AppShell({ role }: { role?: Role }) {
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex h-16 shrink-0 items-center justify-between border-b border-grotto-hair bg-grotto-panel px-6">
-          <div className="lbl-mono flex items-center gap-2">
-            <span className="text-grotto-terra">{t('app.name')}</span>
-            <span aria-hidden>/</span>
-            <span>{crumb}</span>
+                {/* Header (mục 5.2): Page Context (trái) — Season Selector (phải) — Profile (far right).
+            Không có global search ở Header. */}
+        <header className="flex h-header shrink-0 items-center justify-between gap-4 border-b border-grotto-hair bg-grotto-panel px-6">
+          <div className="flex min-w-0 items-center gap-2 text-sm font-semibold text-grotto-soft">
+            <span className="truncate text-grotto-moss">{t('app.name')}</span>
+            <span aria-hidden className="text-grotto-hair">/</span>
+            <span className="truncate text-grotto-ink">{crumb}</span>
           </div>
           <div className="flex items-center gap-2">
+            <SeasonSelector />
             <NotificationsDropdown />
             <Link
               to="/profile"

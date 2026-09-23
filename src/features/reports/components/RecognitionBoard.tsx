@@ -30,25 +30,25 @@ export function RecognitionBoard({ rows }: { rows: ContributorRow[] }) {
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-grotto-hair">
-            <th scope="col" className="lbl-mono w-14 px-4 py-3 text-center">
+            <th scope="col" className="lbl w-14 px-4 py-3 text-center">
               #
             </th>
-            <th scope="col" className="lbl-mono px-4 py-3">
+            <th scope="col" className="lbl px-4 py-3">
               {t('features.volunteers.name')}
             </th>
-            <th scope="col" className="lbl-mono px-4 py-3">
+            <th scope="col" className="lbl px-4 py-3">
               {t('features.volunteers.community')}
             </th>
-            <th scope="col" className="lbl-mono px-4 py-3 text-right">
+            <th scope="col" className="lbl px-4 py-3 text-right">
               {t('features.volunteers.points')}
             </th>
-            <th scope="col" className="lbl-mono px-4 py-3 text-right">
+            <th scope="col" className="lbl px-4 py-3 text-right">
               {t('features.volunteers.hours')}
             </th>
-            <th scope="col" className="lbl-mono px-4 py-3 text-right">
+            <th scope="col" className="lbl px-4 py-3 text-right">
               {t('features.reports.contributions')}
             </th>
-            <th scope="col" className="lbl-mono px-4 py-3 text-right">
+            <th scope="col" className="lbl px-4 py-3 text-right">
               {t('features.reports.tasksDone')}
             </th>
           </tr>

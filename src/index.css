@@ -3,24 +3,82 @@
 @tailwind utilities;
 
 @layer base {
+    /* ========================================================================
+     GOLDEN WINTER — Design Tokens (DESIGN_SYSTEM.md mục 37)
+     ======================================================================== */
   :root {
-    /* shadcn variables mapped to the grotto palette (HSL) */
-    --background: 41 52% 87%; /* grotto ground #EFE4CC */
-    --foreground: 27 28% 19%; /* grotto ink #3E2F23 */
-    --primary: 22 52% 48%; /* grotto terra #B96A3B */
-    --primary-foreground: 43 69% 95%; /* grotto panel #FBF6E9 */
-    --secondary: 43 69% 95%; /* grotto panel #FBF6E9 */
-    --secondary-foreground: 27 28% 19%; /* grotto ink #3E2F23 */
-    --muted: 39 39% 80%; /* grotto hair #E0D2B8 */
-    --muted-foreground: 32 22% 44%; /* grotto soft #8A7358 */
-    --accent: 41 62% 49%; /* grotto straw #C9972F */
-    --accent-foreground: 27 28% 19%; /* grotto ink #3E2F23 */
-    --destructive: 8 55% 40%; /* grotto brick #9C3D2E */
-    --destructive-foreground: 43 69% 95%; /* grotto panel #FBF6E9 */
-    --border: 39 39% 80%; /* grotto hair #E0D2B8 */
-    --input: 39 39% 80%; /* grotto hair #E0D2B8 */
-    --ring: 22 52% 48%; /* grotto terra #B96A3B */
-    --radius: 0.5rem;
+    /* ---- Brand (HSL bridge cho shadcn) --------------------------------- */
+    --background: 210 17% 98%; /* canvas #F8F9FA */
+    --foreground: 234 22% 22%; /* ink    #2B2D42 */
+    --primary: 152 80% 20%; /* pine   #0A5C36 */
+    --primary-foreground: 0 0% 100%; /* on-primary #FFFFFF */
+    --secondary: 0 0% 100%; /* panel  #FFFFFF */
+    --secondary-foreground: 234 22% 22%; /* ink #2B2D42 */
+    --muted: 210 16% 96%; /* table-header #F1F5F2 */
+    --muted-foreground: 208 7% 46%; /* muted  #6C757D */
+    --accent: 152 80% 20%; /* pine accent (nav active) */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 37%; /* danger #991B1B */
+    --destructive-foreground: 0 0% 100%;
+    --border: 210 14% 93%; /* hairline #E9ECEF */
+    --input: 210 14% 93%;
+    --ring: 152 80% 20%; /* focus ring = primary */
+    --radius: 10px;
+
+    /* ---- Raw Golden Winter tokens (dùng trực tiếp khi cần) ------------- */
+    --color-primary: #0a5c36;
+    --color-primary-hover: #0d7344;
+    --color-primary-light: #e8f5e9;
+    --color-accent-gold: #eeb902;
+    --color-accent-gold-light: #fef9c3;
+    --color-accent-warm: #f4a261;
+
+    --bg-canvas: #f8f9fa;
+    --bg-card: #ffffff;
+    --bg-table-header: #f1f5f2;
+    --bg-hover: #f8f9fa;
+
+    --text-main: #2b2d42;
+    --text-muted: #6c757d;
+    --text-light: #adb5bd;
+    --text-on-primary: #ffffff;
+
+    --border-light: #e9ecef;
+    --border-accent: #e8f0ec;
+
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-7: 32px;
+    --space-8: 40px;
+    --space-9: 48px;
+    --space-10: 64px;
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-card: 12px;
+    --radius-lg: 16px;
+
+    --sidebar-width: 260px;
+    --sidebar-collapsed-width: 72px;
+    --header-height: 64px;
+
+    --page-padding-desktop: 32px;
+    --page-padding-tablet: 24px;
+    --page-padding-mobile: 16px;
+
+    --mobile-bottom-nav-height: 64px;
+    --mobile-touch-target: 48px;
+    --mobile-fab-size: 56px;
+
+    --shadow-card: 0 4px 16px rgba(10, 92, 54, 0.04);
+    --shadow-hover: 0 8px 24px rgba(10, 92, 54, 0.08);
+
+    --transition-fast: 150ms ease;
+    --transition-normal: 250ms ease;
   }
 
   body {
@@ -42,7 +100,15 @@
   font-variant-numeric: tabular-nums;
 }
 
-.lbl-mono {
+/* Label phụ trợ (card title nhỏ, section label) — Sentence Case theo mục 4.2.
+   KHÔNG dùng chữ in hoa toàn bộ cho nội dung nghiệp vụ. */
+.lbl {
+  @apply text-xs font-semibold text-grotto-soft;
+}
+
+/* Ngoại lệ có kiểm soát: chỉ dùng cho mã/token cần uppercase thật
+   (vd mã mùa, mã yêu cầu). Không dùng cho nhãn UI thông thường. */
+.lbl-caps {
   @apply font-mono text-[10px] uppercase tracking-[0.14em] text-grotto-soft;
 }
 
@@ -81,6 +147,41 @@
   animation-delay: calc(var(--d, 0) * 70ms);
 }
 
+/* ---- Tuyết rơi (trang login) ---------------------------------------------
+   Hạt tuyết được tạo động ở component Snowfall; mỗi hạt nhận style inline
+   --x (vị trí ngang %), --size, --dur (thời gian rơi), --delay, --drift
+   (độ trôi ngang). Chỉ animate transform + opacity để không layout thrash. */
+@keyframes snow-fall {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--opacity, 0.9);
+  }
+  90% {
+    opacity: var(--opacity, 0.9);
+  }
+  100% {
+    transform: translate3d(var(--drift, 0px), 110vh, 0) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.snowflake {
+  position: absolute;
+  top: 0;
+  left: var(--x, 0);
+  width: var(--size, 6px);
+  height: var(--size, 6px);
+  border-radius: 9999px;
+  background: #ffffff;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation: snow-fall var(--dur, 10s) linear var(--delay, 0s) infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -91,6 +192,6 @@
 }
 
 ::selection {
-  background: #c9972f;
-  color: #3e2f23;
+  background: #0a5c36;
+  color: #ffffff;
 }

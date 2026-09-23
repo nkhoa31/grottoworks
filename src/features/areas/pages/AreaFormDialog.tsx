@@ -36,7 +36,7 @@ type FormData = z.infer<typeof schema>
 // cần search/tích hợp nhiều option (users > 30). Export để dialog khác
 // (AreaAssignDialog) dùng chung style.
 export const SELECT_CLS =
-  'flex h-10 w-full rounded-md border border-grotto-hair bg-grotto-panel px-3 py-2 text-sm text-grotto-ink transition-colors focus-visible:outline-none focus-visible:border-grotto-terra focus-visible:ring-2 focus-visible:ring-grotto-terra/30'
+  'flex h-8 w-full rounded-md border border-grotto-hair bg-grotto-panel px-3.5 text-sm text-grotto-ink transition-colors focus-visible:outline-none focus-visible:border-grotto-terra focus-visible:ring-2 focus-visible:ring-grotto-terra/30'
 
 export function AreaFormDialog({
   onClose,

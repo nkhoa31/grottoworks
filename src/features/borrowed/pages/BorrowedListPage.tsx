@@ -170,7 +170,7 @@ export default function BorrowedListPage() {
     [t, areas],
   )
 
-  if (areasPending) return <p className="lbl-mono">{t('common.loading')}</p>
+  if (areasPending) return <p className="lbl">{t('common.loading')}</p>
   if (isOfficer && !myAreas.length) return <EmptyState text={t('features.borrowed.noArea')} />
 
   return (
@@ -189,7 +189,7 @@ export default function BorrowedListPage() {
       />
 
       {isPending ? (
-        <p className="lbl-mono">{t('common.loading')}</p>
+        <p className="lbl">{t('common.loading')}</p>
       ) : (
         <DataTable rows={rows} columns={columns} emptyText={t('features.borrowed.empty')} />
       )}

@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { useMemo } from 'react'
 import type { CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
+import { FileText, Plus } from 'lucide-react'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { StatCard } from '@/components/shared/StatCard'
 import { DataTable } from '@/components/shared/DataTable'
@@ -52,7 +53,7 @@ export default function CommitteeDashboard() {
     }
   }, [timesheets])
 
-  const attentionRows = useMemo(() => activity.slice(0, 5), [activity])
+    const attentionRows = useMemo(() => activity.slice(0, 5), [activity])
   const attentionColumns = useMemo(
     () => [
       {
@@ -77,20 +78,37 @@ export default function CommitteeDashboard() {
     [t],
   )
 
+  // Có việc cần chú ý? (Alerts — mục 31) — dùng để đổi framing vùng Activity.
+  const hasAlerts = (summary?.materialsShortage ?? 0) > 0 || (summary?.pendingPurchases ?? 0) > 0
+
   return (
     <div>
+      {/* Page Header (mục 29): H1 + Description + Primary/Secondary Action.
+          One Primary Action (mục 2.5): "Quản lý khu vực" là điểm vào nghiệp vụ chính. */}
       <PageHeader
         title={t('features.dashboards.committeeTitle')}
         sub={t('features.dashboards.committeeSub')}
+        actions={
+          <>
+            <Button variant="secondary" onClick={() => navigate('/committee/reports')}>
+              <FileText aria-hidden />
+              {t('features.dashboards.reportAction')}
+            </Button>
+            <Button onClick={() => navigate('/committee/areas')}>
+              <Plus aria-hidden />
+              {t('features.dashboards.manageAreasAction')}
+            </Button>
+          </>
+        }
       />
 
       {isPending ? (
-        <p className="lbl-mono">{t('common.loading')}</p>
+        <DashboardSkeleton />
       ) : !summary ? null : (
-        <div className="space-y-6">
+                <div className="space-y-6">
           {activeSeason && <AdventProgress season={activeSeason} />}
 
-          {/* 4 StatCard count-up — tone theo mức độ cần chú ý. */}
+          {/* ── 1. KPI ──────────────────────────────────────────────────── */}
           <div className="stagger grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <div style={d(0)}>
               <StatCard
@@ -124,11 +142,13 @@ export default function CommitteeDashboard() {
             </div>
           </div>
 
-          {/* Khu vực + (giờ công, việc cần chú ý): 2 cột trên màn rộng. */}
+                    {/* ── 2. Progress các khu + Giờ công (2 cột trên màn rộng) ────── */}
           <div className="grid gap-6 xl:grid-cols-[1fr_400px]">
             <Card className="p-5">
                 <div className="mb-4 flex items-center justify-between gap-3">
-                  <p className="lbl-mono">{t('features.dashboards.areasOverview')}</p>
+                  <h2 className="text-web-h2 font-semibold text-grotto-ink">
+                    {t('features.dashboards.areasOverview')}
+                  </h2>
                   <Button variant="ghost" size="sm" onClick={() => navigate('/committee/areas')}>
                     {t('features.dashboards.viewAllAreas')}
                   </Button>
@@ -138,15 +158,15 @@ export default function CommitteeDashboard() {
                   <div
                     key={a.id}
                     style={d(i)}
-                    className="g-item rounded-grotto border border-grotto-hair bg-grotto-panel p-4 shadow-sm"
+                    className="g-item rounded-card border border-grotto-hair bg-grotto-ground/40 p-4 shadow-card"
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <h3 className="truncate text-sm font-bold text-grotto-ink">{a.name}</h3>
+                      <h3 className="truncate text-web-h3 font-semibold text-grotto-ink">{a.name}</h3>
                       <StatusTag status={a.status} />
                     </div>
                     <div className="mt-3">
                       <div className="flex items-baseline justify-between">
-                        <span className="lbl-mono">{t('features.areas.progress')}</span>
+                        <span className="lbl">{t('features.areas.progress')}</span>
                         <span className="tabular text-sm font-extrabold text-grotto-ink">
                           {a.progress}%
                         </span>
@@ -165,7 +185,7 @@ export default function CommitteeDashboard() {
                         />
                       </div>
                     </div>
-                    <p className="tabular mt-3 text-xs font-semibold text-grotto-soft">
+                                        <p className="tabular mt-3 text-web-sub text-grotto-soft">
                       {a.volunteerCount} {t('features.areas.volunteers')} · {a.taskCount}{' '}
                       {t('features.areas.tasks')}
                     </p>
@@ -177,32 +197,65 @@ export default function CommitteeDashboard() {
             <div className="space-y-6">
               <Card className="p-5">
                 <div className="mb-3 flex items-baseline justify-between gap-3">
-                  <p className="lbl-mono">{t('features.dashboards.hoursByDay')}</p>
+                  <h2 className="text-web-h2 font-semibold text-grotto-ink">
+                    {t('features.dashboards.hoursByDay')}
+                  </h2>
                   <p className="tabular text-sm font-extrabold text-grotto-ink">
                     {summary.weekHours.toLocaleString()} {t('features.volunteers.hourUnit')}
                   </p>
                 </div>
                 <HoursChart data={chart.data} highlightFrom={chart.weekFrom} />
               </Card>
-
-              <Card className="p-5">
-                <div className="mb-3 flex items-center justify-between gap-3">
-                  <p className="lbl-mono">{t('features.dashboards.attention')}</p>
-                  <Button variant="ghost" size="sm" onClick={() => navigate('/committee/support')}>
-                    {t('features.dashboards.viewSupport')}
-                  </Button>
-                </div>
-                <DataTable
-                  rows={attentionRows}
-                  columns={attentionColumns}
-                  pageSize={5}
-                  emptyText={t('common.empty')}
-                />
-              </Card>
             </div>
           </div>
+
+          {/* ── 3. Pending / Activity (mục 31) ──────────────────────────── */}
+          <Card className="p-5">
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <div>
+                <h2 className="text-web-h2 font-semibold text-grotto-ink">
+                  {t('features.dashboards.attention')}
+                </h2>
+                {hasAlerts && (
+                  <p className="mt-0.5 text-web-sub text-grotto-soft">
+                    {t('features.dashboards.attentionHint')}
+                  </p>
+                )}
+              </div>
+              <Button variant="ghost" size="sm" onClick={() => navigate('/committee/support')}>
+                {t('features.dashboards.viewSupport')}
+              </Button>
+            </div>
+            <DataTable
+              rows={attentionRows}
+              columns={attentionColumns}
+              pageSize={5}
+              emptyText={t('common.empty')}
+            />
+          </Card>
         </div>
       )}
+    </div>
+  )
+}
+
+// Loading State (mục 21): Skeleton cho card/KPI, KHÔNG dùng spinner giữa trang.
+function DashboardSkeleton() {
+  return (
+    <div className="space-y-6" aria-busy="true" aria-live="polite">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div
+            key={i}
+            className="h-28 animate-pulse rounded-card border border-grotto-hair bg-grotto-panel"
+          />
+        ))}
+      </div>
+      <div className="h-28 animate-pulse rounded-card border border-grotto-hair bg-grotto-panel" />
+      <div className="grid gap-6 xl:grid-cols-[1fr_400px]">
+        <div className="h-72 animate-pulse rounded-card border border-grotto-hair bg-grotto-panel" />
+        <div className="h-72 animate-pulse rounded-card border border-grotto-hair bg-grotto-panel" />
+      </div>
     </div>
   )
 }

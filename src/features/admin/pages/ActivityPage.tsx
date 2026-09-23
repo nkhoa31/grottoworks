@@ -62,7 +62,7 @@ export default function ActivityPage() {
       <PageHeader title={t('features.admin.activityTitle')} sub={t('features.admin.activitySub')} />
 
       {isPending ? (
-        <p className="lbl-mono">{t('common.loading')}</p>
+        <p className="lbl">{t('common.loading')}</p>
       ) : (
         <DataTable
           rows={logs}

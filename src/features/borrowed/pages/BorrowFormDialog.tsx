@@ -13,7 +13,7 @@ import { useCreateBorrowed } from '../api'
 import type { WorkArea } from '@/types'
 
 export const SELECT_CLS =
-  'mt-1 flex h-10 w-full rounded-md border border-grotto-hair bg-grotto-panel px-3 py-2 text-sm text-grotto-ink transition-colors focus-visible:outline-none focus-visible:border-grotto-terra focus-visible:ring-2 focus-visible:ring-grotto-terra/30'
+  'mt-1 flex h-8 w-full rounded-md border border-grotto-hair bg-grotto-panel px-3.5 text-sm text-grotto-ink transition-colors focus-visible:outline-none focus-visible:border-grotto-terra focus-visible:ring-2 focus-visible:ring-grotto-terra/30'
 
 const schema = z.object({
   name: z.string().trim().min(1, 'features.borrowed.nameRequired'),

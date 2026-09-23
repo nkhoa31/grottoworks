@@ -129,7 +129,7 @@ export default function Profile() {
   const { user, refresh } = useAuth()
   const { data: timesheets = [] } = useTimesheets(user?.id)
 
-  if (!user) return <p className="lbl-mono">{t('common.loading')}</p>
+  if (!user) return <p className="lbl">{t('common.loading')}</p>
 
   const hours = timesheets.reduce((s, x) => s + (x.hours ?? 0), 0)
 

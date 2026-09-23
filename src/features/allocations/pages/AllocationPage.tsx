@@ -26,7 +26,7 @@ import { availableMap, useAllocations, useCreateAllocation } from '../api'
 import type { Allocation } from '@/types'
 
 const SELECT_CLS =
-  'mt-1 flex h-10 w-full rounded-md border border-grotto-hair bg-grotto-panel px-3 py-2 text-sm text-grotto-ink transition-colors focus-visible:outline-none focus-visible:border-grotto-terra focus-visible:ring-2 focus-visible:ring-grotto-terra/30'
+  'mt-1 flex h-8 w-full rounded-md border border-grotto-hair bg-grotto-panel px-3.5 text-sm text-grotto-ink transition-colors focus-visible:outline-none focus-visible:border-grotto-terra focus-visible:ring-2 focus-visible:ring-grotto-terra/30'
 
 const qtyField = z.preprocess(
   (v) => (v === '' || v == null ? undefined : v),
@@ -187,7 +187,7 @@ export default function AllocationPage() {
     [t, allMaterials, allTasks, areas, users],
   )
 
-  if (areasPending) return <p className="lbl-mono">{t('common.loading')}</p>
+  if (areasPending) return <p className="lbl">{t('common.loading')}</p>
   if (isOfficer && !myAreas.length) return <EmptyState text={t('features.allocations.noArea')} />
 
   return (
@@ -267,7 +267,7 @@ export default function AllocationPage() {
       </Card>
 
       {isPending ? (
-        <p className="lbl-mono">{t('common.loading')}</p>
+        <p className="lbl">{t('common.loading')}</p>
       ) : (
         <DataTable rows={rows} columns={columns} emptyText={t('features.allocations.empty')} />
       )}

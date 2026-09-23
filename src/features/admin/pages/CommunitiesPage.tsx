@@ -126,7 +126,7 @@ function ParishCard() {
 
   return (
     <Card className="mb-5 p-5">
-      <p className="lbl-mono">{t('features.admin.parishName')}</p>
+      <p className="lbl">{t('features.admin.parishName')}</p>
       <div className="mt-2 flex max-w-md gap-2">
         <Input
           aria-label={t('features.admin.parishName')}
@@ -245,7 +245,7 @@ export default function CommunitiesPage() {
       <ParishCard />
 
       {isPending ? (
-        <p className="lbl-mono">{t('common.loading')}</p>
+        <p className="lbl">{t('common.loading')}</p>
       ) : (
         <DataTable
           rows={communities}

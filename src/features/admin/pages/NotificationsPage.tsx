@@ -23,6 +23,7 @@ const EVENTS = [
   'correctionRequested',
   'supportOpened',
   'regPending',
+  'assignmentDeclined',
 ] as const
 type EventKey = (typeof EVENTS)[number]
 type Prefs = Partial<Record<EventKey, boolean>>

@@ -27,7 +27,7 @@ import type { Material, PurchaseRecord, PurchaseRequest } from '@/types'
 import { useConfirmPurchase, useCreatePurchaseRecord, usePurchaseRecords, usePurchaseRequests } from '../api'
 
 const SELECT_CLS =
-  'flex h-10 w-full rounded-md border border-grotto-hair bg-grotto-panel px-3 py-2 text-sm text-grotto-ink transition-colors focus-visible:outline-none focus-visible:border-grotto-terra focus-visible:ring-2 focus-visible:ring-grotto-terra/30'
+  'flex h-8 w-full rounded-md border border-grotto-hair bg-grotto-panel px-3.5 text-sm text-grotto-ink transition-colors focus-visible:outline-none focus-visible:border-grotto-terra focus-visible:ring-2 focus-visible:ring-grotto-terra/30'
 
 const num = (key: string, min = 0) =>
   z.preprocess(
@@ -213,7 +213,7 @@ export default function PurchaseConfirmPage() {
       {
         key: 'id',
         header: t('features.purchases.code'),
-        render: (r: PurchaseRequest) => <span className="lbl-mono font-semibold">#{r.id}</span>,
+        render: (r: PurchaseRequest) => <span className="lbl font-semibold">#{r.id}</span>,
       },
       {
         key: 'materials',
@@ -289,21 +289,21 @@ export default function PurchaseConfirmPage() {
     [t, materials, users, confirmPurchase],
   )
 
-  if (areasPending) return <p className="lbl-mono">{t('common.loading')}</p>
+  if (areasPending) return <p className="lbl">{t('common.loading')}</p>
   if (!myAreas.length) return <EmptyState text={t('features.materials.noArea')} />
 
   return (
     <div>
       <PageHeader title={t('features.purchases.confirmTitle')} sub={t('features.purchases.confirmSub')} />
 
-      <h2 className="lbl-mono mb-3">{t('features.purchases.pendingRecords')}</h2>
+      <h2 className="lbl mb-3">{t('features.purchases.pendingRecords')}</h2>
       {isPending ? (
-        <p className="lbl-mono">{t('common.loading')}</p>
+        <p className="lbl">{t('common.loading')}</p>
       ) : (
         <DataTable rows={pending} columns={pendingColumns} emptyText={t('features.purchases.noApproved')} />
       )}
 
-      <h2 className="lbl-mono mb-3 mt-8">{t('features.purchases.recordsTitle')}</h2>
+      <h2 className="lbl mb-3 mt-8">{t('features.purchases.recordsTitle')}</h2>
       <DataTable rows={myRecords} columns={recordColumns} pageSize={8} emptyText={t('features.purchases.noRecords')} />
 
       {recording && (
