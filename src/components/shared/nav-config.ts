@@ -21,6 +21,8 @@ export const NAV: Record<Role, NavGroup[]> = {
       section: 'nav.section.overview',
       items: [
         { label: 'nav.community.dashboard', to: '/community', icon: 'dashboard' },
+        { label: 'nav.community.seasons', to: '/community/seasons', icon: 'calendar' },
+        { label: 'nav.community.areas', to: '/community/areas', icon: 'areas' },
       ],
     },
     {

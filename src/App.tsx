@@ -52,6 +52,7 @@ const BackupPage = lazy(() => import('@/features/parish/pages/BackupPage'))
 const PAGES: Record<string, ComponentType> = {
   '/parish/seasons': SeasonListPage,
   '/parish/areas': AreaListPage,
+  '/community/seasons': SeasonListPage,
   '/community/areas': AreaListPage,
   '/leader/tasks': TaskListPage,
   '/leader/assignments': TaskListPage,
@@ -85,7 +86,6 @@ const PAGES: Record<string, ComponentType> = {
 const DYNAMIC: Partial<Record<Role, { path: string; Page: ComponentType }[]>> = {
   LEADER: [{ path: 'tasks/:id', Page: TaskDetailPage }, { path: 'volunteers/:id', Page: VolunteerDetailPage }],
   COMMUNITY: [
-    { path: 'areas', Page: AreaListPage },
     { path: 'areas/:id/tasks', Page: TaskListPage },
     { path: 'volunteers/:id', Page: VolunteerDetailPage },
   ],

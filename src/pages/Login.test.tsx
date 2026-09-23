@@ -12,6 +12,7 @@ beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))
 beforeEach(() => {
   resetDb()
   localStorage.removeItem('grotto-token')
+  window.history.pushState({}, '', '/')
 })
 afterAll(() => server.close())
 
@@ -22,11 +23,15 @@ test('hiện 4 chip tài khoản demo', async () => {
   }
 })
 
-test('đăng nhập committee → vào shell với nav điều phối', async () => {
+test('đăng nhập committee → vào shell với nav điều phối, hiện Mùa chuẩn bị & Khu vực công tác', async () => {
   const user = userEvent.setup()
   render(<App />)
   await user.click(await screen.findByRole('button', { name: /committee/ }))
   await user.click(screen.getByRole('button', { name: 'Đăng nhập' }))
   expect(await screen.findByText('Điều phối')).toBeDefined()
   expect(await screen.findByText('Giuse Trần Văn Bình')).toBeDefined()
+  expect(await screen.findByRole('link', { name: /Mùa chuẩn bị/i })).toBeDefined()
+  expect(await screen.findByRole('link', { name: /Khu vực công tác/i })).toBeDefined()
 })
+
+
