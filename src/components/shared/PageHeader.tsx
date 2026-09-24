@@ -14,11 +14,11 @@ export function PageHeader({
   return (
     <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
       <div className="stagger">
-        <h1 className="text-2xl font-extrabold tracking-tight text-grotto-ink" style={d(0)}>
+        <h1 className="text-2xl font-extrabold tracking-tight text-foreground" style={d(0)}>
           {title}
         </h1>
         {sub && (
-          <p className="mt-1 text-sm text-grotto-soft" style={d(1)}>
+          <p className="mt-1 text-sm text-muted-foreground" style={d(1)}>
             {sub}
           </p>
         )}

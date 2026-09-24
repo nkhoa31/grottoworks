@@ -35,7 +35,7 @@ function Section({
   return (
     <section className="mt-8" style={{ '--d': index } as CSSProperties} data-g-item>
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-lg font-extrabold tracking-tight text-grotto-ink">
+        <h2 className="text-lg font-extrabold tracking-tight text-foreground">
           {title}
           <span className="lbl-mono ml-2">{t('common.total', { n: count })}</span>
         </h2>
@@ -359,7 +359,7 @@ export default function ReportPage() {
 
       <section className="mt-8" style={{ '--d': 4 } as CSSProperties} data-g-item>
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-          <h2 className="text-lg font-extrabold tracking-tight text-grotto-ink">
+          <h2 className="text-lg font-extrabold tracking-tight text-foreground">
             {t('features.reports.recognitionTitle')}
           </h2>
         </div>

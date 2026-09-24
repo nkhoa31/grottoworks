@@ -89,7 +89,7 @@ function ReceptionDialog({
       <form id="reception-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
         {material && item.promisedQty != null && (
           <p className="text-sm">
-            <span className="font-semibold text-grotto-ink">{material.name}</span>{' '}
+            <span className="font-semibold text-foreground">{material.name}</span>{' '}
             — {t('features.donations.pledgedOf', { n: item.promisedQty, unit: material.unit })}
           </p>
         )}
@@ -97,7 +97,7 @@ function ReceptionDialog({
           <Label htmlFor="reception-qty">{t('features.donations.receivedQty')}</Label>
           <Input id="reception-qty" type="number" min={0} step={1} {...register('receivedQty')} />
           {errors.receivedQty?.message && (
-            <p className="mt-1 text-xs font-semibold text-grotto-brick">
+            <p className="mt-1 text-xs font-semibold text-destructive">
               {t(errors.receivedQty.message)}
             </p>
           )}
@@ -147,7 +147,7 @@ export default function DonationListPage() {
       {
         key: 'donorName',
         header: t('features.donations.donor'),
-        render: (d: Donation) => <span className="font-semibold text-grotto-ink">{d.donorName}</span>,
+        render: (d: Donation) => <span className="font-semibold text-foreground">{d.donorName}</span>,
       },
       {
         key: 'material',
@@ -156,10 +156,10 @@ export default function DonationListPage() {
           d.materialId ? (
             <span>
               {materialById.get(d.materialId)?.name ?? '—'}
-              {unitOf(d) && <span className="text-xs text-grotto-soft"> ({unitOf(d)})</span>}
+              {unitOf(d) && <span className="text-xs text-muted-foreground"> ({unitOf(d)})</span>}
             </span>
           ) : (
-            <span className="tabular font-semibold text-grotto-straw">
+            <span className="tabular font-semibold text-brand-gold">
               {t('features.donations.money')} · {fmt(d.monetary ?? 0)}
             </span>
           ),
@@ -174,7 +174,7 @@ export default function DonationListPage() {
               {d.promisedQty} {unitOf(d)}
             </span>
           ) : (
-            <span className="text-grotto-soft">—</span>
+            <span className="text-muted-foreground">—</span>
           ),
       },
       {
@@ -185,7 +185,7 @@ export default function DonationListPage() {
           d.receivedQty != null ? (
             <span className="tabular">{d.receivedQty}</span>
           ) : (
-            <span className="text-grotto-soft">—</span>
+            <span className="text-muted-foreground">—</span>
           ),
       },
       { key: 'status', header: t('common.status'), render: (d: Donation) => <StatusTag status={d.status} /> },
@@ -234,7 +234,7 @@ export default function DonationListPage() {
               </Button>
             </div>
           ) : (
-            <span className="text-grotto-soft">—</span>
+            <span className="text-muted-foreground">—</span>
           ),
       },
     ],

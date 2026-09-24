@@ -35,13 +35,13 @@ function LockSwitch({
       onClick={onToggle}
       className={cn(
         'relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border transition-colors',
-        checked ? 'border-grotto-brick bg-grotto-brick' : 'border-grotto-hair bg-grotto-moss',
+        checked ? 'border-destructive bg-destructive' : 'border-border bg-brand-pine',
       )}
     >
       <span
         aria-hidden
         className={cn(
-          'inline-block size-3.5 rounded-full bg-grotto-panel shadow transition-transform',
+          'inline-block size-3.5 rounded-full bg-card shadow transition-transform',
           checked ? 'translate-x-[18px]' : 'translate-x-[3px]',
         )}
       />

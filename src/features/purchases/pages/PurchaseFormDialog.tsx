@@ -15,7 +15,7 @@ import { shortage } from '@/types'
 import type { Material } from '@/types'
 import { useCreatePurchaseRequest } from '../api'
 
-const CHECK_CLS = 'mt-1 size-4 rounded border border-grotto-hair bg-grotto-panel accent-grotto-terra'
+const CHECK_CLS = 'mt-1 size-4 rounded border border-border bg-card accent-primary'
 
 // qtys là record string→string (input uncontrolled), ép số lúc submit.
 const schema = z
@@ -101,15 +101,15 @@ export function PurchaseFormDialog({
               {materials.map((m) => {
                 const checked = values.materialIds.includes(m.id)
                 return (
-                  <div key={m.id} className="rounded-grotto border border-grotto-hair/60 p-2.5">
-                    <label className="flex items-start gap-2 text-sm text-grotto-ink">
+                  <div key={m.id} className="rounded-card border border-border/60 p-2.5">
+                    <label className="flex items-start gap-2 text-sm text-foreground">
                       <input type="checkbox" value={m.id} className={CHECK_CLS} {...register('materialIds')} />
                       <span className="flex-1">
                         <span className="font-semibold">{m.name}</span>{' '}
-                        <span className="text-grotto-soft">
+                        <span className="text-muted-foreground">
                           {t('features.purchases.shortOf', { n: shortage(m), unit: m.unit })}
                         </span>
-                        <span className="block text-xs text-grotto-soft">
+                        <span className="block text-xs text-muted-foreground">
                           {t('features.purchases.estUnitPrice')}:{' '}
                           <span className="tabular">{m.estUnitPrice.toLocaleString()}</span> ₫/{m.unit}
                         </span>
@@ -134,10 +134,10 @@ export function PurchaseFormDialog({
               })}
             </div>
           ) : (
-            <p className="pt-1 text-sm text-grotto-soft">{t('features.purchases.noShortage')}</p>
+            <p className="pt-1 text-sm text-muted-foreground">{t('features.purchases.noShortage')}</p>
           )}
           {errors.materialIds?.message ? (
-            <p className="mt-1 text-xs font-semibold text-grotto-brick">
+            <p className="mt-1 text-xs font-semibold text-destructive">
               {t(errors.materialIds.message)}
             </p>
           ) : null}
@@ -146,7 +146,7 @@ export function PurchaseFormDialog({
           <Label htmlFor="purchase-note">{t('features.purchases.note')}</Label>
           <Input id="purchase-note" {...register('note')} />
         </div>
-        <p className="text-right text-sm text-grotto-ink">
+        <p className="text-right text-sm text-foreground">
           {t('features.purchases.total')}:{' '}
           <span className="tabular font-bold">{total.toLocaleString()} ₫</span>
         </p>

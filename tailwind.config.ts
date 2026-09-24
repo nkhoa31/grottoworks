@@ -5,17 +5,41 @@ export default {
   theme: {
     extend: {
       colors: {
-        grotto: {
-          ground: '#EFE4CC',
-          panel: '#FBF6E9',
-          ink: '#3E2F23',
-          soft: '#8A7358',
-          hair: '#E0D2B8',
-          terra: '#B96A3B',
-          terraDark: '#A05A30',
-          moss: '#6B7D45',
-          straw: '#C9972F',
-          brick: '#9C3D2E',
+        // Golden Winter — DESIGN_SYSTEM.md mục 37 (raw tokens)
+        brand: {
+          pine: '#0A5C36', // primary
+          pineHover: '#0D7344', // primary hover
+          pineLight: '#E8F5E9', // primary light
+          gold: '#EEB902', // champagne gold (accent)
+          goldLight: '#FEF9C3',
+          warm: '#F4A261', // warm gold (pending/shortage)
+        },
+        gw: {
+          canvas: '#F8F9FA',
+          card: '#FFFFFF',
+          ink: '#2B2D42',
+          muted: '#6C757D',
+          light: '#ADB5BD',
+          hair: '#E9ECEF',
+          tableHead: '#F1F5F2',
+          hover: '#F8F9FA',
+        },
+        // Status colors — DESIGN_SYSTEM.md mục 12
+        status: {
+          successBg: '#E8F5E9',
+          successText: '#0A5C36',
+          pendingBg: '#FEF3C7',
+          pendingText: '#B45309',
+          revisionBg: '#FFEEDD',
+          revisionText: '#D97706',
+          dangerBg: '#FEE2E2',
+          dangerText: '#991B1B',
+          neutralBg: '#F1F3F5',
+          neutralText: '#495057',
+        },
+        card: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
         },
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
@@ -44,16 +68,21 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['"Be Vietnam Pro"', 'sans-serif'],
+        sans: ['"Be Vietnam Pro"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
         mono: ['"IBM Plex Mono"', 'monospace'],
       },
       borderRadius: {
-        grotto: '46px 46px 6px 6px',
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        sm: '6px',
+        md: '10px',
+        card: '12px',
+        lg: '16px',
+      },
+      boxShadow: {
+        card: '0 4px 16px rgba(10, 92, 54, 0.04)',
+        hover: '0 8px 24px rgba(10, 92, 54, 0.08)',
       },
     },
   },
   plugins: [],
 } satisfies Config
+

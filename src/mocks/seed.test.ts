@@ -46,10 +46,18 @@ describe('seed invariants', () => {
     received.forEach((sum, id) => expect(byId.get(id)!.donatedReceived).toBeGreaterThanOrEqual(sum));
   });
 
-  it('received = existing + purchased + donatedReceived cho mọi vật tư', () => {
+    it('received = existing + purchased + donatedReceived cho mọi vật tư', () => {
     seed.materials.forEach((m) =>
       expect(m.received).toBe(m.existing + m.purchased + m.donatedReceived),
     );
+  });
+
+  it('mọi supportReg trỏ tới yêu cầu hỗ trợ + TNV tồn tại', () => {
+    const requestIds = new Set(seed.supportRequests.map((r) => r.id));
+    seed.supportRegs.forEach((g) => {
+      expect(requestIds.has(g.requestId)).toBe(true);
+      expect(userIds.has(g.volunteerId)).toBe(true);
+    });
   });
 
   it('quy mô dữ liệu đúng đề bài', () => {

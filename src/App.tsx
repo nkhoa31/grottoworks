@@ -54,8 +54,7 @@ const PAGES: Record<string, ComponentType> = {
   '/parish/areas': AreaListPage,
   '/community/seasons': SeasonListPage,
   '/community/areas': AreaListPage,
-  '/leader/tasks': TaskListPage,
-  '/leader/assignments': TaskListPage,
+    '/leader/tasks': TaskListPage,
   '/leader/volunteers': VolunteerListPage,
   '/community/volunteers': VolunteerListPage,
   '/leader/regs': RegsApprovalPage,
@@ -101,7 +100,7 @@ const ROLES: Role[] = ['COMMUNITY', 'LEADER', 'MATERIAL_OFFICER', 'PARISH']
 function Placeholder({ label }: { label: string }) {
   const { t } = useTranslation()
   return (
-    <Card className="grid h-64 place-items-center border-dashed bg-grotto-panel/60">
+    <Card className="grid h-64 place-items-center border-dashed bg-card/60">
       <p className="lbl-mono px-6 text-center">
         {t('common.building')} — {t(label)}
       </p>

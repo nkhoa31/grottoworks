@@ -86,9 +86,9 @@ export function MaterialFormDialog({
   }
 
   const err = (msg?: string) =>
-    msg ? <p className="mt-1 text-xs font-semibold text-grotto-brick">{t(msg)}</p> : null
+    msg ? <p className="mt-1 text-xs font-semibold text-destructive">{t(msg)}</p> : null
 
-  const RO = 'flex h-10 w-full rounded-md border border-grotto-hair/60 bg-grotto-panel/50 px-3 py-2 text-sm text-grotto-soft'
+  const RO = 'flex h-10 w-full rounded-md border border-border/60 bg-card/50 px-3 py-2 text-sm text-muted-foreground'
 
   return (
     <Dialog

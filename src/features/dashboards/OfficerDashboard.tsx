@@ -57,7 +57,7 @@ export default function OfficerDashboard() {
         header: t('features.materials.remainingShort'),
         align: 'right' as const,
         render: (m: OfficerSummary['shortageList'][number]) => (
-          <span className="tabular font-bold text-grotto-brick">
+          <span className="tabular font-bold text-destructive">
             {m.short} {m.unit}
           </span>
         ),

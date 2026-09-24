@@ -74,11 +74,11 @@ export function CorrectionDialog({
       }
     >
       <div className="space-y-3">
-        <p className="text-sm font-semibold text-grotto-ink">
+        <p className="text-sm font-semibold text-foreground">
           {volunteerName} · <span className="tabular">{viDate(item.date)}</span>
         </p>
         <p>
-          <span className="font-semibold text-grotto-ink">
+          <span className="font-semibold text-foreground">
             {t('features.timesheets.correctionRequest')}:
           </span>{' '}
           {item.correctionRequest}
@@ -101,7 +101,7 @@ export function CorrectionDialog({
             }}
           />
           {error && (
-            <p className="mt-1 text-xs font-semibold text-grotto-brick">
+            <p className="mt-1 text-xs font-semibold text-destructive">
               {t('features.timesheets.hoursRequired')}
             </p>
           )}

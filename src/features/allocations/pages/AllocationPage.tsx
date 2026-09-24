@@ -26,7 +26,7 @@ import { availableMap, useAllocations, useCreateAllocation } from '../api'
 import type { Allocation } from '@/types'
 
 const SELECT_CLS =
-  'mt-1 flex h-10 w-full rounded-md border border-grotto-hair bg-grotto-panel px-3 py-2 text-sm text-grotto-ink transition-colors focus-visible:outline-none focus-visible:border-grotto-terra focus-visible:ring-2 focus-visible:ring-grotto-terra/30'
+  'mt-1 flex h-10 w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground transition-colors focus-visible:outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/30'
 
 const qtyField = z.preprocess(
   (v) => (v === '' || v == null ? undefined : v),
@@ -125,7 +125,7 @@ export default function AllocationPage() {
   }
 
   const err = (msg?: string) =>
-    msg ? <p className="mt-1 text-xs font-semibold text-grotto-brick">{t(msg)}</p> : null
+    msg ? <p className="mt-1 text-xs font-semibold text-destructive">{t(msg)}</p> : null
 
   // Bảng: phân bổ của vật tư khu officer phụ trách.
   const rows = isOfficer
@@ -146,9 +146,9 @@ export default function AllocationPage() {
         render: (a: Allocation) => {
           const m = allMaterials.find((x) => x.id === a.materialId)
           return (
-            <span className="font-semibold text-grotto-ink">
+            <span className="font-semibold text-foreground">
               {m?.name ?? a.materialId}
-              {m && <span className="text-xs font-normal text-grotto-soft"> ({m.unit})</span>}
+              {m && <span className="text-xs font-normal text-muted-foreground"> ({m.unit})</span>}
             </span>
           )
         },
@@ -166,7 +166,7 @@ export default function AllocationPage() {
           <span className="flex items-center gap-1.5">
             {targetLabel(a)}
             {a.targetTaskId && (
-              <span className="text-xs text-grotto-soft">
+              <span className="text-xs text-muted-foreground">
                 ({areaById.get(taskById.get(a.targetTaskId)?.areaId ?? '')?.name ?? ''})
               </span>
             )}
@@ -212,7 +212,7 @@ export default function AllocationPage() {
               ))}
             </select>
             {materialId && (
-              <p className="mt-1 text-xs font-semibold text-grotto-moss">
+              <p className="mt-1 text-xs font-semibold text-brand-pine">
                 {t('features.allocations.available', { n: available[materialId] ?? 0 })}
               </p>
             )}

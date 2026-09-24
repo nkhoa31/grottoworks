@@ -74,7 +74,7 @@ function CommunityFormDialog({
   }
 
   const err = (msg?: string) =>
-    msg ? <p className="mt-1 text-xs font-semibold text-grotto-brick">{t(msg)}</p> : null
+    msg ? <p className="mt-1 text-xs font-semibold text-destructive">{t(msg)}</p> : null
 
   return (
     <Dialog

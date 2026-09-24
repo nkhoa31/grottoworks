@@ -59,22 +59,19 @@ export default function Login() {
   }
 
   return (
-    <main className="grid min-h-screen place-items-center bg-grotto-ground p-4">
+    <main className="grid min-h-screen place-items-center bg-background p-4">
       <Card className="g-item w-full max-w-sm overflow-hidden">
-        {/* Vòm hang đá: dải terra với mái vòm panel cắt lên trên. */}
-        <div className="relative h-28 bg-grotto-terra">
-          <div className="absolute inset-x-0 bottom-0 mx-auto h-8 w-24 rounded-t-full bg-grotto-panel" />
-          <div className="grid h-full place-items-center">
-            <div className="grid size-12 place-items-center rounded-[14px_14px_4px_4px] bg-grotto-terraDark text-xl font-extrabold text-grotto-panel">
-              G
-            </div>
+        {/* Christmas accent — dải pine với dấu sao (DESIGN_SYSTEM.md mục 36). */}
+        <div className="relative grid h-28 place-items-center bg-primary">
+          <div className="grid size-14 place-items-center rounded-card bg-brand-gold text-2xl font-extrabold text-foreground">
+            ★
           </div>
         </div>
         <div className="p-6">
-          <h1 className="text-xl font-extrabold tracking-tight text-grotto-ink">
+          <h1 className="text-xl font-extrabold tracking-tight text-foreground">
             {t('app.name')}
           </h1>
-          <p className="mt-0.5 text-sm text-grotto-soft">{t('login.subtitle')}</p>
+          <p className="mt-0.5 text-sm text-muted-foreground">{t('login.subtitle')}</p>
 
           <p className="lbl-mono mt-5">{t('login.demoAccounts')}</p>
           <div className="mt-2 grid grid-cols-2 gap-2">
@@ -84,7 +81,7 @@ export default function Login() {
                 type="button"
                 onClick={() => fillDemo(d.email)}
                 title={d.email}
-                className="rounded-md border border-grotto-hair bg-grotto-ground px-3 py-2 text-left text-xs font-semibold text-grotto-soft transition-colors hover:border-grotto-terra hover:text-grotto-terra"
+                className="rounded-md border border-border bg-background px-3 py-2 text-left text-xs font-semibold text-muted-foreground transition-colors hover:border-primary hover:text-primary"
               >
                 <span className="block truncate">{t(`role.${d.role}`)}</span>
                 <span className="block truncate font-mono text-[10px]">
@@ -99,7 +96,7 @@ export default function Login() {
               <Label htmlFor="email">{t('login.email')}</Label>
               <Input id="email" type="email" autoComplete="email" {...register('email')} />
               {errors.email && (
-                <p className="mt-1 text-xs font-semibold text-grotto-brick">
+                <p className="mt-1 text-xs font-semibold text-destructive">
                   {t(errors.email.message ?? '')}
                 </p>
               )}
@@ -113,13 +110,13 @@ export default function Login() {
                 {...register('password')}
               />
               {errors.password && (
-                <p className="mt-1 text-xs font-semibold text-grotto-brick">
+                <p className="mt-1 text-xs font-semibold text-destructive">
                   {t(errors.password.message ?? '')}
                 </p>
               )}
             </div>
             {serverError && (
-              <p role="alert" className="text-xs font-semibold text-grotto-brick">
+              <p role="alert" className="text-xs font-semibold text-destructive">
                 {serverError}
               </p>
             )}
@@ -132,3 +129,4 @@ export default function Login() {
     </main>
   )
 }
+

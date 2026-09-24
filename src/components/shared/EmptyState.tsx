@@ -18,8 +18,8 @@ export function EmptyState({
         className,
       )}
     >
-      <Inbox className="size-8 text-grotto-soft" aria-hidden />
-      <p className="text-sm text-grotto-soft">{text}</p>
+      <Inbox className="size-8 text-muted-foreground" aria-hidden />
+      <p className="text-sm text-muted-foreground">{text}</p>
       {action}
     </div>
   )

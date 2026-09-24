@@ -56,7 +56,7 @@ export function AreaAssignDialog({
   }
 
   const err = (msg?: string) =>
-    msg ? <p className="mt-1 text-xs font-semibold text-grotto-brick">{t(msg)}</p> : null
+    msg ? <p className="mt-1 text-xs font-semibold text-destructive">{t(msg)}</p> : null
 
   const select = (
     id: 'leaderId' | 'officerId',
@@ -93,24 +93,24 @@ export function AreaAssignDialog({
         </>
       }
     >
-      <div className="mb-4 space-y-2 rounded-md border border-grotto-hair bg-grotto-ground/60 p-3 text-xs">
+      <div className="mb-4 space-y-2 rounded-md border border-border bg-background/60 p-3 text-xs">
         <div className="flex items-center justify-between">
-          <span className="text-grotto-soft">{t('features.areas.type')}:</span>
-          <span className="font-semibold text-grotto-ink">
+          <span className="text-muted-foreground">{t('features.areas.type')}:</span>
+          <span className="font-semibold text-foreground">
             {t(`features.areas.areaType.${area.type}`)} · {t(`features.areas.level.${area.level}`)}
           </span>
         </div>
         {area.deadline ? (
           <div className="flex items-center justify-between">
-            <span className="flex items-center gap-1 text-grotto-soft">
-              <Calendar className="size-3.5 text-grotto-terra" />
+            <span className="flex items-center gap-1 text-muted-foreground">
+              <Calendar className="size-3.5 text-primary" />
               {t('features.areas.deadline')}:
             </span>
-            <span className="tabular font-semibold text-grotto-ink">{viDate(area.deadline)}</span>
+            <span className="tabular font-semibold text-foreground">{viDate(area.deadline)}</span>
           </div>
         ) : null}
         {area.description ? (
-          <p className="border-t border-grotto-hair/60 pt-1.5 text-grotto-soft">
+          <p className="border-t border-border/60 pt-1.5 text-muted-foreground">
             {area.description}
           </p>
         ) : null}

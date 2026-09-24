@@ -42,7 +42,7 @@ export default function PurchaseListPage() {
         key: 'id',
         header: t('features.purchases.code'),
         render: (r: PurchaseRequest) => (
-          <span className="lbl-mono font-semibold text-grotto-ink">#{r.id}</span>
+          <span className="lbl-mono font-semibold text-foreground">#{r.id}</span>
         ),
       },
       {
@@ -54,7 +54,7 @@ export default function PurchaseListPage() {
               <span key={id}>
                 {i > 0 && ', '}
                 {matName(id)?.name ?? id}
-                {r.qtys?.[id] ? <span className="text-grotto-soft"> ×{r.qtys[id]}</span> : null}
+                {r.qtys?.[id] ? <span className="text-muted-foreground"> ×{r.qtys[id]}</span> : null}
               </span>
             ))}
           </span>
@@ -73,7 +73,7 @@ export default function PurchaseListPage() {
           <span>
             {r.note ?? '—'}
             {r.rejectReason && (
-              <span className="block text-xs text-grotto-brick">
+              <span className="block text-xs text-destructive">
                 {t('features.purchases.rejectReason')}: {r.rejectReason}
               </span>
             )}
@@ -100,7 +100,7 @@ export default function PurchaseListPage() {
               {t('features.purchases.send')}
             </Button>
           ) : (
-            <span className="text-grotto-soft">—</span>
+            <span className="text-muted-foreground">—</span>
           ),
       },
     ],

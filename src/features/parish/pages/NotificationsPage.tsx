@@ -51,13 +51,13 @@ function Toggle({ checked, label, onToggle }: { checked: boolean; label: string;
       onClick={onToggle}
       className={cn(
         'relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border transition-colors',
-        checked ? 'border-grotto-moss bg-grotto-moss' : 'border-grotto-hair bg-grotto-ground',
+        checked ? 'border-brand-pine bg-brand-pine' : 'border-border bg-background',
       )}
     >
       <span
         aria-hidden
         className={cn(
-          'inline-block size-3.5 rounded-full bg-grotto-panel shadow transition-transform',
+          'inline-block size-3.5 rounded-full bg-card shadow transition-transform',
           checked ? 'translate-x-[18px]' : 'translate-x-[3px]',
         )}
       />
@@ -87,7 +87,7 @@ export default function NotificationsPage() {
       <PageHeader title={t('features.parish.notificationsTitle')} sub={t('features.parish.notificationsSub')} />
 
       <Card className="p-5">
-        <div className="mb-4 flex items-center gap-2 rounded-md border border-grotto-hair bg-grotto-ground px-3 py-2 text-sm text-grotto-soft">
+        <div className="mb-4 flex items-center gap-2 rounded-md border border-border bg-background px-3 py-2 text-sm text-muted-foreground">
           <Bell className="size-4" aria-hidden />
           <span className="tabular">
             {onCount}/{EVENTS.length}
@@ -99,13 +99,13 @@ export default function NotificationsPage() {
             <li
               key={k}
               style={{ '--d': i } as React.CSSProperties}
-              className="flex items-center justify-between gap-4 border-b border-grotto-hair/60 py-3 last:border-0"
+              className="flex items-center justify-between gap-4 border-b border-border/60 py-3 last:border-0"
             >
               <div className="min-w-0">
-                <p className="truncate text-sm font-semibold text-grotto-ink">
+                <p className="truncate text-sm font-semibold text-foreground">
                   {t(`features.parish.notifEvent.${k}`)}
                 </p>
-                <p className="text-xs text-grotto-soft">{t(`features.parish.notifEventSub.${k}`)}</p>
+                <p className="text-xs text-muted-foreground">{t(`features.parish.notifEventSub.${k}`)}</p>
               </div>
               <Toggle
                 checked={isOn(prefs, k)}

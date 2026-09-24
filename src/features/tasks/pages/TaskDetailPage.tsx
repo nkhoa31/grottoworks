@@ -32,10 +32,10 @@ import type { Task, User } from '@/types'
 import { viDate } from '@/lib/format'
 
 const TEXTAREA_CLS =
-  'mt-1 w-full rounded-md border border-grotto-hair bg-grotto-panel px-3 py-2 text-sm text-grotto-ink transition-colors focus-visible:outline-none focus-visible:border-grotto-terra focus-visible:ring-2 focus-visible:ring-grotto-terra/30'
+  'mt-1 w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground transition-colors focus-visible:outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/30'
 
 const CHIP_CLS =
-  'inline-flex items-center gap-1.5 rounded-full border border-grotto-hair bg-grotto-panel px-2.5 py-0.5 text-xs font-semibold text-grotto-ink'
+  'inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-2.5 py-0.5 text-xs font-semibold text-foreground'
 
 // 1 dòng TNV trong dialog phân công: tự dùng hook assign theo user đó.
 function VolunteerRow({ task, user }: { task: Task; user: User }) {
@@ -53,11 +53,11 @@ function VolunteerRow({ task, user }: { task: Task; user: User }) {
     }
   }
   return (
-    <div className="flex items-center justify-between gap-3 border-b border-grotto-hair/60 py-2 last:border-0">
+    <div className="flex items-center justify-between gap-3 border-b border-border/60 py-2 last:border-0">
       <div>
-        <p className="text-sm font-semibold text-grotto-ink">{user.name}</p>
+        <p className="text-sm font-semibold text-foreground">{user.name}</p>
         {matched > 0 && (
-          <p className="lbl-mono text-[11px] text-grotto-moss">
+          <p className="lbl-mono text-[11px] text-brand-pine">
             {t('features.tasks.matchedSkills', { n: matched })}
           </p>
         )}
@@ -111,7 +111,7 @@ function AssigneeChip({ taskId, user, readOnly }: { taskId: string; user: User; 
           type="button"
           aria-label={t('features.tasks.unassign', { name: user.name })}
           onClick={onUnassign}
-          className="text-grotto-soft transition-colors hover:text-grotto-brick"
+          className="text-muted-foreground transition-colors hover:text-destructive"
         >
           <X className="size-3.5" />
         </button>
@@ -176,7 +176,7 @@ function NoteDialog({
             setError(false)
           }}
         />
-        {error && <p className="mt-1 text-xs font-semibold text-grotto-brick">{requiredMsg}</p>}
+        {error && <p className="mt-1 text-xs font-semibold text-destructive">{requiredMsg}</p>}
       </div>
     </Dialog>
   )
@@ -237,7 +237,7 @@ export default function TaskDetailPage() {
   const field = (label: string, value: string) => (
     <div>
       <p className="lbl-mono">{label}</p>
-      <p className="mt-0.5 text-sm font-semibold text-grotto-ink">{value}</p>
+      <p className="mt-0.5 text-sm font-semibold text-foreground">{value}</p>
     </div>
   )
 
@@ -259,7 +259,7 @@ export default function TaskDetailPage() {
         <div className="space-y-6 lg:col-span-2">
           <Card className="p-6">
             <div className="flex items-start justify-between gap-4">
-              <p className="text-sm text-grotto-soft">{task.description}</p>
+              <p className="text-sm text-muted-foreground">{task.description}</p>
               <StatusTag status={task.status} />
             </div>
             <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -279,7 +279,7 @@ export default function TaskDetailPage() {
                       </span>
                     ))
                   ) : (
-                    <span className="text-sm text-grotto-soft">—</span>
+                    <span className="text-sm text-muted-foreground">—</span>
                   )}
                 </div>
               </div>
@@ -293,21 +293,21 @@ export default function TaskDetailPage() {
                       </span>
                     ))
                   ) : (
-                    <span className="text-sm text-grotto-soft">{t('features.tasks.materialNone')}</span>
+                    <span className="text-sm text-muted-foreground">{t('features.tasks.materialNone')}</span>
                   )}
                 </div>
               </div>
               <div>
                 <p className="lbl-mono">{t('features.tasks.photos')}</p>
                 <div className="mt-1 flex items-center gap-1.5">
-                  <span className="tabular text-sm font-semibold text-grotto-ink">
+                  <span className="tabular text-sm font-semibold text-foreground">
                     {task.submittedPhotos}
                   </span>
                   {Array.from({ length: Math.min(task.submittedPhotos, 8) }).map((_, i) => (
                     <div
                       key={i}
                       aria-hidden
-                      className="size-8 rounded-grotto border border-grotto-hair bg-grotto-hair/40"
+                      className="size-8 rounded-card border border-border bg-border/40"
                     />
                   ))}
                 </div>
@@ -320,10 +320,10 @@ export default function TaskDetailPage() {
             <div className="mt-2 space-y-2">
               <div className="flex items-center gap-2">
                 <StatusTag status={task.status} />
-                <span className="text-sm text-grotto-soft">{viDate(task.dueDate)}</span>
+                <span className="text-sm text-muted-foreground">{viDate(task.dueDate)}</span>
               </div>
               {task.submittedNotes && (
-                <p className="rounded-grotto border border-grotto-hair bg-grotto-panel p-3 text-sm text-grotto-ink">
+                <p className="rounded-card border border-border bg-card p-3 text-sm text-foreground">
                   <span className="lbl-mono mr-2">{t('features.tasks.notes')}</span>
                   {task.submittedNotes}
                 </p>
@@ -355,7 +355,7 @@ export default function TaskDetailPage() {
                   <AssigneeChip key={u.id} taskId={task.id} user={u} readOnly={readOnly} />
                 ))
               ) : (
-                <p className="text-sm text-grotto-soft">{t('features.tasks.assignNone')}</p>
+                <p className="text-sm text-muted-foreground">{t('features.tasks.assignNone')}</p>
               )}
             </div>
           </Card>

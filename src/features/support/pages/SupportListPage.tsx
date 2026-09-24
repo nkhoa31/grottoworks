@@ -6,11 +6,12 @@
 // Urgent tone: OPEN straw (StatusTag OPEN→warn), COORDINATED ◐, RESOLVED ✓.
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Plus } from 'lucide-react'
+import { Check, Plus, X } from 'lucide-react'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { DataTable } from '@/components/shared/DataTable'
 import { StatusTag } from '@/components/shared/StatusTag'
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
+import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
@@ -18,9 +19,15 @@ import { useToast } from '@/components/ui/toast'
 import { useAreas } from '@/features/areas/api'
 import { useUsers } from '@/features/users/api'
 import { useAuth } from '@/lib/auth'
-import { useSupportRequests, useUpdateSupportRequest } from '../api'
+import {
+  useApproveSupportReg,
+  useRejectSupportReg,
+  useSupportRegs,
+  useSupportRequests,
+  useUpdateSupportRequest,
+} from '../api'
 import { SELECT_CLS, SupportFormDialog } from './SupportFormDialog'
-import type { SupportRequest } from '@/types'
+import type { SupportReg, SupportRequest } from '@/types'
 
 // Detail dialog (committee): info yêu cầu + điều phối (chọn TNV) / giải quyết.
 // Điều phối PATCH cả status + assigneeId (1 lần) — persist người được gán.
@@ -99,14 +106,14 @@ function SupportDetailDialog({ item, onClose }: { item: SupportRequest; onClose:
       <div className="space-y-3">
         <div className="flex flex-wrap items-center gap-2">
           <StatusTag status={item.status} />
-          <span className="text-sm font-semibold text-grotto-ink">
+          <span className="text-sm font-semibold text-foreground">
             {area?.name ?? '—'} · {t(`features.support.kind.${item.kind}`)}
           </span>
         </div>
-        <p className="text-sm text-grotto-ink">{item.detail}</p>
+        <p className="text-sm text-foreground">{item.detail}</p>
         {assigneeName && (
           <p className="text-sm">
-            <span className="font-semibold text-grotto-ink">
+            <span className="font-semibold text-foreground">
               {t('features.support.assignee')}:
             </span>{' '}
             {assigneeName}
@@ -132,7 +139,7 @@ function SupportDetailDialog({ item, onClose }: { item: SupportRequest; onClose:
               ))}
             </select>
             {missing && (
-              <p className="mt-1 text-xs font-semibold text-grotto-brick">
+              <p className="mt-1 text-xs font-semibold text-destructive">
                 {t('features.support.volunteerRequired')}
               </p>
             )}
@@ -154,12 +161,142 @@ function SupportDetailDialog({ item, onClose }: { item: SupportRequest; onClose:
   )
 }
 
+// Đơn đăng ký hỗ trợ nhân lực liên cộng đoàn chờ duyệt (leader).
+// TNV cộng đoàn khác gửi SupportReg (PENDING) vào các yêu cầu thuộc khu mình lãnh.
+// Duyệt = useApproveSupportReg (reg APPROVED + tính lại fulfill của request);
+// Từ chối = useRejectSupportReg. Chỉ hiện khi có đơn — tránh chiếm chỗ khi rảnh.
+function SupportRegsSection({
+  regs,
+  requests,
+  areaIds,
+}: {
+  regs: SupportReg[]
+  requests: SupportRequest[]
+  areaIds: Set<string>
+}) {
+  const { t } = useTranslation()
+  const toast = useToast()
+  const { data: areas = [] } = useAreas()
+  const { data: users = [] } = useUsers()
+  const approve = useApproveSupportReg()
+  const reject = useRejectSupportReg()
+  const [confirmReject, setConfirmReject] = useState<SupportReg | null>(null)
+
+  const requestOf = (id: string) => requests.find((r) => r.id === id)
+  const areaName = (id: string) => areas.find((a) => a.id === id)?.name ?? '—'
+  const volunteerName = (id: string) => users.find((u) => u.id === id)?.name ?? '—'
+
+  // Chỉ đơn PENDING thuộc yêu cầu của khu mình lãnh.
+  const rows = regs.filter(
+    (g) => g.status === 'PENDING' && areaIds.has(requestOf(g.requestId)?.areaId ?? ''),
+  )
+
+  if (rows.length === 0) return null
+
+  const act = async (
+    reg: SupportReg,
+    fn: { mutateAsync: (r: SupportReg) => Promise<unknown> },
+    msg: string,
+  ) => {
+    try {
+      await fn.mutateAsync(reg)
+      toast(msg)
+    } catch {
+      toast(t('common.error'), 'alert')
+    }
+  }
+
+  const columns = [
+    {
+      key: 'volunteer',
+      header: t('features.support.regVolunteer'),
+      render: (g: SupportReg) => (
+        <span className="font-semibold text-foreground">{volunteerName(g.volunteerId)}</span>
+      ),
+    },
+    {
+      key: 'request',
+      header: t('features.support.regRequest'),
+      render: (g: SupportReg) => requestOf(g.requestId)?.detail ?? '—',
+    },
+    {
+      key: 'area',
+      header: t('features.support.area'),
+      render: (g: SupportReg) => {
+        const req = requestOf(g.requestId)
+        return req ? areaName(req.areaId) : '—'
+      },
+    },
+    {
+      key: 'note',
+      header: t('features.support.regNote'),
+      render: (g: SupportReg) =>
+        g.note ? (
+          <span className="text-muted-foreground">{g.note}</span>
+        ) : (
+          <span className="text-muted-foreground">—</span>
+        ),
+    },
+    {
+      key: 'actions',
+      header: t('common.actions'),
+      render: (g: SupportReg) => (
+        <div className="flex justify-end gap-1.5">
+          <Button
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation()
+              void act(g, approve, t('features.support.regApproved'))
+            }}
+          >
+            <Check className="size-4" />
+            {t('common.approve')}
+          </Button>
+          <Button
+            size="sm"
+            variant="destructive"
+            onClick={(e) => {
+              e.stopPropagation()
+              setConfirmReject(g)
+            }}
+          >
+            <X className="size-4" />
+            {t('common.reject')}
+          </Button>
+        </div>
+      ),
+    },
+  ]
+
+  return (
+    <Card className="mb-4 p-4">
+      <h2 className="text-sm font-bold text-foreground">{t('features.support.regsTitle')}</h2>
+      <p className="mt-0.5 text-xs text-muted-foreground">{t('features.support.regsSub')}</p>
+      <div className="mt-3">
+        <DataTable rows={rows} columns={columns} emptyText={t('features.support.regsEmpty')} />
+      </div>
+      {confirmReject && (
+        <ConfirmDialog
+          open
+          title={t('features.support.regRejectTitle')}
+          description={t('features.support.regRejectDesc')}
+          tone="destructive"
+          confirmLabel={t('common.reject')}
+          onConfirm={() => void act(confirmReject, reject, t('features.support.regRejected'))}
+          onClose={() => setConfirmReject(null)}
+        />
+      )}
+    </Card>
+  )
+}
+
 export default function SupportListPage() {
   const { t } = useTranslation()
   const { user } = useAuth()
   const { data: areas = [] } = useAreas()
   const { data: users = [] } = useUsers()
   const { data: requests = [], isPending } = useSupportRequests()
+  const { data: regs = [] } = useSupportRegs()
 
   const isLeader = user?.role === 'LEADER'
   const myAreas = areas.filter((a) => a.leaderId === user?.id)
@@ -189,7 +326,7 @@ export default function SupportListPage() {
       {
         key: 'detail',
         header: t('features.support.detail'),
-        render: (r: SupportRequest) => <span className="text-grotto-soft">{r.detail}</span>,
+        render: (r: SupportRequest) => <span className="text-muted-foreground">{r.detail}</span>,
       },
       {
         key: 'assignee',
@@ -198,7 +335,7 @@ export default function SupportListPage() {
           r.assigneeId ? (
             (users.find((u) => u.id === r.assigneeId)?.name ?? '—')
           ) : (
-            <span className="text-grotto-soft">—</span>
+            <span className="text-muted-foreground">—</span>
           ),
       },
       {
@@ -225,6 +362,11 @@ export default function SupportListPage() {
           )
         }
       />
+
+            {/* Leader: đơn đăng ký hỗ trợ liên cộng đoàn chờ duyệt (gộp từ tab cũ). */}
+      {isLeader && !isPending && (
+        <SupportRegsSection regs={regs} requests={requests} areaIds={myAreaIds} />
+      )}
 
       {isPending ? (
         <p className="lbl-mono">{t('common.loading')}</p>

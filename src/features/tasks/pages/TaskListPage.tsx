@@ -1,7 +1,6 @@
-// Danh sách nhiệm vụ. Mount ở 4 nơi, phân biệt theo route:
+// Danh sách nhiệm vụ. Mount ở các route:
 // - /leader/tasks: leader thấy việc các khu mình lãnh (nhiều khu → select khu),
 //   committee/parish thấy tất cả (route committee tương lai).
-// - /leader/assignments: chỉ việc chưa đủ assignees.
 // - /community/areas/:id/tasks: read-only (ẩn tạo/sửa/xoá), khoá theo :id.
 // Status tabs = chip filter của DataTable (client-side trên key 'status').
 import { useMemo, useState } from 'react'
@@ -31,8 +30,7 @@ export default function TaskListPage() {
   const { id: areaParam } = useParams()
   const { user } = useAuth()
 
-  const readOnly = pathname.startsWith('/community/') || pathname.startsWith('/parish/')
-  const assignments = pathname.startsWith('/leader/assignments')
+    const readOnly = pathname.startsWith('/community/') || pathname.startsWith('/parish/')
 
   const { data: areas = [] } = useAreas()
   const deleteTask = useDeleteTask()
@@ -44,11 +42,8 @@ export default function TaskListPage() {
     myAreas.length === 1 ? myAreas[0].id : myAreas.length > 1 ? selectedArea || myAreas[0].id : ''
   const areaId = (readOnly ? areaParam : undefined) ?? (leaderAreaId || undefined)
 
-  const { data: allTasks = [], isPending } = useTasks(areaId)
-  // /leader/assignments: chỉ việc chưa đủ người (tab "Cần phân công" mặc định).
-  const tasks = assignments
-    ? allTasks.filter((x) => x.assignees.length < x.volunteersNeeded)
-    : allTasks
+    const { data: allTasks = [], isPending } = useTasks(areaId)
+  const tasks = allTasks
 
   const [formOpen, setFormOpen] = useState(false)
   const [editing, setEditing] = useState<Task | null>(null)
@@ -134,14 +129,12 @@ export default function TaskListPage() {
 
   return (
     <div>
-      <PageHeader
-        title={assignments ? t('features.tasks.assignmentsTitle') : t('features.tasks.title')}
+            <PageHeader
+        title={t('features.tasks.title')}
         sub={
-          assignments
-            ? t('features.tasks.assignmentsSub')
-            : areaId
-              ? `${t('features.tasks.area')}: ${areaName(areaId)}`
-              : t('features.tasks.sub')
+          areaId
+            ? `${t('features.tasks.area')}: ${areaName(areaId)}`
+            : t('features.tasks.sub')
         }
         actions={
           !readOnly &&
@@ -177,9 +170,8 @@ export default function TaskListPage() {
 
       {isPending ? (
         <p className="lbl-mono">{t('common.loading')}</p>
-      ) : user?.role === 'LEADER' && myAreas.length === 0 ? (
-        // Leader chưa lãnh khu nào (cả nhánh /leader/assignments) — không
-        // đổ toàn bộ tasks, hướng liên hệ committee.
+            ) : user?.role === 'LEADER' && myAreas.length === 0 ? (
+        // Leader chưa lãnh khu nào — không đổ toàn bộ tasks, hướng liên hệ committee.
         <EmptyState
           text={t('features.tasks.noArea')}
           action={

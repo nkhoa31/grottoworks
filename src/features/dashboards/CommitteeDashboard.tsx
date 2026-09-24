@@ -138,16 +138,16 @@ export default function CommitteeDashboard() {
                   <div
                     key={a.id}
                     style={d(i)}
-                    className="g-item rounded-grotto border border-grotto-hair bg-grotto-panel p-4 shadow-sm"
+                    className="g-item rounded-card border border-border bg-card p-4 shadow-card"
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <h3 className="truncate text-sm font-bold text-grotto-ink">{a.name}</h3>
+                      <h3 className="truncate text-sm font-bold text-foreground">{a.name}</h3>
                       <StatusTag status={a.status} />
                     </div>
                     <div className="mt-3">
                       <div className="flex items-baseline justify-between">
                         <span className="lbl-mono">{t('features.areas.progress')}</span>
-                        <span className="tabular text-sm font-extrabold text-grotto-ink">
+                        <span className="tabular text-sm font-extrabold text-foreground">
                           {a.progress}%
                         </span>
                       </div>
@@ -157,15 +157,15 @@ export default function CommitteeDashboard() {
                         aria-valuemin={0}
                         aria-valuemax={100}
                         aria-label={a.name}
-                        className="mt-1.5 h-2 overflow-hidden rounded-full bg-grotto-hair"
+                        className="mt-1.5 h-2 overflow-hidden rounded-full bg-border"
                       >
                         <div
-                          className="g-bar h-full rounded-full bg-grotto-moss"
+                          className="g-bar h-full rounded-full bg-brand-pine"
                           style={{ width: `${a.progress}%`, ...d(i) }}
                         />
                       </div>
                     </div>
-                    <p className="tabular mt-3 text-xs font-semibold text-grotto-soft">
+                    <p className="tabular mt-3 text-xs font-semibold text-muted-foreground">
                       {a.volunteerCount} {t('features.areas.volunteers')} · {a.taskCount}{' '}
                       {t('features.areas.tasks')}
                     </p>
@@ -178,7 +178,7 @@ export default function CommitteeDashboard() {
               <Card className="p-5">
                 <div className="mb-3 flex items-baseline justify-between gap-3">
                   <p className="lbl-mono">{t('features.dashboards.hoursByDay')}</p>
-                  <p className="tabular text-sm font-extrabold text-grotto-ink">
+                  <p className="tabular text-sm font-extrabold text-foreground">
                     {summary.weekHours.toLocaleString()} {t('features.volunteers.hourUnit')}
                   </p>
                 </div>

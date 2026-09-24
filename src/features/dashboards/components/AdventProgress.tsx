@@ -26,7 +26,7 @@ export function AdventProgress({ season }: { season: Season }) {
     <section
       aria-label={t('features.dashboards.seasonProgress')}
       data-percent={percent}
-      className="flex items-center gap-5 rounded-grotto border border-grotto-hair bg-grotto-panel p-5 shadow-sm"
+      className="flex items-center gap-5 rounded-card border border-border bg-card p-5 shadow-card"
     >
       <div className="relative size-20 shrink-0" role="img" aria-hidden>
         <RadialBarChart
@@ -34,22 +34,22 @@ export function AdventProgress({ season }: { season: Season }) {
           height={80}
           innerRadius="68%"
           outerRadius="100%"
-          data={[{ value: percent, fill: '#6B7D45' }]}
+          data={[{ value: percent, fill: '#0A5C36' }]}
           startAngle={90}
           endAngle={-270}
         >
-          <RadialBar dataKey="value" background={{ fill: '#E0D2B8' }} cornerRadius={10} />
+          <RadialBar dataKey="value" background={{ fill: '#E9ECEF' }} cornerRadius={10} />
         </RadialBarChart>
-        <p className="tabular absolute inset-0 grid place-items-center text-sm font-extrabold text-grotto-ink">
+        <p className="tabular absolute inset-0 grid place-items-center text-sm font-extrabold text-foreground">
           {percent}%
         </p>
       </div>
       <div className="min-w-0">
         <p className="lbl-mono">{t('features.dashboards.seasonProgress')}</p>
-        <h2 className="mt-1 text-lg font-extrabold leading-tight text-grotto-ink">
+        <h2 className="mt-1 text-lg font-extrabold leading-tight text-foreground">
           {t('features.dashboards.seasonTitle', { year: season.year })}
         </h2>
-        <p className="tabular mt-1 text-sm font-semibold text-grotto-soft">
+        <p className="tabular mt-1 text-sm font-semibold text-muted-foreground">
           {t('features.dashboards.seasonElapsed', { percent, start: viDate(season.startDate), end: viDate(season.endDate) })}
         </p>
       </div>

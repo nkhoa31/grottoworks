@@ -48,7 +48,7 @@ export default function VolunteerListPage() {
         key: 'name',
         header: t('features.volunteers.name'),
         render: (u: User) => (
-          <span className="flex items-center gap-2 font-semibold text-grotto-ink">
+          <span className="flex items-center gap-2 font-semibold text-foreground">
             <Avatar name={u.name} hue={u.avatarHue} size="sm" />
             {u.name}
           </span>
@@ -70,7 +70,7 @@ export default function VolunteerListPage() {
               ))}
             </span>
           ) : (
-            <span className="text-grotto-soft">—</span>
+            <span className="text-muted-foreground">—</span>
           ),
       },
       {
@@ -112,8 +112,8 @@ export default function VolunteerListPage() {
                   className={cn(
                     'rounded-full border px-2.5 py-1 text-xs font-semibold transition-colors',
                     selected
-                      ? 'border-grotto-terra bg-grotto-terra text-grotto-panel'
-                      : 'border-grotto-hair bg-grotto-panel text-grotto-soft hover:border-grotto-terra hover:text-grotto-terra',
+                      ? 'border-primary bg-primary text-primary-foreground'
+                      : 'border-border bg-card text-muted-foreground hover:border-primary hover:text-primary',
                   )}
                 >
                   {s ?? t('common.all')}

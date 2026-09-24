@@ -18,7 +18,7 @@ import type { PurchaseRequest } from '@/types'
 import { useApproveRequest, usePurchaseRequests, useRejectRequest } from '../api'
 
 const TEXTAREA_CLS =
-  'mt-1 w-full rounded-md border border-grotto-hair bg-grotto-panel px-3 py-2 text-sm text-grotto-ink transition-colors focus-visible:outline-none focus-visible:border-grotto-terra focus-visible:ring-2 focus-visible:ring-grotto-terra/30'
+  'mt-1 w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground transition-colors focus-visible:outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/30'
 
 // Dialog từ chối: lý do bắt buộc, ghi vào note của request.
 function RejectDialog({ item, onClose }: { item: PurchaseRequest; onClose: () => void }) {
@@ -74,7 +74,7 @@ function RejectDialog({ item, onClose }: { item: PurchaseRequest; onClose: () =>
           onChange={(e) => setReason(e.target.value)}
         />
         {!reason.trim() ? (
-          <p className="mt-1 text-xs font-semibold text-grotto-brick">{t('features.purchases.reasonRequired')}</p>
+          <p className="mt-1 text-xs font-semibold text-destructive">{t('features.purchases.reasonRequired')}</p>
         ) : null}
       </div>
     </Dialog>
@@ -112,9 +112,9 @@ export default function CommitteeApprovalPage() {
                 <span key={id}>
                   {i > 0 && ', '}
                   {m?.name ?? id}
-                  {r.qtys?.[id] ? <span className="text-grotto-soft"> ×{r.qtys[id]}</span> : null}
+                  {r.qtys?.[id] ? <span className="text-muted-foreground"> ×{r.qtys[id]}</span> : null}
                   {m && shortage(m) > 0 ? (
-                    <span className="text-xs text-grotto-brick">
+                    <span className="text-xs text-destructive">
                       {' '}
                       ({t('features.purchases.shortOf', { n: shortage(m), unit: m.unit })})
                     </span>
@@ -139,7 +139,7 @@ export default function CommitteeApprovalPage() {
           <span>
             {r.note ?? '—'}
             {r.rejectReason && (
-              <span className="block text-xs text-grotto-brick">
+              <span className="block text-xs text-destructive">
                 {t('features.purchases.rejectReason')}: {r.rejectReason}
               </span>
             )}
@@ -177,7 +177,7 @@ export default function CommitteeApprovalPage() {
               </Button>
             </div>
           ) : (
-            <span className="text-grotto-soft">—</span>
+            <span className="text-muted-foreground">—</span>
           ),
       },
     ],

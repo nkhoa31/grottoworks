@@ -6,7 +6,7 @@ export function Badge({ children, className }: { children: ReactNode; className?
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-grotto-hair bg-grotto-panel px-2.5 py-0.5 text-xs font-semibold text-grotto-ink',
+        'inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-border bg-card px-2.5 py-0.5 text-xs font-semibold text-foreground',
         className,
       )}
     >

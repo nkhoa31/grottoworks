@@ -33,29 +33,29 @@ export function Dialog({
   if (!open) return null
   return (
     <div
-      className="fixed inset-0 z-50 grid place-items-center bg-grotto-ink/40 p-4"
+      className="fixed inset-0 z-50 grid place-items-center bg-foreground/40 p-4"
       role="dialog"
       aria-modal="true"
       aria-label={title}
       onClick={onClose}
     >
       <div
-        className="g-item w-full max-w-sm rounded-grotto border border-grotto-hair bg-grotto-panel p-6 shadow-xl"
+        className="g-item w-full max-w-sm rounded-card border border-border bg-card p-6 shadow-hover"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4">
-          <h2 className="text-lg font-bold text-grotto-ink">{title}</h2>
+          <h2 className="text-lg font-bold text-foreground">{title}</h2>
           <button
             ref={closeRef}
             type="button"
             onClick={onClose}
             aria-label={i18n.t('common.close')}
-            className="rounded-md text-grotto-soft transition-colors hover:text-grotto-ink"
+            className="rounded-md text-muted-foreground transition-colors hover:text-foreground"
           >
             <X className="size-4" />
           </button>
         </div>
-        {children && <div className="mt-3 text-sm text-grotto-soft">{children}</div>}
+        {children && <div className="mt-3 text-sm text-muted-foreground">{children}</div>}
         {footer && <div className="mt-6 flex justify-end gap-2">{footer}</div>}
       </div>
     </div>

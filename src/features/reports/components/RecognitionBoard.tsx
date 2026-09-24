@@ -1,5 +1,5 @@
 // Bảng vinh danh (RecognitionBoard): top người đóng góp theo điểm giảm dần,
-// huy chương vàng/bạc/đồng (gold #C9972F theo brief) — cột: hạng, tên
+// huy chương vàng/bạc/đồng (gold #EEB902 theo brief) — cột: hạng, tên
 // (Avatar), giáo khu, điểm, giờ công (tabular), số quà tặng + nhiệm vụ hoàn
 // thành. Dữ liệu join client-side từ users/timesheets/donations/tasks.
 import { useMemo } from 'react'
@@ -11,11 +11,11 @@ import { EmptyState } from '@/components/shared/EmptyState'
 import { cn } from '@/lib/utils'
 import type { ContributorRow } from '../api'
 
-// Huy chương theo hạng: 1 vàng #C9972F, 2 bạc, 3 đồng; còn lại số soft.
+// Huy chương theo hạng: 1 vàng #EEB902, 2 bạc, 3 đồng; còn lại số soft.
 const MEDAL = [
-  'bg-[#C9972F]/15 text-[#C9972F]',
-  'bg-grotto-soft/15 text-grotto-soft',
-  'bg-grotto-terra/15 text-grotto-terra',
+  'bg-[#EEB902]/15 text-[#EEB902]',
+  'bg-muted-foreground/15 text-muted-foreground',
+  'bg-primary/15 text-primary',
 ] as const
 
 export function RecognitionBoard({ rows }: { rows: ContributorRow[] }) {
@@ -26,10 +26,10 @@ export function RecognitionBoard({ rows }: { rows: ContributorRow[] }) {
   if (!sorted.length) return <EmptyState text={t('features.reports.recognitionEmpty')} />
 
   return (
-    <div className="overflow-x-auto rounded-grotto border border-grotto-hair bg-grotto-panel">
+    <div className="overflow-x-auto rounded-card border border-border bg-card">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-grotto-hair">
+          <tr className="border-b border-border">
             <th scope="col" className="lbl-mono w-14 px-4 py-3 text-center">
               #
             </th>
@@ -58,27 +58,27 @@ export function RecognitionBoard({ rows }: { rows: ContributorRow[] }) {
             <tr
               key={u.id}
               style={{ '--d': i } as CSSProperties}
-              className="border-b border-grotto-hair/60 transition-[transform,box-shadow] last:border-0"
+              className="border-b border-border/60 transition-[transform,box-shadow] last:border-0"
             >
               <td className="px-4 py-3 text-center">
                 <span
                   aria-label={t('features.reports.rank', { n: i + 1 })}
                   className={cn(
                     'inline-grid size-7 place-items-center rounded-full font-mono text-[11px] font-extrabold',
-                    i < 3 ? MEDAL[i] : 'text-grotto-soft',
+                    i < 3 ? MEDAL[i] : 'text-muted-foreground',
                   )}
                 >
                   {i < 3 ? <Award className="size-4" aria-hidden /> : i + 1}
                 </span>
               </td>
               <td className="px-4 py-3">
-                <span className="flex items-center gap-2 font-semibold text-grotto-ink">
+                <span className="flex items-center gap-2 font-semibold text-foreground">
                   <Avatar name={u.name} hue={u.avatarHue} size="sm" />
                   {u.name}
                 </span>
               </td>
-              <td className="px-4 py-3 text-grotto-soft">{u.communityName}</td>
-              <td className="tabular px-4 py-3 text-right font-extrabold text-grotto-ink">
+              <td className="px-4 py-3 text-muted-foreground">{u.communityName}</td>
+              <td className="tabular px-4 py-3 text-right font-extrabold text-foreground">
                 {u.points.toLocaleString()}
               </td>
               <td className="tabular px-4 py-3 text-right">{u.hours.toFixed(1)}</td>

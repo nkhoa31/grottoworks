@@ -89,7 +89,7 @@ export default function PointRulesPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-grotto-hair">
+              <tr className="border-b border-border">
                 <th scope="col" className="lbl-mono px-4 py-3 text-left">
                   {t('features.parish.ruleAction')}
                 </th>
@@ -103,9 +103,9 @@ export default function PointRulesPage() {
                 <tr
                   key={r.action}
                   style={{ '--d': i } as React.CSSProperties}
-                  className="border-b border-grotto-hair/60 last:border-0"
+                  className="border-b border-border/60 last:border-0"
                 >
-                  <td className="px-4 py-2.5 font-semibold text-grotto-ink">{r.action}</td>
+                  <td className="px-4 py-2.5 font-semibold text-foreground">{r.action}</td>
                   <td className="px-4 py-2.5">
                     <Label htmlFor={`rule-${i}`} className="sr-only">
                       {t('features.parish.rulePoints')}

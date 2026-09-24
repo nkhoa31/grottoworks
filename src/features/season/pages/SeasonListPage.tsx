@@ -89,12 +89,12 @@ export default function SeasonListPage() {
         render: (s: Season) => {
           const ids = s.communityIds ?? []
           if (ids.length === 0) {
-            return <span className="text-xs text-grotto-soft">—</span>
+            return <span className="text-xs text-muted-foreground">—</span>
           }
           const names = ids.map((id) => communityMap[id] ?? id).join(', ')
           return (
             <span title={names}>
-              <Badge className="tabular border-grotto-hair bg-grotto-panel text-xs">
+              <Badge className="tabular border-border bg-card text-xs">
                 {ids.length} {t('features.season.communities')}
               </Badge>
             </span>
@@ -119,12 +119,12 @@ export default function SeasonListPage() {
         header: t('features.season.description'),
         render: (s: Season) => {
           if (!s.description) {
-            return <span className="text-xs text-grotto-soft">—</span>
+            return <span className="text-xs text-muted-foreground">—</span>
           }
           const truncated =
             s.description.length > 40 ? `${s.description.slice(0, 40)}…` : s.description
           return (
-            <span className="text-xs text-grotto-soft" title={s.description}>
+            <span className="text-xs text-muted-foreground" title={s.description}>
               {truncated}
             </span>
           )
@@ -140,7 +140,7 @@ export default function SeasonListPage() {
                 variant="ghost"
                 size="icon"
                 aria-label={t('features.season.activate')}
-                className="text-grotto-terra hover:bg-grotto-terra/10 hover:text-grotto-terra"
+                className="text-primary hover:bg-primary/10 hover:text-primary"
                 onClick={() => onActivateClick(s)}
               >
                 <Rocket className="size-4" />

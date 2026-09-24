@@ -41,14 +41,14 @@ function Switch({
       onClick={onToggle}
       className={cn(
         'relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border transition-colors',
-        checked ? 'border-grotto-moss bg-grotto-moss' : 'border-grotto-hair bg-grotto-ground',
+        checked ? 'border-brand-pine bg-brand-pine' : 'border-border bg-background',
         disabled && 'cursor-not-allowed opacity-60',
       )}
     >
       <span
         aria-hidden
         className={cn(
-          'inline-block size-3.5 rounded-full bg-grotto-panel shadow transition-transform',
+          'inline-block size-3.5 rounded-full bg-card shadow transition-transform',
           checked ? 'translate-x-[18px]' : 'translate-x-[3px]',
         )}
       />
@@ -95,37 +95,37 @@ function AreaChecklistCard({
             height={80}
             innerRadius="68%"
             outerRadius="100%"
-            data={[{ value: percent, fill: '#6B7D45' }]}
+            data={[{ value: percent, fill: '#0A5C36' }]}
             startAngle={90}
             endAngle={-270}
           >
-            <RadialBar dataKey="value" background={{ fill: '#E0D2B8' }} cornerRadius={10} />
+            <RadialBar dataKey="value" background={{ fill: '#E9ECEF' }} cornerRadius={10} />
           </RadialBarChart>
-          <p className="tabular absolute inset-0 grid place-items-center text-sm font-extrabold text-grotto-ink">
+          <p className="tabular absolute inset-0 grid place-items-center text-sm font-extrabold text-foreground">
             {percent}%
           </p>
         </div>
         <div className="min-w-0">
-          <h3 className="text-base font-bold text-grotto-ink">{area.name}</h3>
+          <h3 className="text-base font-bold text-foreground">{area.name}</h3>
           <p className="lbl-mono mt-1">
             {done}/{items.length} {t('features.checklist.itemUnit')}
           </p>
         </div>
       </div>
 
-      <ul className="mt-4 space-y-3 border-t border-grotto-hair pt-4">
+      <ul className="mt-4 space-y-3 border-t border-border pt-4">
         {items.map((item) => (
           <li key={item.id} className="flex items-start justify-between gap-3">
             <div className="min-w-0">
               <p
                 className={cn(
                   'text-sm',
-                  item.done ? 'text-grotto-soft line-through' : 'font-semibold text-grotto-ink',
+                  item.done ? 'text-muted-foreground line-through' : 'font-semibold text-foreground',
                 )}
               >
                 {item.label}
               </p>
-              {item.note && <p className="mt-0.5 text-xs text-grotto-soft">{item.note}</p>}
+              {item.note && <p className="mt-0.5 text-xs text-muted-foreground">{item.note}</p>}
             </div>
             <Switch
               checked={item.done}
@@ -184,10 +184,10 @@ export default function ChecklistPage() {
         <>
           <div
             className={cn(
-              'mb-6 flex items-center gap-4 rounded-grotto border p-5',
+              'mb-6 flex items-center gap-4 rounded-card border p-5',
               allReady
-                ? 'border-grotto-moss bg-grotto-moss/12 text-grotto-moss'
-                : 'border-grotto-straw bg-grotto-straw/12 text-grotto-straw',
+                ? 'border-brand-pine bg-brand-pine/12 text-brand-pine'
+                : 'border-brand-gold bg-brand-gold/12 text-brand-gold',
             )}
           >
             {allReady ? (

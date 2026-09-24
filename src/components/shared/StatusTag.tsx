@@ -10,15 +10,16 @@ const TONE: Record<string, 'ok' | 'warn' | 'alert' | 'soft'> = {
   PLEDGED: 'warn',
   LATE: 'alert', REVISE: 'alert', REJECTED: 'alert', SHORTAGE: 'alert',
   AT_RISK: 'alert', UNUSABLE: 'alert', DAMAGED: 'alert', LOST: 'alert',
-  OPEN: 'warn', // yêu cầu hỗ trợ đang chờ điều phối — tone straw urgent
+  OPEN: 'warn', // yêu cầu hỗ trợ đang chờ điều phối
   NOT_RETURNED: 'soft', // đồ mượn chưa trả
 }
 
+// DESIGN_SYSTEM.md mục 12 — Status Badge: pastel background + dark text.
 const STYLE = {
-  ok: 'bg-grotto-moss/12 text-grotto-moss',
-  warn: 'bg-grotto-straw/15 text-grotto-straw',
-  alert: 'bg-grotto-brick/12 text-grotto-brick',
-  soft: 'bg-grotto-soft/12 text-grotto-soft',
+  ok: 'bg-status-successBg text-status-successText',
+  warn: 'bg-status-pendingBg text-status-pendingText',
+  alert: 'bg-status-dangerBg text-status-dangerText',
+  soft: 'bg-status-neutralBg text-status-neutralText',
 } as const
 
 const GLYPH = { ok: '✓', warn: '◐', alert: '✕', soft: '◇' } as const
@@ -40,7 +41,7 @@ export function StatusTag({
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-0.5 font-mono text-[11px] font-semibold uppercase tracking-wide',
+        'inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-0.5 font-mono text-[11px] font-semibold tracking-wide',
         STYLE[activeTone],
         className,
       )}
@@ -50,3 +51,4 @@ export function StatusTag({
     </span>
   )
 }
+
