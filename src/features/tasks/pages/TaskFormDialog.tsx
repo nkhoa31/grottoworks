@@ -19,10 +19,6 @@ import type { Task } from '@/types'
 export const SELECT_CLS =
   'flex h-10 w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground transition-colors focus-visible:outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/30'
 
-// Checkbox group: label + hàng ô vuông, chữ nhỏ.
-const CHECK_CLS =
-  'size-4 rounded border border-border bg-card accent-primary'
-
 // Trống → undefined để báo lỗi thay vì coerce 0 (pattern SeasonFormDialog);
 // ràng buộc min/int nằm trong schema con vì preprocess trả ZodEffects.
 const num = (inner: z.ZodNumber) =>
