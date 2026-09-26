@@ -4,7 +4,6 @@
 // chiếu donorName — donation không có volunteerId, khớp chuỗi con vì seed
 // có tiền tố "Bà/Ông/Anh"; hồ sơ mua theo buyerId).
 import { useMemo } from 'react'
-import type { CSSProperties, ReactNode } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ArrowLeft } from 'lucide-react'
@@ -107,13 +106,6 @@ export default function VolunteerDetailPage() {
   const myPurchases = purchases.filter((p) => p.buyerId === id)
   const community = communities.find((c) => c.id === user.communityId)
 
-  const section = (label: string, table: ReactNode) => (
-    <div className="space-y-2">
-      <p className="lbl-mono">{label}</p>
-      {table}
-    </div>
-  )
-
   return (
     <div>
       <PageHeader
@@ -127,61 +119,77 @@ export default function VolunteerDetailPage() {
         }
       />
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        {/* Trái: profile + điểm + giờ công. */}
-        <div className="space-y-6">
-          <div className="flex items-center gap-4 rounded-card border border-border bg-card p-5">
-            <Avatar name={user.name} hue={user.avatarHue} size="lg" />
-            <div className="min-w-0">
-              <p className="truncate font-bold text-foreground">{user.name}</p>
-              <p className="truncate text-sm text-muted-foreground">{user.email}</p>
-              <div className="mt-1.5 flex flex-wrap gap-1">
-                {user.skills.length ? (
-                  user.skills.map((s) => <Badge key={s}>{s}</Badge>)
-                ) : (
-                  <span className="text-sm text-muted-foreground">—</span>
-                )}
-              </div>
+      {/* Hero Profile & Stats Bar */}
+      <div className="mb-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
+        {/* Profile Card */}
+        <div className="flex items-center gap-4 rounded-card border border-border bg-card p-5 shadow-xs">
+          <Avatar name={user.name} hue={user.avatarHue} size="lg" />
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2">
+              <p className="truncate text-base font-bold text-foreground">{user.name}</p>
+              <span className="inline-flex items-center gap-1 rounded-full bg-brand-gold/15 px-2 py-0.5 text-xs font-bold text-amber-900 dark:text-amber-300">
+                ★ {user.points}
+              </span>
             </div>
-          </div>
-          <div className="grid stagger grid-cols-2 gap-4">
-            <div style={{ '--d': 0 } as CSSProperties}>
-              <StatCard label={t('features.volunteers.pointsTitle')} value={user.points} tone="ok" />
-            </div>
-            <div style={{ '--d': 1 } as CSSProperties}>
-              <StatCard
-                label={t('features.volunteers.hoursTitle')}
-                value={totalHours}
-                unit={t('features.volunteers.hourUnit')}
-                tone="warn"
-              />
+            <p className="truncate text-xs text-muted-foreground">{user.email}</p>
+            {user.phone && (
+              <p className="text-xs font-mono text-muted-foreground mt-0.5">{user.phone}</p>
+            )}
+            <div className="mt-2 flex flex-wrap gap-1">
+              {user.skills.length ? (
+                user.skills.map((s) => (
+                  <Badge key={s} className="bg-brand-pine/10 text-brand-pine border-brand-pine/20 text-[11px] px-2 py-0.5">
+                    {s}
+                  </Badge>
+                ))
+              ) : (
+                <span className="text-xs text-muted-foreground">—</span>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Phải: giờ công + nhiệm vụ. */}
-        <div className="space-y-6 lg:col-span-2">
-          {section(
-            t('features.volunteers.timesheetsTitle'),
-            <DataTable rows={myTimesheets} columns={tsColumns} pageSize={5} emptyText={t('features.volunteers.noTimesheets')} />,
-          )}
-          {section(
-            t('features.volunteers.tasksTitle'),
-            <DataTable rows={myTasks} columns={taskColumns} pageSize={5} emptyText={t('features.volunteers.noTasks')} />,
-          )}
+        {/* 2 Stat Cards for volunteer */}
+        <div className="grid grid-cols-2 gap-4 lg:col-span-2">
+          <StatCard
+            label={t('features.volunteers.hoursTitle')}
+            value={totalHours}
+            unit={t('features.volunteers.hourUnit')}
+            tone="ok"
+          />
+          <StatCard
+            label={t('features.volunteers.tasksTitle')}
+            value={myTasks.length}
+            unit="việc"
+            tone="warn"
+          />
         </div>
       </div>
 
-      {/* Đóng góp: quyên góp (đối chiếu tên) + mua hộ (buyerId). */}
+      {/* Main Grid: Timesheets & Tasks */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <Card className="p-5">
+          <h3 className="lbl-mono mb-3 text-foreground">{t('features.volunteers.timesheetsTitle')}</h3>
+          <DataTable rows={myTimesheets} columns={tsColumns} pageSize={5} emptyText={t('features.volunteers.noTimesheets')} />
+        </Card>
+
+        <Card className="p-5">
+          <h3 className="lbl-mono mb-3 text-foreground">{t('features.volunteers.tasksTitle')}</h3>
+          <DataTable rows={myTasks} columns={taskColumns} pageSize={5} emptyText={t('features.volunteers.noTasks')} />
+        </Card>
+      </div>
+
+      {/* Bottom Grid: Donations & Purchases */}
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {section(
-          t('features.volunteers.donationsTitle'),
-          <DataTable rows={myDonations} columns={donationColumns} pageSize={5} emptyText={t('features.volunteers.noDonations')} />,
-        )}
-        {section(
-          t('features.volunteers.purchasesTitle'),
-          <DataTable rows={myPurchases} columns={purchaseColumns} pageSize={5} emptyText={t('features.volunteers.noPurchases')} />,
-        )}
+        <Card className="p-5">
+          <h3 className="lbl-mono mb-3 text-foreground">{t('features.volunteers.donationsTitle')}</h3>
+          <DataTable rows={myDonations} columns={donationColumns} pageSize={5} emptyText={t('features.volunteers.noDonations')} />
+        </Card>
+
+        <Card className="p-5">
+          <h3 className="lbl-mono mb-3 text-foreground">{t('features.volunteers.purchasesTitle')}</h3>
+          <DataTable rows={myPurchases} columns={purchaseColumns} pageSize={5} emptyText={t('features.volunteers.noPurchases')} />
+        </Card>
       </div>
     </div>
   )
