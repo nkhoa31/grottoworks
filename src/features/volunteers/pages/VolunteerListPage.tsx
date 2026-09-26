@@ -77,13 +77,21 @@ export default function VolunteerListPage() {
         key: 'points',
         header: t('features.volunteers.points'),
         align: 'right' as const,
-        render: (u: User) => <span className="tabular font-semibold">{u.points}</span>,
+        render: (u: User) => (
+          <span className="tabular inline-flex items-center gap-1 rounded-full bg-brand-gold/15 px-2.5 py-0.5 text-xs font-bold text-amber-900 dark:text-amber-200">
+            ★ {u.points}
+          </span>
+        ),
       },
       {
         key: 'hours',
         header: t('features.volunteers.hours'),
         align: 'right' as const,
-        render: (u: User) => <span className="tabular">{(hours.get(u.id) ?? 0).toFixed(1)}</span>,
+        render: (u: User) => (
+          <span className="tabular font-semibold text-brand-pine">
+            {(hours.get(u.id) ?? 0).toFixed(1)} {t('features.volunteers.hourUnit')}
+          </span>
+        ),
       },
     ],
     [t, communities, hours],
