@@ -6,6 +6,7 @@ import { useMemo } from 'react'
 import type { CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { AlertTriangle, ArrowRight } from 'lucide-react'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { StatCard } from '@/components/shared/StatCard'
 import { DataTable } from '@/components/shared/DataTable'
@@ -134,6 +135,31 @@ export default function OfficerDashboard() {
         <EmptyState text={t('features.materials.noArea')} />
       ) : (
         <div className="space-y-6">
+          {/* Shortage callout banner if needed */}
+          {summary.shortageList.length > 0 && (
+            <div className="flex items-center justify-between rounded-card border border-destructive/30 bg-destructive/10 p-4">
+              <div className="flex items-center gap-3">
+                <AlertTriangle className="size-5 text-destructive shrink-0" />
+                <div>
+                  <p className="text-sm font-bold text-destructive">
+                    Cảnh báo: Đang thiếu hụt {summary.shortageList.length} mặt hàng vật tư cho phân khu!
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Cần đề xuất đơn mua sắm hoặc huy động quyên góp bổ sung để kịp tiến độ thi công.
+                  </p>
+                </div>
+              </div>
+              <Button
+                size="sm"
+                variant="destructive"
+                onClick={() => navigate('/material-officer/purchases')}
+              >
+                Tạo đơn mua ngay
+                <ArrowRight className="size-4" />
+              </Button>
+            </div>
+          )}
+
           {/* 4 StatCard: thiếu, chờ duyệt, % quyên góp, giờ công tuần. */}
           <div className="stagger grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <div style={d(0)}>

@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { Plus, Send } from 'lucide-react'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { DataTable } from '@/components/shared/DataTable'
-import { EmptyState } from '@/components/shared/EmptyState'
+import { StatCard } from '@/components/shared/StatCard'
 import { StatusTag } from '@/components/shared/StatusTag'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/toast'
@@ -112,10 +112,16 @@ export default function PurchaseListPage() {
     .filter((m) => shortage(m) > 0)
 
   if (areasPending) return <p className="lbl-mono">{t('common.loading')}</p>
-  if (!myAreas.length) return <EmptyState text={t('features.materials.noArea')} />
+  const stats = useMemo(() => {
+    const total = rows.length
+    const draft = rows.filter((r) => r.status === 'DRAFT').length
+    const pending = rows.filter((r) => r.status === 'PENDING').length
+    const approved = rows.filter((r) => r.status === 'APPROVED').length
+    return { total, draft, pending, approved }
+  }, [rows])
 
   return (
-    <div>
+    <div className="space-y-6">
       <PageHeader
         title={t('features.purchases.title')}
         sub={t('features.purchases.sub')}
@@ -126,6 +132,16 @@ export default function PurchaseListPage() {
           </Button>
         }
       />
+
+      {rows.length > 0 && (
+        <div className="stagger grid grid-cols-2 gap-3 xl:grid-cols-4">
+          <StatCard label="Tổng đơn mua" value={stats.total} tone="ok" />
+          <StatCard label="Đơn nháp" value={stats.draft} tone="ok" />
+          <StatCard label="Chờ duyệt" value={stats.pending} tone={stats.pending > 0 ? 'warn' : 'ok'} />
+          <StatCard label="Đã duyệt" value={stats.approved} tone="ok" />
+        </div>
+      )}
+
       {isPending ? (
         <p className="lbl-mono">{t('common.loading')}</p>
       ) : (

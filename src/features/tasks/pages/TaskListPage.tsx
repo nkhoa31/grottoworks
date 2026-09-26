@@ -10,6 +10,7 @@ import { Pencil, Plus, Trash2 } from 'lucide-react'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { DataTable } from '@/components/shared/DataTable'
 import { EmptyState } from '@/components/shared/EmptyState'
+import { StatCard } from '@/components/shared/StatCard'
 import { StatusTag } from '@/components/shared/StatusTag'
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
 import { Button, buttonBase, buttonSizes, buttonVariants } from '@/components/ui/button'
@@ -51,32 +52,74 @@ export default function TaskListPage() {
 
   const areaName = (id: string) => areas.find((a) => a.id === id)?.name ?? '—'
 
+  const stats = useMemo(() => {
+    const total = tasks.length
+    const doing = tasks.filter((x) => x.status === 'DOING').length
+    const revise = tasks.filter((x) => x.status === 'REVISE').length
+    const done = tasks.filter((x) => x.status === 'DONE').length
+    return { total, doing, revise, done }
+  }, [tasks])
+
   const columns = useMemo(
     () => [
       {
         key: 'title',
         header: t('features.tasks.name'),
-        render: (x: Task) => <span className="font-semibold">{x.title}</span>,
+        render: (x: Task) => (
+          <div className="space-y-1">
+            <span className="font-semibold text-foreground hover:text-brand-pine transition-colors">
+              {x.title}
+            </span>
+            {x.skills && x.skills.length > 0 && (
+              <div className="flex flex-wrap gap-1 pt-0.5">
+                {x.skills.map((s) => (
+                  <span
+                    key={s}
+                    className="inline-flex items-center rounded-full bg-brand-gold/10 px-2 py-0.5 text-[11px] font-medium text-amber-800 dark:text-amber-300"
+                  >
+                    {s}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        ),
       },
       {
         key: 'area',
         header: t('features.tasks.area'),
-        render: (x: Task) => areaName(x.areaId),
+        render: (x: Task) => (
+          <span className="inline-flex items-center rounded-md bg-muted px-2 py-1 text-xs font-medium text-muted-foreground">
+            {areaName(x.areaId)}
+          </span>
+        ),
       },
       {
         key: 'dueDate',
         header: t('features.tasks.dueDate'),
-        render: (x: Task) => <span className="tabular">{viDate(x.dueDate)}</span>,
+        render: (x: Task) => <span className="tabular text-sm font-medium">{viDate(x.dueDate)}</span>,
       },
       {
         key: 'assignees',
         header: t('features.tasks.assignees'),
         align: 'right' as const,
-        render: (x: Task) => (
-          <span className="tabular">
-            {x.assignees.length}/{x.volunteersNeeded}
-          </span>
-        ),
+        render: (x: Task) => {
+          const ratio = Math.min(100, Math.round((x.assignees.length / x.volunteersNeeded) * 100))
+          const isFull = x.assignees.length >= x.volunteersNeeded
+          return (
+            <div className="flex flex-col items-end gap-1">
+              <span className={cn('tabular text-xs font-bold', isFull ? 'text-brand-pine' : 'text-amber-700')}>
+                {x.assignees.length}/{x.volunteersNeeded} TNV
+              </span>
+              <div className="h-1.5 w-16 overflow-hidden rounded-full bg-border">
+                <div
+                  className={cn('h-full rounded-full transition-all', isFull ? 'bg-brand-pine' : 'bg-brand-warm')}
+                  style={{ width: `${ratio}%` }}
+                />
+              </div>
+            </div>
+          )
+        },
       },
       { key: 'status', header: t('common.status'), render: (x: Task) => <StatusTag status={x.status} /> },
       ...(readOnly
@@ -108,7 +151,7 @@ export default function TaskListPage() {
                       setDeleting(x)
                     }}
                   >
-                    <Trash2 className="size-4" />
+                    <Trash2 className="size-4 text-destructive" />
                   </Button>
                 </div>
               ),
@@ -128,8 +171,8 @@ export default function TaskListPage() {
   }
 
   return (
-    <div>
-            <PageHeader
+    <div className="space-y-6">
+      <PageHeader
         title={t('features.tasks.title')}
         sub={
           areaId
@@ -170,7 +213,7 @@ export default function TaskListPage() {
 
       {isPending ? (
         <p className="lbl-mono">{t('common.loading')}</p>
-            ) : user?.role === 'LEADER' && myAreas.length === 0 ? (
+      ) : user?.role === 'LEADER' && myAreas.length === 0 ? (
         // Leader chưa lãnh khu nào — không đổ toàn bộ tasks, hướng liên hệ committee.
         <EmptyState
           text={t('features.tasks.noArea')}
@@ -184,15 +227,26 @@ export default function TaskListPage() {
           }
         />
       ) : (
-        <DataTable
-          rows={tasks}
-          columns={columns}
-          searchKeys={['title']}
-          filters={[{ key: 'status', options: ['TODO', 'DOING', 'REVIEW', 'DONE', 'REVISE'] }]}
-          pageSize={8}
-          emptyText={t('features.tasks.empty')}
-          onRowClick={readOnly ? undefined : (x) => navigate(`/leader/tasks/${x.id}`)}
-        />
+        <>
+          {tasks.length > 0 && (
+            <div className="stagger grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              <StatCard label="Tổng công việc" value={stats.total} tone="ok" />
+              <StatCard label="Đang triển khai" value={stats.doing} tone="warn" />
+              <StatCard label="Cần chỉnh sửa" value={stats.revise} tone={stats.revise > 0 ? 'alert' : 'ok'} />
+              <StatCard label="Đã hoàn thành" value={stats.done} tone="ok" />
+            </div>
+          )}
+
+          <DataTable
+            rows={tasks}
+            columns={columns}
+            searchKeys={['title']}
+            filters={[{ key: 'status', options: ['TODO', 'DOING', 'REVIEW', 'DONE', 'REVISE'] }]}
+            pageSize={8}
+            emptyText={t('features.tasks.empty')}
+            onRowClick={readOnly ? undefined : (x) => navigate(`/leader/tasks/${x.id}`)}
+          />
+        </>
       )}
 
       {formOpen && (

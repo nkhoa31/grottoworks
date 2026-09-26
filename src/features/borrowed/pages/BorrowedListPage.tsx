@@ -8,6 +8,7 @@ import { Check, Plus } from 'lucide-react'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { DataTable } from '@/components/shared/DataTable'
 import { EmptyState } from '@/components/shared/EmptyState'
+import { StatCard } from '@/components/shared/StatCard'
 import { StatusTag } from '@/components/shared/StatusTag'
 import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
@@ -173,6 +174,11 @@ export default function BorrowedListPage() {
   if (areasPending) return <p className="lbl-mono">{t('common.loading')}</p>
   if (isOfficer && !myAreas.length) return <EmptyState text={t('features.borrowed.noArea')} />
 
+  const totalBorrowedCount = rows.length
+  const activeBorrowingCount = rows.filter((b) => !b.returnedCondition).length
+  const returnedCount = rows.filter((b) => b.returnedCondition != null).length
+  const overdueCount = rows.filter((b) => !b.returnedCondition && daysLate(b.expectedReturn) > 0).length
+
   return (
     <div>
       <PageHeader
@@ -187,6 +193,33 @@ export default function BorrowedListPage() {
           )
         }
       />
+
+      {/* 4 StatCards */}
+      <div className="mb-6 grid grid-cols-2 gap-4 xl:grid-cols-4">
+        <StatCard
+          label="Tổng đồ mượn"
+          value={totalBorrowedCount}
+          unit="thiết bị"
+        />
+        <StatCard
+          label="Đang mượn"
+          value={activeBorrowingCount}
+          unit="món"
+          tone={activeBorrowingCount > 0 ? 'warn' : 'ok'}
+        />
+        <StatCard
+          label="Đã hoàn trả"
+          value={returnedCount}
+          unit="món xong"
+          tone="ok"
+        />
+        <StatCard
+          label="Quá hạn trả"
+          value={overdueCount}
+          unit="món trễ"
+          tone={overdueCount > 0 ? 'alert' : 'ok'}
+        />
+      </div>
 
       {isPending ? (
         <p className="lbl-mono">{t('common.loading')}</p>

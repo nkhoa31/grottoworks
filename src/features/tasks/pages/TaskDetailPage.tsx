@@ -6,7 +6,7 @@
 import { useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { ArrowLeft, Check, Plus, UserPlus, X } from 'lucide-react'
+import { ArrowLeft, Calendar, Camera, Check, Clock, MapPin, Package, Plus, Sparkles, UserPlus, Users, X } from 'lucide-react'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { EmptyState } from '@/components/shared/EmptyState'
 import { StatusTag } from '@/components/shared/StatusTag'
@@ -34,16 +34,13 @@ import { viDate } from '@/lib/format'
 const TEXTAREA_CLS =
   'mt-1 w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground transition-colors focus-visible:outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/30'
 
-const CHIP_CLS =
-  'inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-2.5 py-0.5 text-xs font-semibold text-foreground'
-
 // 1 dòng TNV trong dialog phân công: tự dùng hook assign theo user đó.
 function VolunteerRow({ task, user }: { task: Task; user: User }) {
   const { t } = useTranslation()
   const toast = useToast()
   const assign = useAssignVolunteer(task.id, user.id)
   const assigned = task.assignees.includes(user.id)
-  const matched = user.skills.filter((s) => task.skills.includes(s)).length
+  const matched = user.skills.filter((s) => task.skills.includes(s))
   const onAssign = async () => {
     try {
       await assign.mutateAsync()
@@ -53,16 +50,27 @@ function VolunteerRow({ task, user }: { task: Task; user: User }) {
     }
   }
   return (
-    <div className="flex items-center justify-between gap-3 border-b border-border/60 py-2 last:border-0">
-      <div>
-        <p className="text-sm font-semibold text-foreground">{user.name}</p>
-        {matched > 0 && (
-          <p className="lbl-mono text-[11px] text-brand-pine">
-            {t('features.tasks.matchedSkills', { n: matched })}
-          </p>
+    <div className="flex items-center justify-between gap-3 rounded-lg border border-border/40 p-3 hover:border-brand-pine/30 hover:bg-muted/30 transition-all">
+      <div className="space-y-1">
+        <div className="flex items-center gap-2">
+          <span className="grid size-7 place-items-center rounded-full bg-brand-pine/10 text-xs font-bold text-brand-pine">
+            {user.name.charAt(0)}
+          </span>
+          <p className="text-sm font-semibold text-foreground">{user.name}</p>
+        </div>
+        {matched.length > 0 ? (
+          <div className="flex flex-wrap gap-1 pt-0.5">
+            {matched.map((s) => (
+              <span key={s} className="inline-flex items-center rounded-full bg-brand-pine/10 px-2 py-0.5 text-[10px] font-semibold text-brand-pine">
+                ✓ {s}
+              </span>
+            ))}
+          </div>
+        ) : (
+          <p className="text-[11px] text-muted-foreground">{t('features.tasks.skills')}: {user.skills.join(', ') || '—'}</p>
         )}
       </div>
-      <Button size="sm" variant={assigned ? 'outline' : 'default'} disabled={assigned} onClick={onAssign}>
+      <Button size="sm" variant={assigned ? 'outline' : 'default'} disabled={assigned} onClick={onAssign} className={assigned ? '' : 'bg-brand-pine hover:bg-brand-pineHover text-white'}>
         {assigned ? <Check className="size-4" /> : <Plus className="size-4" />}
         {assigned ? t('features.tasks.assignedShort') : t('features.tasks.assignVolunteer')}
       </Button>
@@ -81,7 +89,7 @@ function AssignDialog({ task, onClose }: { task: Task; onClose: () => void }) {
   )
   return (
     <Dialog open onClose={onClose} title={t('features.tasks.assignTitle')}>
-      <div className="max-h-80 overflow-y-auto">
+      <div className="max-h-96 space-y-2 overflow-y-auto pr-1">
         {ranked.map((u) => (
           <VolunteerRow key={u.id} task={task} user={u} />
         ))}
@@ -104,19 +112,22 @@ function AssigneeChip({ taskId, user, readOnly }: { taskId: string; user: User; 
     }
   }
   return (
-    <span className={CHIP_CLS}>
-      {user.name}
+    <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 shadow-sm hover:border-brand-pine/30 transition-all">
+      <span className="grid size-5 place-items-center rounded-full bg-brand-pine/15 text-[10px] font-bold text-brand-pine">
+        {user.name.charAt(0)}
+      </span>
+      <span className="text-xs font-semibold text-foreground">{user.name}</span>
       {!readOnly && (
         <button
           type="button"
           aria-label={t('features.tasks.unassign', { name: user.name })}
           onClick={onUnassign}
-          className="text-muted-foreground transition-colors hover:text-destructive"
+          className="rounded-full p-0.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
         >
           <X className="size-3.5" />
         </button>
       )}
-    </span>
+    </div>
   )
 }
 
@@ -233,16 +244,21 @@ export default function TaskDetailPage() {
   const taskMaterials = materials.filter((m) => task.materialIds.includes(m.id))
   const assignees = users.filter((u) => task.assignees.includes(u.id))
 
-  // Info panel: label mono + giá trị, 2 cột cho field ngắn.
-  const field = (label: string, value: string) => (
-    <div>
-      <p className="lbl-mono">{label}</p>
-      <p className="mt-0.5 text-sm font-semibold text-foreground">{value}</p>
+  // Info panel: icon + label + value in clean card.
+  const statBox = (Icon: typeof Users, label: string, value: string) => (
+    <div className="flex items-center gap-3 rounded-lg border border-border/40 bg-muted/20 p-3">
+      <span className="grid size-9 place-items-center rounded-md bg-card shadow-xs text-brand-pine">
+        <Icon className="size-4" />
+      </span>
+      <div>
+        <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">{label}</p>
+        <p className="tabular text-sm font-bold text-foreground">{value}</p>
+      </div>
     </div>
   )
 
   return (
-    <div>
+    <div className="space-y-6">
       <PageHeader
         title={task.title}
         sub={`${area?.name ?? '—'} · ${viDate(task.dueDate)}`}
@@ -257,58 +273,74 @@ export default function TaskDetailPage() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Trái: info + timeline. */}
         <div className="space-y-6 lg:col-span-2">
-          <Card className="p-6">
+          <Card className="p-6 space-y-6">
             <div className="flex items-start justify-between gap-4">
-              <p className="text-sm text-muted-foreground">{task.description}</p>
+              <p className="text-sm leading-relaxed text-muted-foreground">{task.description || t('features.tasks.noDescription')}</p>
               <StatusTag status={task.status} />
             </div>
-            <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
-              {field(t('features.tasks.area'), area?.name ?? '—')}
-              {field(t('features.tasks.estimateHours'), `${task.estimateHours} ${t('features.tasks.hours')}`)}
-              {field(t('features.tasks.volunteersNeeded'), String(task.volunteersNeeded))}
-              {field(t('features.tasks.dueDate'), viDate(task.dueDate))}
+
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {statBox(MapPin, t('features.tasks.area'), area?.name ?? '—')}
+              {statBox(Clock, t('features.tasks.estimateHours'), `${task.estimateHours} ${t('features.tasks.hours')}`)}
+              {statBox(Users, t('features.tasks.volunteersNeeded'), `${task.assignees.length}/${task.volunteersNeeded}`)}
+              {statBox(Calendar, t('features.tasks.dueDate'), viDate(task.dueDate))}
             </div>
-            <div className="mt-4 space-y-3">
+
+            <div className="space-y-4 pt-2 border-t border-border/60">
               <div>
-                <p className="lbl-mono">{t('features.tasks.skills')}</p>
-                <div className="mt-1 flex flex-wrap gap-1.5">
+                <p className="lbl-mono mb-2 flex items-center gap-1.5 text-xs font-semibold text-foreground">
+                  <Sparkles className="size-3.5 text-brand-gold" />
+                  {t('features.tasks.skills')}
+                </p>
+                <div className="flex flex-wrap gap-1.5">
                   {task.skills.length ? (
                     task.skills.map((s) => (
-                      <span key={s} className={CHIP_CLS}>
+                      <span key={s} className="inline-flex items-center gap-1 rounded-full bg-brand-gold/15 px-3 py-1 text-xs font-semibold text-amber-900 dark:text-amber-200">
                         {s}
                       </span>
                     ))
                   ) : (
-                    <span className="text-sm text-muted-foreground">—</span>
+                    <span className="text-xs text-muted-foreground">—</span>
                   )}
                 </div>
               </div>
+
               <div>
-                <p className="lbl-mono">{t('features.tasks.materials')}</p>
-                <div className="mt-1 flex flex-wrap gap-1.5">
+                <p className="lbl-mono mb-2 flex items-center gap-1.5 text-xs font-semibold text-foreground">
+                  <Package className="size-3.5 text-brand-pine" />
+                  {t('features.tasks.materials')}
+                </p>
+                <div className="flex flex-wrap gap-2">
                   {taskMaterials.length ? (
                     taskMaterials.map((m) => (
-                      <span key={m.id} className={CHIP_CLS}>
-                        {m.name}
+                      <span key={m.id} className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-2.5 py-1 text-xs font-medium shadow-xs">
+                        <span className="size-1.5 rounded-full bg-brand-pine" />
+                        {m.name} <span className="text-muted-foreground font-normal">({m.unit})</span>
                       </span>
                     ))
                   ) : (
-                    <span className="text-sm text-muted-foreground">{t('features.tasks.materialNone')}</span>
+                    <span className="text-xs text-muted-foreground">{t('features.tasks.materialNone')}</span>
                   )}
                 </div>
               </div>
+
               <div>
-                <p className="lbl-mono">{t('features.tasks.photos')}</p>
-                <div className="mt-1 flex items-center gap-1.5">
-                  <span className="tabular text-sm font-semibold text-foreground">
-                    {task.submittedPhotos}
+                <p className="lbl-mono mb-2 flex items-center gap-1.5 text-xs font-semibold text-foreground">
+                  <Camera className="size-3.5 text-brand-pine" />
+                  {t('features.tasks.photos')}
+                </p>
+                <div className="flex items-center gap-2">
+                  <span className="tabular text-xs font-bold px-2 py-0.5 rounded-full bg-muted text-foreground">
+                    {task.submittedPhotos} {t('features.tasks.photos')}
                   </span>
-                  {Array.from({ length: Math.min(task.submittedPhotos, 8) }).map((_, i) => (
+                  {Array.from({ length: Math.min(task.submittedPhotos, 6) }).map((_, i) => (
                     <div
                       key={i}
                       aria-hidden
-                      className="size-8 rounded-card border border-border bg-border/40"
-                    />
+                      className="size-9 rounded-md border border-border bg-muted/40 flex items-center justify-center text-muted-foreground/50"
+                    >
+                      <Camera className="size-4" />
+                    </div>
                   ))}
                 </div>
               </div>
