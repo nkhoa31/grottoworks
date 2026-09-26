@@ -4,7 +4,6 @@
 // có nút "Xử lý" mở CorrectionDialog. Thêm bản ghi tay qua TimesheetFormDialog.
 // StatCard tổng giờ + BarChart giờ theo ngày (7 ngày cuối của dữ liệu).
 import { useMemo, useState } from 'react'
-import type { CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   Bar,
@@ -148,6 +147,11 @@ export default function TimesheetPage() {
     [t],
   )
 
+  const pendingFixCount = useMemo(
+    () => rows.filter((x) => x.status === 'PENDING_FIX').length,
+    [rows],
+  )
+
   return (
     <div>
       <PageHeader
@@ -189,31 +193,42 @@ export default function TimesheetPage() {
         <EmptyState text={t('features.tasks.noArea')} />
       ) : (
         <>
-          <div className="mb-6 grid gap-4 md:grid-cols-[220px_1fr]">
-            <div className="grid stagger">
-              <div style={{ '--d': 0 } as CSSProperties}>
-                <StatCard
-                  label={t('features.timesheets.totalHours')}
-                  value={totalHours}
-                  unit={t('features.volunteers.hourUnit')}
-                />
-              </div>
-            </div>
-            <Card className="p-4" style={{ '--d': 1 } as CSSProperties}>
-              <p className="lbl-mono mb-2 px-1">{t('features.timesheets.hoursByDay')}</p>
-              <div className="h-44">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartData} margin={{ top: 4, right: 8, bottom: 0, left: -16 }}>
-                    <CartesianGrid stroke="#E9ECEF" strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#6C757D' }} tickLine={false} />
-                    <YAxis tick={{ fontSize: 11, fill: '#6C757D' }} tickLine={false} axisLine={false} />
-                    <Tooltip cursor={{ fill: '#F1F5F2' }} />
-                    <Bar dataKey="hours" fill="#0A5C36" radius={[6, 6, 0, 0]} maxBarSize={28} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </Card>
+          {/* Top 3 StatCards */}
+          <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <StatCard
+              label={t('features.timesheets.totalHours')}
+              value={totalHours}
+              unit={t('features.volunteers.hourUnit')}
+              tone="ok"
+            />
+            <StatCard
+              label="Số ca chấm công"
+              value={rows.length}
+              unit="ca"
+            />
+            <StatCard
+              label="Yêu cầu sửa giờ"
+              value={pendingFixCount}
+              unit="yêu cầu"
+              tone={pendingFixCount > 0 ? 'alert' : 'ok'}
+            />
           </div>
+
+          {/* 7 Days Bar Chart */}
+          <Card className="mb-6 p-5">
+            <p className="lbl-mono mb-3 text-foreground">{t('features.timesheets.hoursByDay')}</p>
+            <div className="h-48">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={chartData} margin={{ top: 4, right: 8, bottom: 0, left: -16 }}>
+                  <CartesianGrid stroke="#E9ECEF" strokeDasharray="3 3" vertical={false} />
+                  <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#6C757D' }} tickLine={false} />
+                  <YAxis tick={{ fontSize: 11, fill: '#6C757D' }} tickLine={false} axisLine={false} />
+                  <Tooltip cursor={{ fill: '#F1F5F2' }} />
+                  <Bar dataKey="hours" fill="#0A5C36" radius={[6, 6, 0, 0]} maxBarSize={32} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </Card>
 
           <DataTable
             rows={rows}
