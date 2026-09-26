@@ -53,26 +53,49 @@ export default function RegsApprovalPage() {
       {
         key: 'volunteer',
         header: t('features.volunteers.regVolunteer'),
-        render: (r: VolunteerReg) => (
-          <span className="font-semibold text-foreground">{volunteerName(r.volunteerId)}</span>
-        ),
+        render: (r: VolunteerReg) => {
+          const vol = users.find((u) => u.id === r.volunteerId)
+          return (
+            <div className="space-y-1">
+              <span className="font-semibold text-foreground">{vol?.name ?? '—'}</span>
+              {vol?.skills && vol.skills.length > 0 && (
+                <div className="flex flex-wrap gap-1">
+                  {vol.skills.map((s) => (
+                    <span
+                      key={s}
+                      className="inline-flex items-center rounded-full bg-brand-gold/10 px-2 py-0.5 text-[10px] font-medium text-amber-800 dark:text-amber-300"
+                    >
+                      {s}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          )
+        },
       },
       {
         key: 'task',
         header: t('features.volunteers.regTask'),
-        render: (r: VolunteerReg) => taskOf(r.taskId)?.title ?? '—',
+        render: (r: VolunteerReg) => (
+          <span className="font-medium text-foreground">{taskOf(r.taskId)?.title ?? '—'}</span>
+        ),
       },
       {
         key: 'area',
         header: t('features.volunteers.regArea'),
-        render: (r: VolunteerReg) => areaName(taskOf(r.taskId)?.areaId ?? ''),
+        render: (r: VolunteerReg) => (
+          <span className="inline-flex items-center rounded-md bg-muted px-2 py-1 text-xs font-medium text-muted-foreground">
+            {areaName(taskOf(r.taskId)?.areaId ?? '')}
+          </span>
+        ),
       },
       {
         key: 'dueDate',
         header: t('features.volunteers.dueDate'),
         render: (r: VolunteerReg) => {
           const due = taskOf(r.taskId)?.dueDate
-          return <span className="tabular">{due ? viDate(due) : '—'}</span>
+          return <span className="tabular text-sm">{due ? viDate(due) : '—'}</span>
         },
       },
       { key: 'status', header: t('common.status'), render: (r: VolunteerReg) => <StatusTag status={r.status} /> },
@@ -81,9 +104,10 @@ export default function RegsApprovalPage() {
         header: t('common.actions'),
         render: (r: VolunteerReg) =>
           r.status === 'PENDING' ? (
-            <div className="flex justify-end gap-1.5">
+            <div className="flex justify-end gap-2">
               <Button
                 size="sm"
+                className="bg-brand-pine hover:bg-brand-pineHover text-white"
                 aria-label={t('features.volunteers.approve')}
                 onClick={(e) => {
                   e.stopPropagation()
