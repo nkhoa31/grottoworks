@@ -11,6 +11,7 @@ import { ArrowRight } from 'lucide-react'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { DataTable } from '@/components/shared/DataTable'
 import { EmptyState } from '@/components/shared/EmptyState'
+import { StatCard } from '@/components/shared/StatCard'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -190,11 +191,39 @@ export default function AllocationPage() {
   if (areasPending) return <p className="lbl-mono">{t('common.loading')}</p>
   if (isOfficer && !myAreas.length) return <EmptyState text={t('features.allocations.noArea')} />
 
+  const totalAllocatedQty = useMemo(() => rows.reduce((s, a) => s + a.qty, 0), [rows])
+  const activeStockCount = useMemo(
+    () => materials.filter((m) => (available[m.id] ?? 0) > 0).length,
+    [materials, available],
+  )
+
   return (
     <div>
       <PageHeader title={t('features.allocations.title')} sub={t('features.allocations.sub')} />
 
+      {/* 3 StatCards */}
+      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <StatCard
+          label="Tổng lượt cấp phát"
+          value={rows.length}
+          unit="lượt"
+        />
+        <StatCard
+          label="Tổng số lượng đã cấp"
+          value={totalAllocatedQty}
+          unit="đơn vị"
+          tone="ok"
+        />
+        <StatCard
+          label="Mặt hàng khả dụng trong kho"
+          value={activeStockCount}
+          unit="mặt hàng"
+          tone="ok"
+        />
+      </div>
+
       <Card className="mb-6 p-5">
+        <h2 className="lbl-mono mb-3 text-foreground">Tạo phiếu phân bổ vật tư</h2>
         <form
           id="allocation-form"
           onSubmit={handleSubmit(onSubmit)}
