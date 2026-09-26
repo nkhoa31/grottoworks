@@ -15,6 +15,7 @@ import { StatusTag } from '@/components/shared/StatusTag'
 import { Avatar } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { useAreas } from '@/features/areas/api'
 import { useCommunities } from '@/features/communities/api'
 import { useDonations } from '@/features/donations/api'
@@ -132,9 +133,6 @@ export default function VolunteerDetailPage() {
               </span>
             </div>
             <p className="truncate text-xs text-muted-foreground">{user.email}</p>
-            {user.phone && (
-              <p className="text-xs font-mono text-muted-foreground mt-0.5">{user.phone}</p>
-            )}
             <div className="mt-2 flex flex-wrap gap-1">
               {user.skills.length ? (
                 user.skills.map((s) => (

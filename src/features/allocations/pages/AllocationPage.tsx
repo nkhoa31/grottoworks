@@ -188,14 +188,14 @@ export default function AllocationPage() {
     [t, allMaterials, allTasks, areas, users],
   )
 
-  if (areasPending) return <p className="lbl-mono">{t('common.loading')}</p>
-  if (isOfficer && !myAreas.length) return <EmptyState text={t('features.allocations.noArea')} />
-
   const totalAllocatedQty = useMemo(() => rows.reduce((s, a) => s + a.qty, 0), [rows])
   const activeStockCount = useMemo(
     () => materials.filter((m) => (available[m.id] ?? 0) > 0).length,
     [materials, available],
   )
+
+  if (areasPending) return <p className="lbl-mono">{t('common.loading')}</p>
+  if (isOfficer && !myAreas.length) return <EmptyState text={t('features.allocations.noArea')} />
 
   return (
     <div>

@@ -134,6 +134,7 @@ export default function OfficerDashboard() {
       ) : !area || !summary ? (
         <EmptyState text={t('features.materials.noArea')} />
       ) : (
+        <div className="space-y-6">
           {/* Shortage callout banner if needed */}
           {summary.shortageList.length > 0 && (
             <div className="flex items-center justify-between rounded-card border border-destructive/30 bg-destructive/10 p-4">

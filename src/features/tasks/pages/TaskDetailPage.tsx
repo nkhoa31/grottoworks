@@ -34,9 +34,6 @@ import { viDate } from '@/lib/format'
 const TEXTAREA_CLS =
   'mt-1 w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground transition-colors focus-visible:outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/30'
 
-const CHIP_CLS =
-  'inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs font-semibold text-foreground transition-colors'
-
 // 1 dòng TNV trong dialog phân công: tự dùng hook assign theo user đó.
 function VolunteerRow({ task, user }: { task: Task; user: User }) {
   const { t } = useTranslation()

@@ -306,7 +306,8 @@ export default function DonationListPage() {
         />
         <StatCard
           label="Tiền quyên góp"
-          value={totalMoney ? `${(totalMoney / 1_000_000).toFixed(1)}Tr` : '0 ₫'}
+          value={totalMoney}
+          unit="₫"
           tone="ok"
         />
       </div>

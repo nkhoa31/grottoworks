@@ -60,11 +60,6 @@ export default function MaterialListPage() {
                 {m.unit}
               </span>
             </div>
-            {m.reusable && (
-              <span className="inline-flex items-center rounded-full bg-brand-gold/15 px-2 py-0.5 text-[10px] font-semibold text-amber-900 dark:text-amber-200">
-                ♻ Tái sử dụng
-              </span>
-            )}
           </div>
         ),
       },
