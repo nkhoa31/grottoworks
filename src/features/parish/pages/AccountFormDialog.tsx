@@ -15,9 +15,9 @@ import { useAdminSkills, useCreateUser, useUpdateUser } from '../api'
 import type { User } from '@/types'
 
 export const SELECT_CLS =
-  'flex h-10 w-full rounded-md border border-grotto-hair bg-grotto-panel px-3 py-2 text-sm text-grotto-ink transition-colors focus-visible:outline-none focus-visible:border-grotto-terra focus-visible:ring-2 focus-visible:ring-grotto-terra/30'
+  'flex h-10 w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground transition-colors focus-visible:outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/30'
 
-const CHECK_CLS = 'size-4 rounded border border-grotto-hair bg-grotto-panel accent-grotto-terra'
+const CHECK_CLS = 'size-4 rounded border border-border bg-card accent-primary'
 
 const ROLES = ['PARISH', 'COMMUNITY', 'LEADER', 'MATERIAL_OFFICER'] as const
 
@@ -113,7 +113,7 @@ export function AccountFormDialog({
   }
 
   const err = (msg?: string) =>
-    msg ? <p className="mt-1 text-xs font-semibold text-grotto-brick">{t(msg)}</p> : null
+    msg ? <p className="mt-1 text-xs font-semibold text-destructive">{t(msg)}</p> : null
 
   return (
     <Dialog
@@ -170,7 +170,7 @@ export function AccountFormDialog({
           <Label>{t('features.parish.skills')}</Label>
           <div className="flex flex-wrap gap-x-4 gap-y-2">
             {skills.map((s) => (
-              <label key={s} className="flex items-center gap-1.5 text-sm text-grotto-ink">
+              <label key={s} className="flex items-center gap-1.5 text-sm text-foreground">
                 <input type="checkbox" value={s} className={CHECK_CLS} {...register('skills')} />
                 {s}
               </label>

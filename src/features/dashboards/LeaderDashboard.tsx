@@ -26,11 +26,11 @@ const d = (n: number) => ({ '--d': n }) as CSSProperties
 // Màu donut theo trạng thái nhiệm vụ — moss (xong) → straw (đang làm) →
 // terra nhạt (chờ duyệt) → brick (trễ/làm lại) → hair (chưa bắt đầu).
 const STATUS_FILL: Record<string, string> = {
-  DONE: '#6B7D45',
-  DOING: '#C9972F',
-  REVIEW: '#B96A3B',
-  REVISE: '#9C3D2E',
-  TODO: '#E0D2B8',
+  DONE: '#0A5C36',
+  DOING: '#EEB902',
+  REVIEW: '#F4A261',
+  REVISE: '#991B1B',
+  TODO: '#E9ECEF',
 }
 
 export default function LeaderDashboard() {
@@ -70,7 +70,7 @@ export default function LeaderDashboard() {
     return Object.entries(summary.taskCounts).map(([status, count]) => ({
       status,
       count,
-      fill: STATUS_FILL[status] ?? '#E0D2B8',
+      fill: STATUS_FILL[status] ?? '#E9ECEF',
     }))
   }, [summary])
 
@@ -174,7 +174,7 @@ export default function LeaderDashboard() {
                     <ul className="mt-2 space-y-1.5">
                       {donutData.map((entry) => (
                         <li key={entry.status} className="flex items-center justify-between gap-3">
-                          <span className="flex items-center gap-2 text-sm text-grotto-ink">
+                          <span className="flex items-center gap-2 text-sm text-foreground">
                             <span
                               aria-hidden
                               className="inline-block size-2.5 rounded-full"
@@ -182,7 +182,7 @@ export default function LeaderDashboard() {
                             />
                             {t(`status.${entry.status}`)}
                           </span>
-                          <span className="tabular text-sm font-extrabold text-grotto-ink">
+                          <span className="tabular text-sm font-extrabold text-foreground">
                             {entry.count}
                           </span>
                         </li>
@@ -195,10 +195,10 @@ export default function LeaderDashboard() {
               <Card className="p-5">
                 <p className="lbl-mono mb-2">{t('features.checklist.title')}</p>
                 <div className="flex items-baseline justify-between">
-                  <p className="tabular text-2xl font-extrabold text-grotto-ink">
+                  <p className="tabular text-2xl font-extrabold text-foreground">
                     {summary.checklist.done}/{summary.checklist.total}
                   </p>
-                  <p className="tabular text-sm font-semibold text-grotto-soft">
+                  <p className="tabular text-sm font-semibold text-muted-foreground">
                     {summary.checklist.total
                       ? Math.round((summary.checklist.done / summary.checklist.total) * 100)
                       : 0}
@@ -211,10 +211,10 @@ export default function LeaderDashboard() {
                   aria-valuemin={0}
                   aria-valuemax={summary.checklist.total}
                   aria-label={t('features.checklist.title')}
-                  className="mt-2 h-2 overflow-hidden rounded-full bg-grotto-hair"
+                  className="mt-2 h-2 overflow-hidden rounded-full bg-border"
                 >
                   <div
-                    className="g-bar h-full rounded-full bg-grotto-moss"
+                    className="g-bar h-full rounded-full bg-brand-pine"
                     style={{
                       width: `${summary.checklist.total ? (summary.checklist.done / summary.checklist.total) * 100 : 0}%`,
                       ...d(0),
@@ -238,7 +238,7 @@ export default function LeaderDashboard() {
                 <div className="mb-3 flex items-center justify-between gap-3">
                   <p className="lbl-mono">{t('features.dashboards.lateTasks')}</p>
                   <span
-                    className="tabular rounded-full bg-grotto-brick/12 px-2.5 py-0.5 font-mono text-[11px] font-semibold text-grotto-brick"
+                    className="tabular rounded-full bg-destructive/12 px-2.5 py-0.5 font-mono text-[11px] font-semibold text-destructive"
                     aria-label={t('features.dashboards.lateTasks')}
                   >
                     ✕ {lateTasks.length}
@@ -255,19 +255,19 @@ export default function LeaderDashboard() {
               <Card className="p-5">
                 <div className="flex flex-wrap items-center justify-between gap-4">
                   <div className="flex items-center gap-4">
-                    <span className="grid size-11 place-items-center rounded-[14px_14px_4px_4px] bg-grotto-straw/15 text-grotto-straw" aria-hidden>
+                    <span className="grid size-11 place-items-center rounded-card bg-brand-gold/15 text-brand-gold" aria-hidden>
                       <Users className="size-5" />
                     </span>
                     <div>
                       <p className="lbl-mono">{t('features.dashboards.volunteerGaps')}</p>
-                      <p className="tabular text-2xl font-extrabold text-grotto-ink">{gaps}</p>
+                      <p className="tabular text-2xl font-extrabold text-foreground">{gaps}</p>
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     <Button
                       variant="secondary"
                       size="sm"
-                      onClick={() => navigate('/leader/assignments')}
+                      onClick={() => navigate('/leader/tasks')}
                     >
                       {t('features.tasks.assignmentsTitle')}
                     </Button>

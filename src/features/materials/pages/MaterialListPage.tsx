@@ -23,7 +23,7 @@ import { shortage } from '@/types'
 import type { Material } from '@/types'
 
 const SELECT_CLS =
-  'flex h-10 rounded-md border border-grotto-hair bg-grotto-panel px-3 py-2 text-sm text-grotto-ink transition-colors focus-visible:outline-none focus-visible:border-grotto-terra focus-visible:ring-2 focus-visible:ring-grotto-terra/30'
+  'flex h-10 rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground transition-colors focus-visible:outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/30'
 
 export default function MaterialListPage() {
   const { t } = useTranslation()
@@ -53,8 +53,8 @@ export default function MaterialListPage() {
         key: 'name',
         header: t('features.materials.name'),
         render: (m: Material) => (
-          <span className="font-semibold text-grotto-ink">
-            {m.name} <span className="text-xs font-normal text-grotto-soft">({m.unit})</span>
+          <span className="font-semibold text-foreground">
+            {m.name} <span className="text-xs font-normal text-muted-foreground">({m.unit})</span>
           </span>
         ),
       },
@@ -70,9 +70,9 @@ export default function MaterialListPage() {
         render: (m: Material) => {
           const s = shortage(m)
           return s > 0 ? (
-            <span className="tabular font-bold text-grotto-brick">{s}</span>
+            <span className="tabular font-bold text-destructive">{s}</span>
           ) : (
-            <span className="tabular font-semibold text-grotto-moss">✓ 0</span>
+            <span className="tabular font-semibold text-brand-pine">✓ 0</span>
           )
         },
       },

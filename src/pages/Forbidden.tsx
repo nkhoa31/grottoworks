@@ -11,7 +11,7 @@ export function Forbidden() {
   const { user } = useAuth()
   const navigate = useNavigate()
   return (
-    <main className="grid min-h-screen place-items-center bg-grotto-ground p-6">
+    <main className="grid min-h-screen place-items-center bg-background p-6">
       <div className="stagger text-center">
         <p className="lbl-mono" style={d(0)}>
           403
@@ -19,7 +19,7 @@ export function Forbidden() {
         <h1 className="mt-2 text-3xl font-extrabold tracking-tight" style={d(1)}>
           {t('error.forbiddenTitle')}
         </h1>
-        <p className="mt-2 text-sm text-grotto-soft" style={d(2)}>
+        <p className="mt-2 text-sm text-muted-foreground" style={d(2)}>
           {t('error.forbiddenSub')}
         </p>
         <div className="mt-6" style={d(3)}>

@@ -27,7 +27,7 @@ import type { Material, PurchaseRecord, PurchaseRequest } from '@/types'
 import { useConfirmPurchase, useCreatePurchaseRecord, usePurchaseRecords, usePurchaseRequests } from '../api'
 
 const SELECT_CLS =
-  'flex h-10 w-full rounded-md border border-grotto-hair bg-grotto-panel px-3 py-2 text-sm text-grotto-ink transition-colors focus-visible:outline-none focus-visible:border-grotto-terra focus-visible:ring-2 focus-visible:ring-grotto-terra/30'
+  'flex h-10 w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground transition-colors focus-visible:outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/30'
 
 const num = (key: string, min = 0) =>
   z.preprocess(
@@ -90,7 +90,7 @@ function RecordDialog({ request, materials, onClose }: {
   }
 
   const err = (msg?: string) =>
-    msg ? <p className="mt-1 text-xs font-semibold text-grotto-brick">{t(msg)}</p> : null
+    msg ? <p className="mt-1 text-xs font-semibold text-destructive">{t(msg)}</p> : null
 
   return (
     <Dialog
@@ -163,14 +163,14 @@ function RecordDialog({ request, materials, onClose }: {
             id="record-photo"
             type="file"
             accept="image/*"
-            className="mt-1 block w-full text-sm text-grotto-soft file:mr-3 file:rounded-md file:border-0 file:bg-grotto-terra file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-grotto-panel"
+            className="mt-1 block w-full text-sm text-muted-foreground file:mr-3 file:rounded-md file:border-0 file:bg-primary file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-primary-foreground"
             onChange={(e) => {
               const f = e.target.files?.[0]
               setPhoto(f ? URL.createObjectURL(f) : '')
             }}
           />
           {/* objectURL preview — demo không upload thật (chỉ tồn tại trong phiên). */}
-          {photo && <img src={photo} alt={t('features.purchases.receipt')} className="mt-2 max-h-32 rounded-grotto border border-grotto-hair" />}
+          {photo && <img src={photo} alt={t('features.purchases.receipt')} className="mt-2 max-h-32 rounded-card border border-border" />}
         </div>
       </form>
     </Dialog>
@@ -262,14 +262,14 @@ export default function PurchaseConfirmPage() {
         key: 'receiptPhoto',
         header: t('features.purchases.receipt'),
         align: 'center' as const,
-        render: (r: PurchaseRecord) => (r.receiptPhoto ? <span className="text-grotto-moss">✓</span> : <span className="text-grotto-soft">—</span>),
+        render: (r: PurchaseRecord) => (r.receiptPhoto ? <span className="text-brand-pine">✓</span> : <span className="text-muted-foreground">—</span>),
       },
       {
         key: 'confirmed',
         header: t('features.purchases.confirmed'),
         render: (r: PurchaseRecord) =>
           r.confirmed ? (
-            <span className="font-semibold text-grotto-moss">✓</span>
+            <span className="font-semibold text-brand-pine">✓</span>
           ) : (
             <Button
               size="sm"

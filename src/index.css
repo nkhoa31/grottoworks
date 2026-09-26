@@ -4,27 +4,48 @@
 
 @layer base {
   :root {
-    /* shadcn variables mapped to the grotto palette (HSL) */
-    --background: 41 52% 87%; /* grotto ground #EFE4CC */
-    --foreground: 27 28% 19%; /* grotto ink #3E2F23 */
-    --primary: 22 52% 48%; /* grotto terra #B96A3B */
-    --primary-foreground: 43 69% 95%; /* grotto panel #FBF6E9 */
-    --secondary: 43 69% 95%; /* grotto panel #FBF6E9 */
-    --secondary-foreground: 27 28% 19%; /* grotto ink #3E2F23 */
-    --muted: 39 39% 80%; /* grotto hair #E0D2B8 */
-    --muted-foreground: 32 22% 44%; /* grotto soft #8A7358 */
-    --accent: 41 62% 49%; /* grotto straw #C9972F */
-    --accent-foreground: 27 28% 19%; /* grotto ink #3E2F23 */
-    --destructive: 8 55% 40%; /* grotto brick #9C3D2E */
-    --destructive-foreground: 43 69% 95%; /* grotto panel #FBF6E9 */
-    --border: 39 39% 80%; /* grotto hair #E0D2B8 */
-    --input: 39 39% 80%; /* grotto hair #E0D2B8 */
-    --ring: 22 52% 48%; /* grotto terra #B96A3B */
-    --radius: 0.5rem;
-  }
+    /* GOLDEN WINTER — Design Tokens (DESIGN_SYSTEM.md mục 37) */
+    /* shadcn variables mapped to Golden Winter palette (HSL) */
+    --background: 210 17% 98%; /* canvas #F8F9FA */
+    --foreground: 234 22% 22%; /* ink #2B2D42 */
+    --primary: 152 80% 20%; /* pine #0A5C36 */
+    --primary-foreground: 0 0% 100%; /* on-primary #FFFFFF */
+    --secondary: 0 0% 100%; /* card #FFFFFF */
+    --secondary-foreground: 234 22% 22%; /* ink #2B2D42 */
+    --muted: 210 16% 96%; /* table-header #F1F5F2 */
+    --muted-foreground: 208 7% 46%; /* muted #6C757D */
+    --accent: 45 97% 47%; /* gold #EEB902 */
+    --accent-foreground: 234 22% 22%; /* ink #2B2D42 */
+    --destructive: 0 72% 37%; /* danger #991B1B */
+    --destructive-foreground: 0 0% 100%;
+    --border: 210 14% 93%; /* hairline #E9ECEF */
+    --input: 210 14% 93%;
+    --ring: 152 80% 20%; /* focus ring = primary */
+    --radius: 10px;
 
+    /* Raw Golden Winter tokens (dùng trực tiếp khi cần) */
+    --color-primary: #0a5c36;
+    --color-primary-hover: #0d7344;
+    --color-primary-light: #e8f5e9;
+    --color-accent-gold: #eeb902;
+    --color-accent-gold-light: #fef9c3;
+    --color-accent-warm: #f4a261;
+
+    --bg-canvas: #f8f9fa;
+    --bg-card: #ffffff;
+    --bg-table-header: #f1f5f2;
+    --bg-hover: #f8f9fa;
+
+    --text-main: #2b2d42;
+    --text-muted: #6c757d;
+    --text-light: #adb5bd;
+    --text-on-primary: #ffffff;
+
+    --border-light: #e9ecef;
+    --border-accent: #e8f0ec;
+  }
   body {
-    @apply bg-grotto-ground text-grotto-ink font-sans;
+    @apply bg-background text-foreground font-sans;
   }
 
   /* a11y: ring focus-visible cho mọi phần tử tương tác KHÔNG dùng Button/Input
@@ -43,7 +64,7 @@
 }
 
 .lbl-mono {
-  @apply font-mono text-[10px] uppercase tracking-[0.14em] text-grotto-soft;
+  @apply font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground;
 }
 
 @keyframes g-rise {
@@ -91,6 +112,7 @@
 }
 
 ::selection {
-  background: #c9972f;
-  color: #3e2f23;
+  background: #eeb902;
+  color: #2b2d42;
 }
+

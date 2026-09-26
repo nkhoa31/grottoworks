@@ -83,9 +83,9 @@ export default function AreaListPage() {
         header: t('features.areas.name'),
         render: (a: WorkArea) => (
           <div>
-            <span className="font-semibold text-grotto-ink">{a.name}</span>
+            <span className="font-semibold text-foreground">{a.name}</span>
             {a.description ? (
-              <p className="line-clamp-1 text-xs text-grotto-soft" title={a.description}>
+              <p className="line-clamp-1 text-xs text-muted-foreground" title={a.description}>
                 {a.description}
               </p>
             ) : null}
@@ -98,7 +98,7 @@ export default function AreaListPage() {
         render: (a: WorkArea) => {
           const season = seasonMap.get(a.seasonId ?? 's1')
           return (
-            <span className="inline-flex items-center rounded-full border border-grotto-hair bg-grotto-ground px-2 py-0.5 text-xs font-semibold text-grotto-soft">
+            <span className="inline-flex items-center rounded-full border border-border bg-background px-2 py-0.5 text-xs font-semibold text-muted-foreground">
               {season ? t('features.areas.seasonBadge', { year: season.year }) : '—'}
             </span>
           )
@@ -128,7 +128,7 @@ export default function AreaListPage() {
         key: 'deadline',
         header: t('features.areas.deadline'),
         render: (a: WorkArea) => (
-          <span className="tabular text-xs font-medium text-grotto-soft">
+          <span className="tabular text-xs font-medium text-muted-foreground">
             {a.deadline ? viDate(a.deadline) : '—'}
           </span>
         ),
@@ -214,7 +214,7 @@ export default function AreaListPage() {
             <div
               role="group"
               aria-label={t('features.areas.view')}
-              className="flex overflow-hidden rounded-md border border-grotto-hair"
+              className="flex overflow-hidden rounded-md border border-border"
             >
               {(
                 [
@@ -231,8 +231,8 @@ export default function AreaListPage() {
                   className={cn(
                     'grid size-10 place-items-center transition-colors',
                     view === v
-                      ? 'bg-grotto-terra text-grotto-panel'
-                      : 'bg-grotto-panel text-grotto-soft hover:text-grotto-terra',
+                      ? 'bg-primary text-primary-foreground'
+                      : 'bg-card text-muted-foreground hover:text-primary',
                   )}
                 >
                   <Icon className="size-4" />
@@ -253,7 +253,7 @@ export default function AreaListPage() {
       />
 
       {/* Filter bar */}
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-grotto-hair bg-grotto-panel/60 px-4 py-3">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card/60 px-4 py-3">
         <div className="flex flex-wrap items-center gap-2">
           <label htmlFor="area-season-filter" className="lbl-mono cursor-pointer">
             {t('features.areas.seasonFilter')}:
@@ -273,7 +273,7 @@ export default function AreaListPage() {
             ))}
           </select>
         </div>
-        <span className="tabular text-xs font-semibold text-grotto-soft">
+        <span className="tabular text-xs font-semibold text-muted-foreground">
           {t('common.total', { n: areas.length })}
         </span>
       </div>

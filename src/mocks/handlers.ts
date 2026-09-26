@@ -22,8 +22,9 @@ const PREFIX: Record<string, string> = {
   donations: 'd',
   borrowedItems: 'b',
   allocations: 'al',
-  timesheets: 'ts',
+    timesheets: 'ts',
   supportRequests: 'sr',
+  supportRegs: 'srg',
   checklists: 'cl',
   activityLogs: 'log',
 }
@@ -42,8 +43,9 @@ const LABEL: Record<string, string> = {
   donations: 'quà tặng',
   borrowedItems: 'đồ mượn',
   allocations: 'phân bổ',
-  timesheets: 'chấm công',
+    timesheets: 'chấm công',
   supportRequests: 'yêu cầu hỗ trợ',
+  supportRegs: 'đăng ký hỗ trợ',
   checklists: 'checklist',
   skills: 'kỹ năng',
 }
@@ -332,6 +334,7 @@ export const handlers = [
   ...crud('allocations'),
   ...crud('timesheets'),
   ...crud('supportRequests'),
+  ...crud('supportRegs'),
   ...crud('checklists'),
   ...crud('activityLogs'),
 ]

@@ -17,11 +17,11 @@ import { useCreateTask, useSkills, useUpdateTask } from '../api'
 import type { Task } from '@/types'
 
 export const SELECT_CLS =
-  'flex h-10 w-full rounded-md border border-grotto-hair bg-grotto-panel px-3 py-2 text-sm text-grotto-ink transition-colors focus-visible:outline-none focus-visible:border-grotto-terra focus-visible:ring-2 focus-visible:ring-grotto-terra/30'
+  'flex h-10 w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground transition-colors focus-visible:outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/30'
 
 // Checkbox group: label + hàng ô vuông, chữ nhỏ.
 const CHECK_CLS =
-  'size-4 rounded border border-grotto-hair bg-grotto-panel accent-grotto-terra'
+  'size-4 rounded border border-border bg-card accent-primary'
 
 // Trống → undefined để báo lỗi thay vì coerce 0 (pattern SeasonFormDialog);
 // ràng buộc min/int nằm trong schema con vì preprocess trả ZodEffects.
@@ -122,7 +122,7 @@ export function TaskFormDialog({
   }
 
   const err = (msg?: string) =>
-    msg ? <p className="mt-1 text-xs font-semibold text-grotto-brick">{t(msg)}</p> : null
+    msg ? <p className="mt-1 text-xs font-semibold text-destructive">{t(msg)}</p> : null
 
   return (
     <Dialog
@@ -168,7 +168,7 @@ export function TaskFormDialog({
           <Label>{t('features.tasks.skills')}</Label>
           <div className="flex flex-wrap gap-x-4 gap-y-1.5 pt-1">
             {skills.map((s) => (
-              <label key={s} className="flex items-center gap-1.5 text-sm text-grotto-ink">
+              <label key={s} className="flex items-center gap-1.5 text-sm text-foreground">
                 <input type="checkbox" value={s} className={CHECK_CLS} {...register('skills')} />
                 {s}
               </label>
@@ -197,7 +197,7 @@ export function TaskFormDialog({
           {materials.length ? (
             <div className="flex flex-wrap gap-x-4 gap-y-1.5 pt-1">
               {materials.map((m) => (
-                <label key={m.id} className="flex items-center gap-1.5 text-sm text-grotto-ink">
+                <label key={m.id} className="flex items-center gap-1.5 text-sm text-foreground">
                   <input
                     type="checkbox"
                     value={m.id}
@@ -209,7 +209,7 @@ export function TaskFormDialog({
               ))}
             </div>
           ) : (
-            <p className="pt-1 text-sm text-grotto-soft">{t('features.tasks.materialNone')}</p>
+            <p className="pt-1 text-sm text-muted-foreground">{t('features.tasks.materialNone')}</p>
           )}
         </div>
       </form>

@@ -92,7 +92,7 @@ function CategoryRow({
   }
 
   return (
-    <li className="flex items-center justify-between gap-3 border-b border-grotto-hair/60 py-2.5 last:border-0">
+    <li className="flex items-center justify-between gap-3 border-b border-border/60 py-2.5 last:border-0">
       {editing ? (
         <form
           className="flex flex-1 gap-2"
@@ -108,7 +108,7 @@ function CategoryRow({
             onChange={(e) => setDraft(e.target.value)}
           />
           <Button type="submit" variant="ghost" size="icon" aria-label={t('common.confirm')}>
-            <Check className="size-4 text-grotto-moss" />
+            <Check className="size-4 text-brand-pine" />
           </Button>
           <Button
             type="button"
@@ -122,7 +122,7 @@ function CategoryRow({
         </form>
       ) : (
         <>
-          <span className="font-semibold text-grotto-ink">{name}</span>
+          <span className="font-semibold text-foreground">{name}</span>
           <div className="flex items-center gap-1">
             <span className="lbl-mono !text-[11px]">
               {refCount} {refLabel}
@@ -187,7 +187,7 @@ function AddCategoryForm({ onAdd }: { onAdd: (name: string) => void | Promise<un
           {...register('name')}
         />
         {errors.name?.message && (
-          <p className="mt-1 text-xs font-semibold text-grotto-brick">{t(errors.name.message)}</p>
+          <p className="mt-1 text-xs font-semibold text-destructive">{t(errors.name.message)}</p>
         )}
       </div>
       <Button type="submit" disabled={isSubmitting}>
@@ -307,8 +307,8 @@ export default function CategoriesPage() {
             className={cn(
               'rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors',
               tab === x
-                ? 'border-grotto-terra bg-grotto-terra text-grotto-panel'
-                : 'border-grotto-hair bg-grotto-panel text-grotto-soft hover:border-grotto-terra hover:text-grotto-terra',
+                ? 'border-primary bg-primary text-primary-foreground'
+                : 'border-border bg-card text-muted-foreground hover:border-primary hover:text-primary',
             )}
           >
             {t(`features.parish.catTab.${x}`)}

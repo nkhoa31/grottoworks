@@ -107,7 +107,7 @@ export default function TimesheetPage() {
         key: 'checkOut',
         header: t('features.timesheets.checkOut'),
         render: (x: Row) => (
-          <span className="tabular">{x.checkOut ?? <span className="text-grotto-soft">—</span>}</span>
+          <span className="tabular">{x.checkOut ?? <span className="text-muted-foreground">—</span>}</span>
         ),
       },
       {
@@ -204,11 +204,11 @@ export default function TimesheetPage() {
               <div className="h-44">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={chartData} margin={{ top: 4, right: 8, bottom: 0, left: -16 }}>
-                    <CartesianGrid stroke="#E0D2B8" strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#8A7358' }} tickLine={false} />
-                    <YAxis tick={{ fontSize: 11, fill: '#8A7358' }} tickLine={false} axisLine={false} />
-                    <Tooltip cursor={{ fill: '#EFE4CC' }} />
-                    <Bar dataKey="hours" fill="#B96A3B" radius={[6, 6, 0, 0]} maxBarSize={28} />
+                    <CartesianGrid stroke="#E9ECEF" strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#6C757D' }} tickLine={false} />
+                    <YAxis tick={{ fontSize: 11, fill: '#6C757D' }} tickLine={false} axisLine={false} />
+                    <Tooltip cursor={{ fill: '#F1F5F2' }} />
+                    <Bar dataKey="hours" fill="#0A5C36" radius={[6, 6, 0, 0]} maxBarSize={28} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>

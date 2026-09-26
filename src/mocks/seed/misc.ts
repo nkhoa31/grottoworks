@@ -1,4 +1,4 @@
-import type { ActivityLog, Allocation, BorrowedItem, ChecklistItem, SupportRequest, VolunteerReg } from '../../types';
+import type { ActivityLog, Allocation, BorrowedItem, ChecklistItem, SupportReg, SupportRequest, VolunteerReg } from '../../types';
 
 // Phân bổ vật tư đã nhận: tổng alloc mỗi vật tư ≤ received của vật tư đó.
 export const allocations: Allocation[] = [
@@ -25,13 +25,63 @@ export const borrowedItems: BorrowedItem[] = [
   { id: 'b12', name: 'Máy phun sơn', owner: 'Bạn trẻ Giáo khu Mẹ Thiên Chúa', expectedReturn: '2026-10-15', returnedCondition: 'GOOD', areaId: 'a5' },
 ];
 
+// Yêu cầu hỗ trợ nhân lực giữa các cộng đoàn. `communityId` = cộng đoàn của khu
+// cần hỗ trợ; TNV thuộc cộng đoàn KHÁC thấy để đăng ký. `fulfill` theo số người
+// đã xác nhận + `volunteersNeeded`. kind MATERIAL không huy động TNV.
 export const supportRequests: SupportRequest[] = [
-  { id: 'sr1', areaId: 'a1', kind: 'PEOPLE', detail: 'Cần thêm 3 anh em phụ hồ tuần này.', status: 'OPEN' },
-  { id: 'sr2', areaId: 'a2', kind: 'MATERIAL', detail: 'Thiếu 35 dây đèn LED nháy nhiều màu.', status: 'OPEN' },
-  { id: 'sr3', areaId: 'a3', kind: 'SKILL', detail: 'Cần thợ điện có chứng chỉ an toàn điện.', status: 'COORDINATED' },
-  { id: 'sr4', areaId: 'a4', kind: 'PEOPLE', detail: 'Cần 5 bạn trẻ phụ dựng sân khấu ngày 18/11.', status: 'COORDINATED' },
-  { id: 'sr5', areaId: 'a5', kind: 'MATERIAL', detail: 'Cần thêm 40m2 bạt che mưa lối đi chính.', status: 'RESOLVED' },
-  { id: 'sr6', areaId: 'a1', kind: 'SKILL', detail: 'Cần người biết sơn nước trang trí núi đá.', status: 'OPEN' },
+  {
+    id: 'sr1', areaId: 'a1', kind: 'PEOPLE',
+    detail: 'Cần thêm 3 anh em phụ hồ tuần này.', status: 'OPEN',
+    volunteersNeeded: 3, supportTime: 'T7 17/11, 8h–12h', taskAreaId: 'a1',
+    fulfill: 'OPEN',
+  },
+  {
+    id: 'sr2', areaId: 'a2', communityId: 'c1', kind: 'MATERIAL',
+    detail: 'Thiếu 35 dây đèn LED nháy nhiều màu.', status: 'OPEN',
+    volunteersNeeded: 0, fulfill: 'FULFILLED',
+  },
+  {
+    id: 'sr3', areaId: 'a3', communityId: 'c2', kind: 'SKILL',
+    detail: 'Cần thợ điện có chứng chỉ an toàn điện.', status: 'COORDINATED',
+    volunteersNeeded: 1, skills: ['Điện'], supportTime: 'Tối trong tuần, 19h–21h',
+    taskAreaId: 'a3', fulfill: 'FULFILLED',
+  },
+  {
+    id: 'sr4', areaId: 'a4', communityId: 'c2', kind: 'PEOPLE',
+    detail: 'Cần 5 bạn trẻ phụ dựng sân khấu ngày 18/11.', status: 'COORDINATED',
+    volunteersNeeded: 5, supportTime: 'CN 18/11, cả ngày', taskAreaId: 'a4',
+    fulfill: 'PARTIAL',
+  },
+  {
+    id: 'sr5', areaId: 'a5', communityId: 'c1', kind: 'MATERIAL',
+    detail: 'Cần thêm 40m2 bạt che mưa lối đi chính.', status: 'RESOLVED',
+    volunteersNeeded: 0, fulfill: 'FULFILLED',
+  },
+  {
+    id: 'sr6', areaId: 'a1', communityId: 'c3', kind: 'SKILL',
+    detail: 'Cần người biết sơn nước trang trí núi đá.', status: 'OPEN',
+    volunteersNeeded: 2, skills: ['Sơn'], supportTime: 'Cuối tuần',
+    taskAreaId: 'a1', fulfill: 'OPEN',
+  },
+];
+
+// Đơn TNV đăng ký hỗ trợ. u13 (c3) đăng ký sr4 (khu a4 thuộc c2) → khác cộng đoàn.
+// u25/u27 đăng ký sr6 (a1, c3) — 1 chờ duyệt, 1 đã duyệt; u21 bị từ chối ở sr3.
+// a1 (Hang đá Bê-lem) do tài khoản demo LEADER u3 lãnh → các đơn PENDING vào
+// sr1/sr6 (khu a1) hiện trong card "Đơn đăng ký hỗ trợ chờ duyệt" của leader.
+export const supportRegs: SupportReg[] = [
+  { id: 'srg1', requestId: 'sr3', volunteerId: 'u21', status: 'APPROVED', at: '2026-11-04T09:00:00' },
+  { id: 'srg2', requestId: 'sr4', volunteerId: 'u13', status: 'APPROVED', note: 'Em rảnh cả ngày CN, có sức khoẻ.', at: '2026-11-06T18:30:00' },
+  { id: 'srg3', requestId: 'sr4', volunteerId: 'u17', status: 'APPROVED', at: '2026-11-07T10:15:00' },
+  { id: 'srg4', requestId: 'sr4', volunteerId: 'u19', status: 'PENDING', note: 'Đến muộn 1 tiếng có được không ạ?', at: '2026-11-08T20:00:00' },
+  { id: 'srg5', requestId: 'sr6', volunteerId: 'u25', status: 'PENDING', note: 'Em biết sơn nước, đã làm giáo khu mấy lần.', at: '2026-11-15T14:00:00' },
+  { id: 'srg6', requestId: 'sr6', volunteerId: 'u27', status: 'PENDING', at: '2026-11-16T08:30:00' },
+  { id: 'srg7', requestId: 'sr3', volunteerId: 'u20', status: 'REJECTED', rejectReason: 'Đã đủ người, cảm ơn em.', at: '2026-11-05T11:00:00' },
+  // Khu a1 (u3 lãnh) — đơn liên cộng đoàn về sr1 (PEOPLE) & sr6 (SKILL) chờ duyệt.
+  { id: 'srg8', requestId: 'sr1', volunteerId: 'u26', status: 'PENDING', note: 'Em rảnh sáng T6–T7, có thể phụ hồ.', at: '2026-11-12T09:00:00' },
+  { id: 'srg9', requestId: 'sr1', volunteerId: 'u18', status: 'PENDING', note: 'Cho em đăng ký 1 buổi sáng thứ Bảy ạ.', at: '2026-11-13T15:30:00' },
+  { id: 'srg10', requestId: 'sr1', volunteerId: 'u14', status: 'PENDING', at: '2026-11-14T08:45:00' },
+  { id: 'srg11', requestId: 'sr6', volunteerId: 'u22', status: 'PENDING', note: 'Em biết sơn nước, từng làm sân khấu giáo khu.', at: '2026-11-16T10:00:00' },
 ];
 
 export const checklistItems: ChecklistItem[] = [

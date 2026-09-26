@@ -60,7 +60,7 @@ function ReturnDialog({ item, onClose }: { item: BorrowedItem; onClose: () => vo
       }
     >
       <div className="space-y-3">
-        <p className="text-sm text-grotto-ink">
+        <p className="text-sm text-foreground">
           <span className="font-semibold">{item.name}</span> — {item.owner}
         </p>
         <div>
@@ -82,7 +82,7 @@ function ReturnDialog({ item, onClose }: { item: BorrowedItem; onClose: () => vo
             ))}
           </select>
           {missing && (
-            <p className="mt-1 text-xs font-semibold text-grotto-brick">
+            <p className="mt-1 text-xs font-semibold text-destructive">
               {t('features.borrowed.conditionRequired')}
             </p>
           )}
@@ -117,7 +117,7 @@ export default function BorrowedListPage() {
       {
         key: 'name',
         header: t('features.borrowed.name'),
-        render: (b: BorrowedItem) => <span className="font-semibold text-grotto-ink">{b.name}</span>,
+        render: (b: BorrowedItem) => <span className="font-semibold text-foreground">{b.name}</span>,
       },
       { key: 'owner', header: t('features.borrowed.owner'), render: (b: BorrowedItem) => b.owner },
       {
@@ -134,7 +134,7 @@ export default function BorrowedListPage() {
             <span>
               <span className="tabular">{viDate(b.expectedReturn)}</span>
               {late > 0 && (
-                <span className="ml-2 font-mono text-[11px] font-bold uppercase text-grotto-brick">
+                <span className="ml-2 text-[11px] font-bold text-destructive">
                   {t('features.borrowed.overdue', { n: late })}
                 </span>
               )}
@@ -152,7 +152,7 @@ export default function BorrowedListPage() {
         header: t('common.actions'),
         render: (b: BorrowedItem) =>
           b.returnedCondition ? (
-            <span className="text-grotto-soft">—</span>
+            <span className="text-muted-foreground">—</span>
           ) : (
             <div className="flex justify-end">
               <Button

@@ -37,10 +37,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             key={x.id}
             role="status"
             className={cn(
-              'g-item rounded-md px-4 py-3 text-sm font-semibold shadow-lg',
+              'g-item rounded-md px-4 py-3 text-sm font-semibold shadow-hover',
               x.tone === 'alert'
-                ? 'bg-grotto-brick text-grotto-panel'
-                : 'bg-grotto-panel text-grotto-ink',
+                ? 'bg-destructive text-destructive-foreground'
+                : 'bg-card text-foreground',
             )}
           >
             {x.msg}

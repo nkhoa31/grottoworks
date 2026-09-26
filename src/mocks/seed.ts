@@ -6,7 +6,7 @@ import { tasks } from './seed/tasks';
 import { donations } from './seed/donations';
 import { purchaseRecords, purchaseRequests } from './seed/purchases';
 import { timesheets } from './seed/timesheets';
-import { activityLogs, allocations, borrowedItems, checklistItems, supportRequests, volunteerRegs } from './seed/misc';
+import { activityLogs, allocations, borrowedItems, checklistItems, supportRegs, supportRequests, volunteerRegs } from './seed/misc';
 import { SKILLS } from '../types';
 
 export const seed = {
@@ -25,6 +25,7 @@ export const seed = {
   allocations,
   timesheets,
   supportRequests,
+  supportRegs,
   checklists: checklistItems,
   activityLogs,
   skills: [...SKILLS],

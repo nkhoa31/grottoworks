@@ -71,13 +71,13 @@ export function NotificationsDropdown() {
         aria-haspopup="dialog"
         title={t('shell.notifications')}
         aria-label={t('shell.notifications')}
-        className="relative grid size-10 place-items-center rounded-md text-grotto-soft transition-colors hover:bg-grotto-ground hover:text-grotto-ink"
+        className="relative grid size-10 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-background hover:text-foreground"
       >
         <Bell className="size-5" />
         {hasUnread && (
           <span
             data-testid="unread-dot"
-            className="absolute right-2.5 top-2.5 size-2 rounded-full bg-grotto-brick"
+            className="absolute right-2.5 top-2.5 size-2 rounded-full bg-destructive"
             aria-hidden
           />
         )}
@@ -86,9 +86,9 @@ export function NotificationsDropdown() {
         <div
           role="dialog"
           aria-label={t('shell.notifications')}
-          className="absolute right-0 top-12 z-50 w-96 rounded-grotto border border-grotto-hair bg-grotto-panel shadow-lg"
+          className="absolute right-0 top-12 z-50 w-96 rounded-card border border-border bg-card shadow-hover"
         >
-          <p className="lbl-mono border-b border-grotto-hair px-4 py-3">
+          <p className="lbl-mono border-b border-border px-4 py-3">
             {t('shell.notifications')}
           </p>
           {items.length ? (
@@ -98,11 +98,11 @@ export function NotificationsDropdown() {
                 return (
                   <li
                     key={x.id}
-                    className="flex items-start gap-3 border-b border-grotto-hair/60 px-4 py-3 last:border-0"
+                    className="flex items-start gap-3 border-b border-border/60 px-4 py-3 last:border-0"
                   >
-                    <Icon className="mt-0.5 size-4 shrink-0 text-grotto-terra" aria-hidden />
+                    <Icon className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
                     <div className="min-w-0">
-                      <p className="text-sm text-grotto-ink">
+                      <p className="text-sm text-foreground">
                         <span className="font-semibold">{nameOf(x.actor)}</span> {x.action}{' '}
                         <span className="font-semibold">{x.target}</span>
                       </p>

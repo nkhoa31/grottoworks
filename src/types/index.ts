@@ -86,9 +86,31 @@ export interface Timesheet {
   hours: number; correctionRequest?: string; status: 'OPEN' | 'CLOSED' | 'PENDING_FIX';
 }
 
+/** Mức đáp ứng nhân lực: 0 người → OPEN; < cần → PARTIAL; ≥ cần → FULFILLED. */
+export type SupportFulfill = 'OPEN' | 'PARTIAL' | 'FULFILLED';
+
 export interface SupportRequest {
   id: string; areaId: string; kind: 'PEOPLE' | 'SKILL' | 'MATERIAL';
   detail: string; status: 'OPEN' | 'COORDINATED' | 'RESOLVED'; assigneeId?: string;
+  /** Cộng đoàn của khu cần hỗ trợ — TNV cộng đoàn KHÁC thấy để đăng ký. */
+  communityId?: string;
+  /** Số TNV cần huy động (0 với kind MATERIAL). */
+  volunteersNeeded?: number;
+  /** Kỹ năng cần có (kind SKILL) — lọc TNV phù hợp. */
+  skills?: string[];
+  /** Thời gian hỗ trợ dự kiến (label tự do). */
+  supportTime?: string;
+  /** Khu nhiệm vụ đích để gán TNV được duyệt (thường trùng areaId). */
+  taskAreaId?: string;
+  /** Mức đáp ứng theo số người đã xác nhận. */
+  fulfill?: SupportFulfill;
+}
+
+/** Đơn TNV (cộng đoàn khác) đăng ký tham gia yêu cầu hỗ trợ. */
+export interface SupportReg {
+  id: string; requestId: string; volunteerId: string;
+  status: 'PENDING' | 'APPROVED' | 'REJECTED';
+  note?: string; rejectReason?: string; at?: string;
 }
 
 export interface ChecklistItem { id: string; areaId: string; label: string; done: boolean; note?: string }

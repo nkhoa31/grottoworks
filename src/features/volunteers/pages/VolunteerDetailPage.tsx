@@ -130,16 +130,16 @@ export default function VolunteerDetailPage() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Trái: profile + điểm + giờ công. */}
         <div className="space-y-6">
-          <div className="flex items-center gap-4 rounded-grotto border border-grotto-hair bg-grotto-panel p-5">
+          <div className="flex items-center gap-4 rounded-card border border-border bg-card p-5">
             <Avatar name={user.name} hue={user.avatarHue} size="lg" />
             <div className="min-w-0">
-              <p className="truncate font-bold text-grotto-ink">{user.name}</p>
-              <p className="truncate text-sm text-grotto-soft">{user.email}</p>
+              <p className="truncate font-bold text-foreground">{user.name}</p>
+              <p className="truncate text-sm text-muted-foreground">{user.email}</p>
               <div className="mt-1.5 flex flex-wrap gap-1">
                 {user.skills.length ? (
                   user.skills.map((s) => <Badge key={s}>{s}</Badge>)
                 ) : (
-                  <span className="text-sm text-grotto-soft">—</span>
+                  <span className="text-sm text-muted-foreground">—</span>
                 )}
               </div>
             </div>

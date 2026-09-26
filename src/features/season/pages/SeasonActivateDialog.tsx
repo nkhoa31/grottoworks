@@ -115,30 +115,30 @@ export function SeasonActivateDialog({
       }
     >
       <div className="space-y-4">
-        <p className="text-sm text-grotto-soft">
+        <p className="text-sm text-muted-foreground">
           {t('features.season.checkTitle')}
         </p>
 
-        <div className="divide-y divide-grotto-hair rounded-lg border border-grotto-hair bg-grotto-panel">
+        <div className="divide-y divide-border rounded-lg border border-border bg-card">
           {items.map((item) => (
             <div key={item.key} className="flex items-start gap-3 p-3">
               {item.valid ? (
                 <CircleCheck className="mt-0.5 size-5 shrink-0 text-emerald-600" />
               ) : (
-                <CircleX className="mt-0.5 size-5 shrink-0 text-grotto-brick" />
+                <CircleX className="mt-0.5 size-5 shrink-0 text-destructive" />
               )}
               <div className="flex-1 text-sm">
                 <p
                   className={
                     item.valid
-                      ? 'font-medium text-grotto-ink'
-                      : 'font-medium text-grotto-brick'
+                      ? 'font-medium text-foreground'
+                      : 'font-medium text-destructive'
                   }
                 >
                   {t(item.label)}
                 </p>
                 {item.detail && (
-                  <p className="mt-0.5 text-xs text-grotto-soft">
+                  <p className="mt-0.5 text-xs text-muted-foreground">
                     {item.key === 'staff'
                       ? t('features.season.checkStaffMissing', { areas: item.detail })
                       : t(item.detail)}
@@ -155,8 +155,8 @@ export function SeasonActivateDialog({
             <span>{t('features.season.readyToActivate')}</span>
           </div>
         ) : (
-          <div className="flex items-center gap-2 rounded-md bg-amber-50 p-3 text-xs font-medium text-grotto-brick border border-amber-200">
-            <CircleAlert className="size-4 shrink-0 text-grotto-brick" />
+          <div className="flex items-center gap-2 rounded-md bg-amber-50 p-3 text-xs font-medium text-destructive border border-amber-200">
+            <CircleAlert className="size-4 shrink-0 text-destructive" />
             <span>{t('features.season.validationFailed')}</span>
           </div>
         )}

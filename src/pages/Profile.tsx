@@ -62,8 +62,8 @@ function ProfileForm({ user, onSaved }: { user: User; onSaved: () => Promise<unk
       <div className="mb-5 flex items-center gap-4">
         <Avatar name={user.name} hue={user.avatarHue} size="lg" />
         <div className="min-w-0">
-          <p className="truncate text-lg font-extrabold text-grotto-ink">{user.name}</p>
-          <p className="text-sm text-grotto-soft">{t(`role.${user.role}`)}</p>
+          <p className="truncate text-lg font-extrabold text-foreground">{user.name}</p>
+          <p className="text-sm text-muted-foreground">{t(`role.${user.role}`)}</p>
         </div>
       </div>
 
@@ -72,7 +72,7 @@ function ProfileForm({ user, onSaved }: { user: User; onSaved: () => Promise<unk
           <Label htmlFor="profile-name">{t('profile.name')}</Label>
           <Input id="profile-name" {...register('name')} />
           {errors.name?.message && (
-            <p className="mt-1 text-xs font-semibold text-grotto-brick">{t(errors.name.message)}</p>
+            <p className="mt-1 text-xs font-semibold text-destructive">{t(errors.name.message)}</p>
           )}
         </div>
         <div>
@@ -81,7 +81,7 @@ function ProfileForm({ user, onSaved }: { user: User; onSaved: () => Promise<unk
         </div>
         <div>
           <Label>{t('profile.skills')}</Label>
-          <p className="mb-2 text-xs text-grotto-soft">{t('profile.skillsHint')}</p>
+          <p className="mb-2 text-xs text-muted-foreground">{t('profile.skillsHint')}</p>
           <Controller
             name="skills"
             control={control}
@@ -102,8 +102,8 @@ function ProfileForm({ user, onSaved }: { user: User; onSaved: () => Promise<unk
                       className={cn(
                         'rounded-full border px-3 py-1 text-xs font-semibold transition-colors',
                         on
-                          ? 'border-grotto-terra bg-grotto-terra text-grotto-panel'
-                          : 'border-grotto-hair bg-grotto-panel text-grotto-soft hover:border-grotto-terra hover:text-grotto-terra',
+                          ? 'border-primary bg-primary text-primary-foreground'
+                          : 'border-border bg-card text-muted-foreground hover:border-primary hover:text-primary',
                       )}
                     >
                       {s}

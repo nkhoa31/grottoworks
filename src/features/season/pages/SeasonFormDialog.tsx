@@ -84,7 +84,7 @@ export function SeasonFormDialog({
   })
 
   const err = (msg?: string) =>
-    msg ? <p className="mt-1 text-xs font-semibold text-grotto-brick">{t(msg)}</p> : null
+    msg ? <p className="mt-1 text-xs font-semibold text-destructive">{t(msg)}</p> : null
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -149,7 +149,7 @@ export function SeasonFormDialog({
             id="season-description"
             rows={3}
             placeholder={t('features.season.descriptionPlaceholder')}
-            className="mt-1 flex w-full rounded-md border border-grotto-hair bg-grotto-panel px-3 py-2 text-sm text-grotto-ink placeholder:text-grotto-soft focus-visible:border-grotto-terra focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-grotto-terra/30 disabled:cursor-not-allowed disabled:opacity-50"
+            className="mt-1 flex w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 disabled:cursor-not-allowed disabled:opacity-50"
             {...register('description')}
           />
           {err(errors.description?.message)}
@@ -161,12 +161,12 @@ export function SeasonFormDialog({
             {communities.map((c) => (
               <label
                 key={c.id}
-                className="flex cursor-pointer items-center gap-2 rounded-md border border-grotto-hair bg-grotto-panel px-3 py-2 text-sm text-grotto-ink transition-colors hover:border-grotto-terra"
+                className="flex cursor-pointer items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground transition-colors hover:border-primary"
               >
                 <input
                   type="checkbox"
                   value={c.id}
-                  className="size-4 rounded border-grotto-hair text-grotto-terra accent-grotto-terra focus:ring-grotto-terra"
+                  className="size-4 rounded border-border text-primary accent-primary focus:ring-primary"
                   {...register('communityIds')}
                 />
                 <span className="font-medium">{c.name}</span>

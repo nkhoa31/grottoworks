@@ -26,7 +26,7 @@ function useCountUp(target: number, duration = 700): number {
   return val
 }
 
-const BAR = { ok: 'bg-grotto-moss', warn: 'bg-grotto-straw', alert: 'bg-grotto-brick' } as const
+const BAR = { ok: 'bg-brand-pine', warn: 'bg-brand-gold', alert: 'bg-destructive' } as const
 
 export function StatCard({
   label,
@@ -49,15 +49,15 @@ export function StatCard({
     <Card className={cn('relative overflow-hidden p-5', className)}>
       <div className={cn('absolute inset-x-0 top-0 h-1.5', BAR[tone])} aria-hidden />
       <p className="lbl-mono">{label}</p>
-      <p className="tabular mt-2 text-3xl font-extrabold text-grotto-ink">
+      <p className="tabular mt-2 text-3xl font-extrabold text-foreground">
         {v.toLocaleString(locale)}
-        {unit && <span className="ml-1.5 text-sm font-semibold text-grotto-soft">{unit}</span>}
+        {unit && <span className="ml-1.5 text-sm font-semibold text-muted-foreground">{unit}</span>}
       </p>
       {delta && (
         <p
           className={cn(
             'mt-1 text-xs font-semibold',
-            delta.dir === 'up' ? 'text-grotto-moss' : 'text-grotto-brick',
+            delta.dir === 'up' ? 'text-brand-pine' : 'text-destructive',
           )}
         >
           {delta.dir === 'up' ? '▲' : '▼'} {delta.text}

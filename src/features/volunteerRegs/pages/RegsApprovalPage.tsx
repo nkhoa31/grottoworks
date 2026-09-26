@@ -54,7 +54,7 @@ export default function RegsApprovalPage() {
         key: 'volunteer',
         header: t('features.volunteers.regVolunteer'),
         render: (r: VolunteerReg) => (
-          <span className="font-semibold text-grotto-ink">{volunteerName(r.volunteerId)}</span>
+          <span className="font-semibold text-foreground">{volunteerName(r.volunteerId)}</span>
         ),
       },
       {
@@ -107,7 +107,7 @@ export default function RegsApprovalPage() {
               </Button>
             </div>
           ) : (
-            <span className="text-grotto-soft">—</span>
+            <span className="text-muted-foreground">—</span>
           ),
       },
     ],

@@ -100,8 +100,8 @@ export function DataTable<T>({
                     className={cn(
                       'rounded-full border px-2.5 py-1 text-xs font-semibold transition-colors',
                       selected
-                        ? 'border-grotto-terra bg-grotto-terra text-grotto-panel'
-                        : 'border-grotto-hair bg-grotto-panel text-grotto-soft hover:border-grotto-terra hover:text-grotto-terra',
+                        ? 'border-primary bg-primary text-primary-foreground'
+                        : 'border-border bg-card text-muted-foreground hover:border-primary hover:text-primary',
                     )}
                   >
                     {opt ? t(`status.${opt}`, { defaultValue: opt }) : t('common.all')}
@@ -113,15 +113,18 @@ export function DataTable<T>({
         </div>
       )}
 
-      <div className="overflow-x-auto rounded-grotto border border-grotto-hair bg-grotto-panel">
+      <div className="overflow-x-auto rounded-card border border-border bg-card">
         <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-grotto-hair">
+                    <thead>
+            <tr className="border-b border-border bg-gw-tableHead">
               {columns.map((c) => (
                 <th
                   key={c.key}
                   scope="col"
-                  className={cn('lbl-mono px-4 py-3', ALIGN[c.align ?? 'left'])}
+                  className={cn(
+                    'px-4 py-3 text-[13px] font-semibold text-primary',
+                    ALIGN[c.align ?? 'left'],
+                  )}
                 >
                   {c.header}
                 </th>
@@ -143,12 +146,12 @@ export function DataTable<T>({
                     : undefined
                 }
                 className={cn(
-                  'border-b border-grotto-hair/60 transition-[transform,box-shadow] last:border-0',
-                  onRowClick && 'cursor-pointer hover:-translate-y-0.5 hover:shadow-md',
+                  'border-b border-border/60 transition-[transform,box-shadow] last:border-0',
+                  onRowClick && 'cursor-pointer hover:-translate-y-0.5 hover:shadow-hover',
                 )}
               >
-                {columns.map((c) => (
-                  <td key={c.key} className={cn('px-4 py-3', ALIGN[c.align ?? 'left'])}>
+                                {columns.map((c) => (
+                  <td key={c.key} className={cn('h-[52px] px-4 py-3 align-middle', ALIGN[c.align ?? 'left'])}>
                     {c.render ? c.render(row) : String(cell(row, c.key) ?? '')}
                   </td>
                 ))}

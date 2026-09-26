@@ -53,7 +53,7 @@ export default function BackupPage() {
         <Card className="flex flex-col justify-between p-5">
           <div>
             <p className="lbl-mono">{t('features.parish.backupExport')}</p>
-            <p className="mt-2 text-sm text-grotto-soft">{t('features.parish.backupExportSub')}</p>
+            <p className="mt-2 text-sm text-muted-foreground">{t('features.parish.backupExportSub')}</p>
           </div>
           <Button className="mt-5 self-start" onClick={() => void download()} disabled={backup.isPending}>
             <Download className="size-4" />
@@ -64,7 +64,7 @@ export default function BackupPage() {
         <Card className="flex flex-col justify-between p-5">
           <div>
             <p className="lbl-mono">{t('features.parish.backupReset')}</p>
-            <p className="mt-2 text-sm text-grotto-soft">{t('features.parish.backupResetSub')}</p>
+            <p className="mt-2 text-sm text-muted-foreground">{t('features.parish.backupResetSub')}</p>
           </div>
           <Button variant="destructive" className="mt-5 self-start" onClick={() => setConfirmReset(true)}>
             <RotateCcw className="size-4" />
