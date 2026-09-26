@@ -1,4 +1,4 @@
-// Dashboard ban tổ chức (route /community, index route): dải tiến độ mùa +
+// Dashboard ban hành giáo (route /community, index route): dải tiến độ mùa +
 // 4 StatCard count-up, khu vực vòm (animated progress), HoursChart tuần
 // hiện tại, bảng "Việc cần chú ý". Dữ liệu: GET /api/dashboard/community +
 // seasons (mùa ACTIVE) + timesheets (vẽ chart) + activity (nhật ký).
