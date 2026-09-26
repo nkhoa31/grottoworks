@@ -12,6 +12,7 @@ import { Check, FilePlus2 } from 'lucide-react'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { DataTable } from '@/components/shared/DataTable'
 import { EmptyState } from '@/components/shared/EmptyState'
+import { StatCard } from '@/components/shared/StatCard'
 import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
@@ -292,19 +293,53 @@ export default function PurchaseConfirmPage() {
   if (areasPending) return <p className="lbl-mono">{t('common.loading')}</p>
   if (!myAreas.length) return <EmptyState text={t('features.materials.noArea')} />
 
+  const confirmedRecordsCount = myRecords.filter((r) => r.confirmed).length
+  const unconfirmedRecordsCount = myRecords.filter((r) => !r.confirmed).length
+
   return (
     <div>
       <PageHeader title={t('features.purchases.confirmTitle')} sub={t('features.purchases.confirmSub')} />
 
-      <h2 className="lbl-mono mb-3">{t('features.purchases.pendingRecords')}</h2>
-      {isPending ? (
-        <p className="lbl-mono">{t('common.loading')}</p>
-      ) : (
-        <DataTable rows={pending} columns={pendingColumns} emptyText={t('features.purchases.noApproved')} />
-      )}
+      {/* 4 StatCards */}
+      <div className="mb-6 grid grid-cols-2 gap-4 xl:grid-cols-4">
+        <StatCard
+          label="Đơn chờ tạo hồ sơ"
+          value={pending.length}
+          unit="đơn duyệt"
+          tone={pending.length > 0 ? 'warn' : 'ok'}
+        />
+        <StatCard
+          label="Tổng hồ sơ giao nhận"
+          value={myRecords.length}
+          unit="hồ sơ"
+        />
+        <StatCard
+          label="Đã xác nhận kho"
+          value={confirmedRecordsCount}
+          unit="hồ sơ"
+          tone="ok"
+        />
+        <StatCard
+          label="Chờ thủ kho xác nhận"
+          value={unconfirmedRecordsCount}
+          unit="hồ sơ"
+          tone={unconfirmedRecordsCount > 0 ? 'alert' : 'ok'}
+        />
+      </div>
 
-      <h2 className="lbl-mono mb-3 mt-8">{t('features.purchases.recordsTitle')}</h2>
-      <DataTable rows={myRecords} columns={recordColumns} pageSize={8} emptyText={t('features.purchases.noRecords')} />
+      <div className="mb-6 rounded-card border border-border bg-card p-5">
+        <h2 className="lbl-mono mb-3 text-foreground">{t('features.purchases.pendingRecords')}</h2>
+        {isPending ? (
+          <p className="lbl-mono">{t('common.loading')}</p>
+        ) : (
+          <DataTable rows={pending} columns={pendingColumns} emptyText={t('features.purchases.noApproved')} />
+        )}
+      </div>
+
+      <div className="rounded-card border border-border bg-card p-5">
+        <h2 className="lbl-mono mb-3 text-foreground">{t('features.purchases.recordsTitle')}</h2>
+        <DataTable rows={myRecords} columns={recordColumns} pageSize={8} emptyText={t('features.purchases.noRecords')} />
+      </div>
 
       {recording && (
         <RecordDialog
