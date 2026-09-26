@@ -131,8 +131,8 @@ export function useBackup() {
 export function useRoleLabel(): Record<Role, string> {
   return {
     PARISH: 'Quản trị',
-    COMMUNITY: 'Ban tổ chức',
+    COMMUNITY: 'Ban hành giáo',
     LEADER: 'Trưởng khu',
-    MATERIAL_OFFICER: 'Trưởng nhóm vật tư',
+    MATERIAL_OFFICER: 'Trưởng ban hành giáo',
   }
 }
