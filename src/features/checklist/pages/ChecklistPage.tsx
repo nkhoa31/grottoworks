@@ -10,6 +10,7 @@ import { RadialBar, RadialBarChart } from 'recharts'
 import { CheckCircle2 } from 'lucide-react'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { EmptyState } from '@/components/shared/EmptyState'
+import { StatCard } from '@/components/shared/StatCard'
 import { Card } from '@/components/ui/card'
 import { useToast } from '@/components/ui/toast'
 import { useAreas } from '@/features/areas/api'
@@ -182,26 +183,54 @@ export default function ChecklistPage() {
         <EmptyState text={t('features.tasks.noArea')} />
       ) : (
         <>
+          {/* 3 StatCards */}
+          <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <StatCard
+              label={t('features.checklist.title')}
+              value={totals.total}
+              unit="hạng mục"
+            />
+            <StatCard
+              label="Đã hoàn thành"
+              value={totals.done}
+              unit="mục xong"
+              tone="ok"
+            />
+            <StatCard
+              label="Tỷ lệ sẵn sàng"
+              value={totals.total ? Math.round((totals.done / totals.total) * 100) : 0}
+              unit="%"
+              tone={allReady ? 'ok' : 'warn'}
+            />
+          </div>
+
           <div
             className={cn(
-              'mb-6 flex items-center gap-4 rounded-card border p-5',
+              'mb-6 flex items-center gap-4 rounded-card border p-5 shadow-xs transition-all',
               allReady
-                ? 'border-brand-pine bg-brand-pine/12 text-brand-pine'
-                : 'border-brand-gold bg-brand-gold/12 text-brand-gold',
+                ? 'border-brand-pine bg-brand-pine/10 text-brand-pine'
+                : 'border-brand-gold bg-brand-gold/10 text-amber-900 dark:text-amber-300',
             )}
           >
             {allReady ? (
-              <CheckCircle2 className="size-10 shrink-0" aria-hidden />
+              <CheckCircle2 className="size-10 shrink-0 text-brand-pine" aria-hidden />
             ) : (
-              <span className="grid size-10 shrink-0 place-items-center text-2xl font-bold" aria-hidden>
+              <span className="grid size-10 shrink-0 place-items-center text-2xl font-bold text-amber-600 dark:text-amber-400" aria-hidden>
                 ◐
               </span>
             )}
-            <p className="text-lg font-extrabold">
-              {allReady
-                ? t('features.checklist.ready')
-                : t('features.checklist.preparing', { done: totals.done, total: totals.total })}
-            </p>
+            <div>
+              <p className="text-lg font-extrabold text-foreground">
+                {allReady
+                  ? t('features.checklist.ready')
+                  : t('features.checklist.preparing', { done: totals.done, total: totals.total })}
+              </p>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                {allReady
+                  ? 'Tất cả các khu vực đã hoàn tất công tác kiểm tra, sẵn sàng cho Đại Lễ Giáng Sinh.'
+                  : 'Vui lòng tiếp tục rà soát các hạng mục còn lại theo từng phân khu phụ trách.'}
+              </p>
+            </div>
           </div>
 
           <div className="stagger grid gap-4 md:grid-cols-2">

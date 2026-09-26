@@ -10,6 +10,7 @@ import { Check, Plus, X } from 'lucide-react'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { DataTable } from '@/components/shared/DataTable'
 import { StatusTag } from '@/components/shared/StatusTag'
+import { StatCard } from '@/components/shared/StatCard'
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -347,6 +348,10 @@ export default function SupportListPage() {
     [t, areas, users],
   )
 
+  const openCount = rows.filter((r) => r.status === 'OPEN').length
+  const coordCount = rows.filter((r) => r.status === 'COORDINATED').length
+  const resolvedCount = rows.filter((r) => r.status === 'RESOLVED').length
+
   return (
     <div>
       <PageHeader
@@ -363,7 +368,34 @@ export default function SupportListPage() {
         }
       />
 
-            {/* Leader: đơn đăng ký hỗ trợ liên cộng đoàn chờ duyệt (gộp từ tab cũ). */}
+      {/* 4 StatCards */}
+      <div className="mb-6 grid grid-cols-2 gap-4 xl:grid-cols-4">
+        <StatCard
+          label={t('features.support.title')}
+          value={rows.length}
+          unit="yêu cầu"
+        />
+        <StatCard
+          label={t('status.OPEN')}
+          value={openCount}
+          unit="chờ xử lý"
+          tone={openCount > 0 ? 'alert' : 'ok'}
+        />
+        <StatCard
+          label={t('status.COORDINATED')}
+          value={coordCount}
+          unit="đang hỗ trợ"
+          tone="warn"
+        />
+        <StatCard
+          label={t('status.RESOLVED')}
+          value={resolvedCount}
+          unit="đã giải quyết"
+          tone="ok"
+        />
+      </div>
+
+      {/* Leader: đơn đăng ký hỗ trợ liên cộng đoàn chờ duyệt (gộp từ tab cũ). */}
       {isLeader && !isPending && (
         <SupportRegsSection regs={regs} requests={requests} areaIds={myAreaIds} />
       )}

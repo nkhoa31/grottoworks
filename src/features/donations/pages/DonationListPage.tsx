@@ -12,6 +12,7 @@ import { Ban, ClipboardCheck, Download, Plus, XCircle } from 'lucide-react'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { DataTable } from '@/components/shared/DataTable'
 import { EmptyState } from '@/components/shared/EmptyState'
+import { StatCard } from '@/components/shared/StatCard'
 import { StatusTag } from '@/components/shared/StatusTag'
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
 import { Button } from '@/components/ui/button'
@@ -260,6 +261,11 @@ export default function DonationListPage() {
   if (areasPending) return <p className="lbl-mono">{t('common.loading')}</p>
   if (isOfficer && !myAreaIds.size) return <EmptyState text={t('features.donations.noArea')} />
 
+  const totalPledgedCount = rows.length
+  const fullReceivedCount = rows.filter((d) => d.status === 'RECEIVED_FULL').length
+  const pendingReceiveCount = rows.filter((d) => d.status === 'PLEDGED' || d.status === 'RECEIVED_PARTIAL').length
+  const totalMoney = rows.reduce((s, d) => s + (d.monetary ?? 0), 0)
+
   return (
     <div>
       <PageHeader
@@ -278,6 +284,33 @@ export default function DonationListPage() {
           </>
         }
       />
+
+      {/* 4 StatCards */}
+      <div className="mb-6 grid grid-cols-2 gap-4 xl:grid-cols-4">
+        <StatCard
+          label="Tổng cam kết"
+          value={totalPledgedCount}
+          unit="lượt"
+        />
+        <StatCard
+          label="Đã nhận đủ"
+          value={fullReceivedCount}
+          unit="lượt xong"
+          tone="ok"
+        />
+        <StatCard
+          label="Đang chờ tiếp nhận"
+          value={pendingReceiveCount}
+          unit="lượt chờ"
+          tone={pendingReceiveCount > 0 ? 'warn' : 'ok'}
+        />
+        <StatCard
+          label="Tiền quyên góp"
+          value={totalMoney}
+          unit="₫"
+          tone="ok"
+        />
+      </div>
 
       {isPending ? (
         <p className="lbl-mono">{t('common.loading')}</p>
