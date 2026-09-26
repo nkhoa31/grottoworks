@@ -165,51 +165,76 @@ export function TaskFormDialog({
           </div>
         )}
         <div>
-          <Label>{t('features.tasks.skills')}</Label>
-          <div className="flex flex-wrap gap-x-4 gap-y-1.5 pt-1">
-            {skills.map((s) => (
-              <label key={s} className="flex items-center gap-1.5 text-sm text-foreground">
-                <input type="checkbox" value={s} className={CHECK_CLS} {...register('skills')} />
-                {s}
-              </label>
-            ))}
+          <Label className="mb-1.5 block">{t('features.tasks.skills')}</Label>
+          <div className="flex flex-wrap gap-2">
+            {skills.map((s) => {
+              const checked = (watch('skills') ?? []).includes(s)
+              return (
+                <label
+                  key={s}
+                  className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${
+                    checked
+                      ? 'border-brand-pine bg-brand-pine text-white shadow-sm'
+                      : 'border-border bg-card text-foreground hover:border-brand-pine/50 hover:bg-muted/50'
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    value={s}
+                    className="sr-only"
+                    {...register('skills')}
+                  />
+                  <span>{checked ? '✓ ' : '+ '}{s}</span>
+                </label>
+              )
+            })}
           </div>
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div>
             <Label htmlFor="task-hours">{t('features.tasks.estimateHours')}</Label>
-            <Input id="task-hours" type="number" min={0} step="0.5" {...register('estimateHours')} />
+            <Input id="task-hours" type="number" min={0} step="0.5" className="tabular" {...register('estimateHours')} />
             {err(errors.estimateHours?.message)}
           </div>
           <div>
             <Label htmlFor="task-needed">{t('features.tasks.volunteersNeeded')}</Label>
-            <Input id="task-needed" type="number" min={1} step="1" {...register('volunteersNeeded')} />
+            <Input id="task-needed" type="number" min={1} step="1" className="tabular" {...register('volunteersNeeded')} />
             {err(errors.volunteersNeeded?.message)}
           </div>
         </div>
         <div>
           <Label htmlFor="task-due">{t('features.tasks.dueDate')}</Label>
-          <Input id="task-due" type="date" {...register('dueDate')} />
+          <Input id="task-due" type="date" className="tabular" {...register('dueDate')} />
           {err(errors.dueDate?.message)}
         </div>
         <div>
-          <Label>{t('features.tasks.materials')}</Label>
+          <Label className="mb-1.5 block">{t('features.tasks.materials')}</Label>
           {materials.length ? (
-            <div className="flex flex-wrap gap-x-4 gap-y-1.5 pt-1">
-              {materials.map((m) => (
-                <label key={m.id} className="flex items-center gap-1.5 text-sm text-foreground">
-                  <input
-                    type="checkbox"
-                    value={m.id}
-                    className={CHECK_CLS}
-                    {...register('materialIds')}
-                  />
-                  {m.name} ({m.unit})
-                </label>
-              ))}
+            <div className="flex flex-wrap gap-2">
+              {materials.map((m) => {
+                const checked = (watch('materialIds') ?? []).includes(m.id)
+                return (
+                  <label
+                    key={m.id}
+                    className={`inline-flex cursor-pointer items-center gap-1.5 rounded-md border px-2.5 py-1.5 text-xs transition-all ${
+                      checked
+                        ? 'border-brand-gold bg-brand-gold/15 font-semibold text-amber-900 dark:text-amber-200'
+                        : 'border-border bg-card text-foreground hover:bg-muted/50'
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      value={m.id}
+                      className="sr-only"
+                      {...register('materialIds')}
+                    />
+                    <span>{checked ? '✓ ' : ''}{m.name} <span className="text-[11px] opacity-75">({m.unit})</span></span>
+                  </label>
+                )
+              })}
             </div>
           ) : (
-            <p className="pt-1 text-sm text-muted-foreground">{t('features.tasks.materialNone')}</p>
+            <p className="text-xs text-muted-foreground">{t('features.tasks.materialNone')}</p>
           )}
         </div>
       </form>
