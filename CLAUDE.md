@@ -20,6 +20,12 @@ npx tsc --noEmit   # Typecheck only (no script alias; use before commit)
 
 No `lint`, `format`, `coverage`, or E2E script in `package.json` — do not invent one.
 
+## Git Workflow — nhánh `khoa` / `dev` / `main`
+
+- **Tạo nhánh**: `dev` và `khoa` đều tách từ `main` (`git checkout main && git checkout -b dev && git push -u origin dev`).
+- **Luồng đẩy**: code mới chỉ push lên `khoa`. Mở PR `khoa → dev`, CI/test pass trên `dev` mới merge `dev → main`. Không push trực tiếp lên `dev` hay `main`.
+- Nhánh làm việc hằng ngày là `khoa`; `dev` là nhánh tích hợp kiểm lỗi; `main` chỉ nhận merge từ `dev` khi đã ổn định.
+
 ## Git & Push Attribution
 
 - Author/committer: `nkhoa31 <276342518+nkhoa31@users.noreply.github.com>`.

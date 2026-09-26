@@ -151,7 +151,7 @@ test('AreaFormDialog: validate deadline trước ngày bắt đầu mùa', async
   const leaderSelect = await screen.findByLabelText(/^Trưởng khu/i)
   await userEvent.selectOptions(leaderSelect, 'u3')
 
-  const officerSelect = await screen.findByLabelText(/^Trưởng nhóm vật tư/i)
+  const officerSelect = await screen.findByLabelText(/^Trưởng ban hành giáo/i)
   await userEvent.selectOptions(officerSelect, 'u4')
 
   // s1 startDate là 2026-09-15. Nhập deadline 2026-09-01 (sớm hơn)
@@ -196,7 +196,7 @@ test('AreaAssignDialog: hiển thị thông tin thời hạn và phân công th�
   expect(await screen.findByText(/Phân công khu vực Hang đá Bê-lem/i)).toBeDefined()
   expect(screen.getByText('20/12/2026')).toBeDefined()
 
-  const officerSelect = (await screen.findByLabelText(/Trưởng nhóm vật tư/i)) as HTMLSelectElement
+  const officerSelect = (await screen.findByLabelText(/Trưởng ban hành giáo/i)) as HTMLSelectElement
   await screen.findByRole('option', { name: /Phêrô Quang/i })
   await userEvent.selectOptions(officerSelect, 'u8')
 
