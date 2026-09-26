@@ -53,16 +53,44 @@ export default function MaterialListPage() {
         key: 'name',
         header: t('features.materials.name'),
         render: (m: Material) => (
-          <span className="font-semibold text-foreground">
-            {m.name} <span className="text-xs font-normal text-muted-foreground">({m.unit})</span>
-          </span>
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-foreground">{m.name}</span>
+              <span className="rounded-md bg-muted px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground">
+                {m.unit}
+              </span>
+            </div>
+            {m.reusable && (
+              <span className="inline-flex items-center rounded-full bg-brand-gold/15 px-2 py-0.5 text-[10px] font-semibold text-amber-900 dark:text-amber-200">
+                ♻ Tái sử dụng
+              </span>
+            )}
+          </div>
         ),
       },
-      { key: 'required', header: t('features.materials.required'), align: 'right' as const, render: (m: Material) => <span className="tabular">{m.required}</span> },
-      { key: 'existing', header: t('features.materials.existing'), align: 'right' as const, render: (m: Material) => <span className="tabular">{m.existing}</span> },
+      { key: 'required', header: t('features.materials.required'), align: 'right' as const, render: (m: Material) => <span className="tabular font-medium">{m.required}</span> },
+      { key: 'existing', header: t('features.materials.existing'), align: 'right' as const, render: (m: Material) => <span className="tabular text-muted-foreground">{m.existing}</span> },
       { key: 'purchased', header: t('features.materials.purchased'), align: 'right' as const, render: (m: Material) => <span className="tabular">{m.purchased}</span> },
       { key: 'donatedReceived', header: t('features.materials.donated'), align: 'right' as const, render: (m: Material) => <span className="tabular">{m.donatedReceived}</span> },
-      { key: 'received', header: t('features.materials.received'), align: 'right' as const, render: (m: Material) => <span className="tabular">{m.received}</span> },
+      {
+        key: 'received',
+        header: t('features.materials.received'),
+        align: 'right' as const,
+        render: (m: Material) => {
+          const ratio = Math.min(100, Math.round((m.received / (m.required || 1)) * 100))
+          return (
+            <div className="flex flex-col items-end gap-1">
+              <span className="tabular font-semibold text-foreground">{m.received}</span>
+              <div className="h-1.5 w-14 overflow-hidden rounded-full bg-border">
+                <div
+                  className="h-full rounded-full bg-brand-pine transition-all"
+                  style={{ width: `${ratio}%` }}
+                />
+              </div>
+            </div>
+          )
+        },
+      },
       {
         key: 'shortage',
         header: t('features.materials.shortageCol'),
@@ -70,9 +98,13 @@ export default function MaterialListPage() {
         render: (m: Material) => {
           const s = shortage(m)
           return s > 0 ? (
-            <span className="tabular font-bold text-destructive">{s}</span>
+            <span className="tabular inline-flex items-center rounded-full bg-destructive/12 px-2.5 py-0.5 font-mono text-xs font-bold text-destructive">
+              ✕ {s}
+            </span>
           ) : (
-            <span className="tabular font-semibold text-brand-pine">✓ 0</span>
+            <span className="tabular inline-flex items-center rounded-full bg-brand-pine/12 px-2.5 py-0.5 font-mono text-xs font-bold text-brand-pine">
+              ✓ Đủ
+            </span>
           )
         },
       },
