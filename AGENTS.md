@@ -113,3 +113,87 @@ When adding a navigable page, update the relevant `NavItem` in `src/components/s
 - `resetDb()` clears `localStorage['grotto-db-v1']`. Tests that need a session must set/remove `grotto-token` explicitly.
 - Test observable behavior with accessible queries and async RTL helpers. Use `location.origin + '/api/…'` for deliberate raw-fetch MSW tests because the test fetch implementation does not accept relative URLs.
 - No coverage threshold or browser E2E runner is currently configured. For a behavior change, run the full affected test module, then `npm run test` before reporting completion.
+
+## AI Development Log
+
+When making non-trivial changes, maintain `docs/AI_LOG.md`.
+
+Each entry should record:
+
+- Date
+- Task/request
+- Files changed
+- Summary of changes
+- Errors encountered
+- Root cause, when known
+- Resolution
+- Tests/verification performed
+- Relevant documentation or Context7 references, when applicable
+
+Do not log:
+
+- Trivial formatting-only changes
+- Normal successful command output
+- Every individual edit during an iterative change
+- Secrets, tokens, credentials, or sensitive data
+
+Example:
+
+### 2026-10-07 — Task API mutation
+
+**Request**
+Fix volunteer assignment update for a task.
+
+**Files changed**
+
+- `src/features/tasks/api.ts`
+- `src/features/tasks/api.test.ts`
+
+**Problem**
+PATCH updates were replacing the volunteer assignment array incorrectly.
+
+**Root cause**
+MSW PATCH handlers are shallow and do not merge nested/related arrays.
+
+**Solution**
+Changed the mutation to read the existing task, update the volunteer assignment array, then persist the complete task.
+
+**Verification**
+
+- `npx vitest run src/features/tasks/api.test.ts`
+- `npm run test`
+
+**Documentation**
+
+- React Query mutation documentation
+- MSW PATCH behavior
+
+## Documentation / Context7
+
+When modifying or adding code that depends on a third-party library:
+
+1. Check the repository's installed version first.
+2. Use Context7 or the library's official documentation when API behavior,
+   configuration, or version-specific usage is uncertain.
+3. Prefer documentation matching the installed major/minor version.
+4. Do not introduce APIs or patterns solely from memory when reliable
+   documentation is available.
+5. Record important documentation references in `docs/AI_LOG.md` when they
+   materially influenced the implementation.
+
+Context7 is a documentation/reference source. It does not replace project
+tests, existing repository conventions, or the project's source of truth.
+
+## Completion Reporting
+
+Never report a task as completed based only on code changes.
+
+A completed task should distinguish:
+
+- Implemented: code has been changed.
+- Tested: relevant tests have passed.
+- Verified: the requested behavior has been manually or automatically verified.
+- Known issues: remaining problems or limitations.
+
+Do not claim tests passed unless the tests were actually run.
+Do not claim a feature is complete based only on a plan or specification.

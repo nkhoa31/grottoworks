@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nền Tảng Điều Phối Giáng Sinh Giáo Xứ & Xóm Đạo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================
+           1. CẤU HÌNH BIẾN MÀU (COMBO 1)
+           ========================================== */
+        :root {
+            --primary: #A52A2A;          /* Đỏ Đô */
+            --primary-dark: #8B0000;     /* Đỏ Đậm */
+            --secondary: #228B22;        /* Xanh Thông */
+            --secondary-dark: #006400;   /* Xanh Đậm */
+            --accent: #DAA520;           /* Vàng Ánh Kim */
+            
+            --bg-main: #FAF0E6;          /* Kem Nhẹ (Background tổng) */
+            --text-dark: #1A202C;        /* Chữ tối */
+            --text-muted: #4A5568;       /* Chữ phụ */
+            --border: #E2E8F0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        /* TOOLBAR TEST MÀU UI/UX */
+        .color-test-bar {
+            background: #111;
+            color: #fff;
+            padding: 8px 5%;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .color-tags { display: flex; gap: 12px; }
+        .tag { display: flex; align-items: center; gap: 5px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+
+        /* HEADER TỐI GIẢN */
+        .landing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 8%;
+            background: rgba(250, 240, 230, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(165, 42, 42, 0.1);
+            position: sticky;
+            top: 33px;
+            z-index: 900;
+            width: 100%;
+        }
+        
+        .brand-logo {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .anchor-menu {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+        .anchor-menu a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+        .anchor-menu a:hover {
+            color: var(--primary);
+        }
+
+        /* BUTTONS */
+        .btn {
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 15px;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            color: #FFF;
+            box-shadow: 0 4px 14px rgba(165, 42, 42, 0.35);
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: #FFF;
+            box-shadow: 0 4px 14px rgba(34, 139, 34, 0.3);
+        }
+        .btn-secondary:hover {
+            background-color: var(--secondary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================
+           WRAPPER KÉO DÀI BACKGROUND TỪ HERO ĐẾN GIỚI THIỆU
+           ========================================== */
+        .hero-and-about-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            padding-bottom: 60px;
+        }
+
+        /* Background mờ trải dài toàn bộ Hero + About */
+        .hero-bg-blur {
+            position: absolute;
+            inset: -20px;
+            background-image: url('https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            filter: blur(16px) brightness(0.92);
+            transform: scale(1.05);
+            z-index: 1;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, 
+                rgba(250, 240, 230, 0.90) 0%, 
+                rgba(250, 240, 230, 0.82) 60%, 
+                var(--bg-main) 100%);
+            z-index: 2;
+        }
+
+        /* HERO CONTENT */
+        .hero-container {
+            position: relative;
+            z-index: 3;
+            min-height: 75vh;
+            display: flex;
+            align-items: center;
+            padding: 60px 8% 40px;
+            width: 100%;
+        }
+
+        .hero-content-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 50px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .hero-title {
+            font-size: 46px;
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+        }
+        .hero-title span { color: var(--secondary); }
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--text-dark);
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        /* HERO FORM */
+        .hero-form-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-top: 6px solid var(--primary);
+        }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; }
+        .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-size: 14px;
+            outline: none;
+            background: #FFF;
+        }
+
+        /* SECTION GIỚI THIỆU NẰM TRONG WRAPPER BACKGROUND */
+        .about-section {
+            position: relative;
+            z-index: 3;
+            padding: 40px 8% 40px;
+            text-align: center;
+            width: 100%;
+        }
+        .section-tag {
+            color: var(--secondary);
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .section-title {
+            font-size: 34px;
+            color: var(--primary-dark);
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+            text-align: left;
+        }
+        .about-card {
+            padding: 25px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(8px);
+            border-top: 4px solid var(--accent);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.04);
+        }
+
+        /* SECTION HEADER CỦA CÁC MỤC THI CÔNG */
+        .projects-header {
+            text-align: center;
+            padding: 60px 8% 40px;
+            background: var(--bg-main);
+            width: 100%;
+        }
+
+        /* ==========================================
+           FULL COLUMN & FULL WIDTH WORK ZONES (Z-PATTERN)
+           ========================================== */
+        .work-zone-container {
+            width: 100%;
+        }
+
+        .work-zone-row {
+            width: 100%;
+            min-height: 520px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .zone-content {
+            position: relative;
+            z-index: 2;
+            width: 45%;
+            padding: 80px 8%;
+        }
+
+        .zone-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+        }
+
+        .zone-desc {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-bottom: 28px;
+            line-height: 1.7;
+        }
+
+        /* ------------------------------------------
+           BG GRADIENT FADE XEN KẼ (Z-PATTERN)
+           ------------------------------------------ */
+
+        /* ROW 1: HANG ĐÁ (Đã đổi chuẩn ảnh Tượng Hang Đá Noel - Nativity Scene) */
+        .zone-hang-da {
+            background-image: url('https://images.unsplash.com/photo-1576919228236-a097c32a5cd4?auto=format&fit=crop&w=1920&q=80');
+            justify-content: flex-start;
+        }
+        .zone-hang-da::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, 
+                var(--bg-main) 0%, 
+                var(--bg-main) 42%, 
+                rgba(250, 240, 230, 0.65) 65%, 
+                rgba(250, 240, 230, 0) 100%);
+            z-index: 1;
+        }
+
+        /* ROW 2: CÂY THÔNG & CỔNG CHÀO (Text Phải) */
+        .zone-cay-thong {
+            background-image: url('https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&w=1920&q=80');
+            justify-content: flex-end;
+        }
+        .zone-cay-thong::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to left, 
+                var(--bg-main) 0%, 
+                var(--bg-main) 42%, 
+                rgba(250, 240, 230, 0.65) 65%, 
+                rgba(250, 240, 230, 0) 100%);
+            z-index: 1;
+        }
+
+        /* ROW 3: ĐÈN ĐƯỜNG XÓM ĐẠO (Text Trái) */
+        .zone-duong-xom {
+            background-image: url('https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1920&q=80');
+            justify-content: flex-start;
+        }
+        .zone-duong-xom::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, 
+                var(--bg-main) 0%, 
+                var(--bg-main) 42%, 
+                rgba(250, 240, 230, 0.65) 65%, 
+                rgba(250, 240, 230, 0) 100%);
+            z-index: 1;
+        }
+
+        /* ROW 4: SÂN KHẤU LỄ HỘI (Text Phải) */
+        .zone-san-khau {
+            background-image: url('https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=1920&q=80');
+            justify-content: flex-end;
+        }
+        .zone-san-khau::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to left, 
+                var(--bg-main) 0%, 
+                var(--bg-main) 42%, 
+                rgba(250, 240, 230, 0.65) 65%, 
+                rgba(250, 240, 230, 0) 100%);
+            z-index: 1;
+        }
+
+        /* CALL TO ACTION FOOTER */
+        .cta-section {
+            background: linear-gradient(135deg, var(--secondary-dark), var(--secondary));
+            color: white;
+            padding: 80px 8%;
+            text-align: center;
+            width: 100%;
+        }
+
+        footer {
+            background: #111;
+            color: #888;
+            text-align: center;
+            padding: 20px;
+            font-size: 13px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOOLBAR TEST MÀU UI/UX -->
+    <div class="color-test-bar">
+        <span>🎨 <strong>Demo Combo 1:</strong> Stretched Hero Blur BG + Đúng Ảnh Hang Đá Đêm Noel</span>
+        <div class="color-tags">
+            <div class="tag"><span class="dot" style="background:#A52A2A"></span> Primary</div>
+            <div class="tag"><span class="dot" style="background:#228B22"></span> Secondary</div>
+            <div class="tag"><span class="dot" style="background:#DAA520"></span> Accent</div>
+            <div class="tag"><span class="dot" style="background:#FAF0E6"></span> Background</div>
+        </div>
+    </div>
+
+    <!-- HEADER TỐI GIẢN -->
+    <header class="landing-header">
+        <a href="/" class="brand-logo" title="Về trang chủ">
+            ⛪ Noel Giáo Xứ & Xóm Đạo
+        </a>
+        <ul class="anchor-menu">
+            <li><a href="#gioi-thieu">Giới thiệu nền tảng</a></li>
+            <li><a href="#khu-vuc">Công trình & Xóm đạo</a></li>
+        </ul>
+        <a href="#dang-ky" class="btn btn-primary" style="padding: 8px 20px; font-size: 13px;">Tham Gia Ngay</a>
+    </header>
+
+    <!-- ==========================================
+         WRAPPER CHỨA NỀN MỜ DÙNG CHUNG CHO HERO & GIỚI THIỆU
+         ========================================== -->
+    <div class="hero-and-about-wrapper">
+        <div class="hero-bg-blur"></div>
+        <div class="hero-overlay"></div>
+
+        <!-- HERO CONTENT -->
+        <section class="hero-container">
+            <div class="hero-content-grid">
+                <div>
+                    <h1 class="hero-title">
+                        Nền Tảng Điều Phối Giáng Sinh <br>
+                        <span>Giáo Xứ & Các Xóm Đạo</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Kết nối Ban hành giáo, Trưởng xóm đạo và Tình nguyện viên – Số hóa quy trình điều phối trang trí công trình từ Nhà thờ chính cho đến từng ngõ xóm.
+                    </p>
+                    <div style="display:flex; gap:15px;">
+                        <a href="#gioi-thieu" class="btn btn-primary">Tìm Hiểu Nền Tảng</a>
+                        <a href="#khu-vuc" class="btn btn-secondary">Xem Các Hạng Mục</a>
+                    </div>
+                </div>
+
+                <!-- FORM ĐĂNG KÝ -->
+                <div class="hero-form-card" id="dang-ky">
+                    <h3 style="color:var(--primary-dark); margin-bottom:8px; font-size:18px;">Đăng Ký Đồng Hành</h3>
+                    <p style="font-size:13px; color:var(--text-muted); margin-bottom:15px;">Tham gia hỗ trợ công trình Giáo xứ hoặc tại Xóm đạo của bạn</p>
+
+                    <form onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã đăng ký!');">
+                        <div class="form-group">
+                            <label>Họ và Tên</label>
+                            <input type="text" class="form-control" placeholder="Nguyễn Văn A" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Thuộc Xóm đạo / Giáo họ</label>
+                            <input type="text" class="form-control" placeholder="Ví dụ: Xóm Giuse / Giáo họ Emanuel" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Khu vực bạn muốn đồng hành</label>
+                            <select class="form-control">
+                                <option>Hang Đá (Giáo Xứ / Xóm Đạo)</option>
+                                <option>Cây Thông & Cổng Chào Xóm</option>
+                                <option>Hệ Thống Đèn Đội Lối Đi Xóm Đạo</option>
+                                <option>Sân Khấu Diễn Nguyện & Sự Kiện</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 5px;">Xác Nhận Đăng Ký</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION GIỚI THIỆU (NẰM TRONG WRAPPER) -->
+        <section class="about-section" id="gioi-thieu">
+            <div class="section-tag">Nền Tảng Hiệp Hành</div>
+            <h2 class="section-title">Gắn Kết Giáo Xứ - Rực Rỡ Xóm Đạo</h2>
+            <p style="max-width: 750px; margin: 0 auto; color: var(--text-muted);">
+                Nền tảng hỗ trợ đồng bộ công tác chuẩn bị đón Mùa Con Chúa Ra Đời – không chỉ tập trung ở trung tâm Nhà thờ mà còn lan tỏa không khí lễ hội tràn ngập khắp từng con hẻm, khu xóm.
+            </p>
+
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3 style="color:var(--primary-dark); margin-bottom:10px;">⛪ Công Trình Giáo Xứ</h3>
+                    <p style="font-size:14px; color:var(--text-muted);">
+                        Lập kế hoạch thi công các hạng mục lớn như Hang đá trung tâm, Cây thông khuôn viên và Hệ thống đại lễ hội.
+                    </p>
+                </div>
+                <div class="about-card">
+                    <h3 style="color:var(--primary-dark); margin-bottom:10px;">🏘️ Hạng Mục Riêng Của Xóm Đạo</h3>
+                    <p style="font-size:14px; color:var(--text-muted);">
+                        Hỗ trợ từng Xóm đạo tự quản lý công trình riêng: từ Cổng chào xóm, Hang đá địa phương đến dải đèn trang trí dọc tuyến đường.
+                    </p>
+                </div>
+                <div class="about-card">
+                    <h3 style="color:var(--primary-dark); margin-bottom:10px;">🤝 Phối Hợp & Chia Sẻ Nguồn Lực</h3>
+                    <p style="font-size:14px; color:var(--text-muted);">
+                        Điều phối tay nghề thợ, thiết bị điện và hỗ trợ lẫn nhau giữa Giáo xứ và các Xóm đạo một cách linh hoạt.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- TIÊU ĐỀ KHU VỰC THI CÔNG -->
+    <div class="projects-header" id="khu-vuc">
+        <div class="section-tag">Hạng Mục Thi Công</div>
+        <h2 class="section-title">Các Không Gian Công Trình Trọng Điểm</h2>
+        <p style="color: var(--text-muted);">Tổng hợp các khu vực thi công tại Nhà thờ chính và trên toàn bàn các Xóm đạo</p>
+    </div>
+
+    <!-- ==========================================
+         CÁC MỤC FULL COLUMN BACKGROUND (Z-PATTERN)
+         ========================================== -->
+    <div class="work-zone-container">
+        
+        <!-- ROW 1: HANG ĐÁ (ẢNH HANG ĐÁ NOEL ĐUỔI CHUẨN + TEXT TRÁI) -->
+        <section class="work-zone-row zone-hang-da">
+            <div class="zone-content">
+                <h3 class="zone-title">🧱 Hang Đá Giáng Sinh (Giáo Xứ & Xóm Đạo)</h3>
+                <p class="zone-desc">
+                    Công trình biểu tượng thiêng liêng được triển khai tại trung tâm Giáo xứ cũng như tại điểm tập trung của từng Xóm đạo. Dự án tập trung dựng mô hình núi đá nghệ thuật, kết hợp tiểu cảnh và hiệu ứng ánh sáng ấm cúng.
+                </p>
+                <a href="#dang-ky" class="btn btn-primary">Đồng Hành Với Dự Án Hang Đá</a>
+            </div>
+        </section>
+
+        <!-- ROW 2: CÂY THÔNG & KHUÔN VIÊN (TEXT PHẢI) -->
+        <section class="work-zone-row zone-cay-thong">
+            <div class="zone-content">
+                <h3 class="zone-title">🎄 Cây Thông & Cổng Chào Xóm Đạo</h3>
+                <p class="zone-desc">
+                    Điểm nhấn nổi bật tại sân Nhà thờ và tại các cổng vào Xóm đạo. Kế hoạch thi công bao gồm lắp dựng khung chịu lực, kết ruy-băng, chuông Giáng sinh và thắp sáng ngôi sao hy vọng.
+                </p>
+                <a href="#dang-ky" class="btn btn-secondary">Đồng Hành Với Dự Án Cây Thông</a>
+            </div>
+        </section>
+
+        <!-- ROW 3: ĐÈN ĐƯỜNG XÓM ĐẠO (TEXT TRÁI) -->
+        <section class="work-zone-row zone-duong-xom">
+            <div class="zone-content">
+                <h3 class="zone-title">💡 Tuyến Đường Ánh Sáng Các Xóm Đạo</h3>
+                <p class="zone-desc">
+                    Hệ thống đèn dây nghệ thuật kéo dài dọc các con hẻm và tuyến đường chính trong xóm. Công trình đòi hỏi sự hưởng ứng chung tay của cư dân từng xóm, đảm bảo mỹ quan rực rỡ và an toàn kỹ thuật điện tuyệt đối.
+                </p>
+                <a href="#dang-ky" class="btn btn-primary">Đồng Hành Trang Trí Đường Xóm</a>
+            </div>
+        </section>
+
+        <!-- ROW 4: SÂN KHẤU LỄ HỘI (TEXT PHẢI) -->
+        <section class="work-zone-row zone-san-khau">
+            <div class="zone-content">
+                <h3 class="zone-title">🎭 Sân Khấu Diễn Nguyện & Hoạt Cảnh Xóm</h3>
+                <p class="zone-desc">
+                    Khu vực tổ chức đêm hoan ca Giáo xứ và các buổi tĩnh tâm, sinh hoạt văn nghệ tại các Xóm đạo. Hạng mục chịu trách nhiệm dựng phông nền, lắp đặt âm thanh, ánh sáng và bố trí hậu đài.
+                </p>
+                <a href="#dang-ky" class="btn btn-secondary">Đồng Hành Với Dự Án Sân Khấu</a>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- CALL TO ACTION FOOTER -->
+    <section class="cta-section">
+        <h2 style="font-size:32px; margin-bottom:15px;">Chung Tay Cho Một Mùa Giáng Sinh Rực Rỡ</h2>
+        <p style="font-size:16px; margin-bottom:25px; opacity:0.9;">Dù ở Giáo xứ hay tại Xóm đạo của bạn, mọi sự đóng góp đều mang lại giá trị to lớn.</p>
+        <a href="#dang-ky" class="btn btn-primary" style="background:var(--accent); color:var(--text-dark); padding:14px 36px; font-size:16px;">Đăng Ký Đồng Hành Ngay</a>
+    </section>
+
+    <footer>
+        <p>© 2026 Nền tảng Điều phối Chuẩn bị Giáng sinh Giáo xứ & Các Xóm Đạo.</p>
+    </footer>
+
+</body>
+</html>
